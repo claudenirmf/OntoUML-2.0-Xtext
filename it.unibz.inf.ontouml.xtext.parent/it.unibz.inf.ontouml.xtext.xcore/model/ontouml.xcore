@@ -1,0 +1,15 @@
+@Ecore(nsURI="http://www.inf.unibz.it/ontouml/xtext/xcore")
+@GenModel(modelDirectory="it.unibz.inf.ontouml.xtext.xcore/src-gen")
+package it.unibz.inf.ontouml.xtext.xcore
+
+class Model
+{
+	contains ModelElement[] elements
+}
+
+class ModelElement {}
+
+class OntoUMLClass extends ModelElement
+{
+	String name
+}
