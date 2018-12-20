@@ -11,20 +11,124 @@ import org.eclipse.xtext.testing.util.ParseHelper
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
+import it.unibz.inf.ontouml.xtext.utils.ModelUtils
+import it.unibz.inf.ontouml.xtext.xcore.OntoUMLClass
+import it.unibz.inf.ontouml.xtext.xcore.Association
+import com.google.inject.Injector
+import it.unibz.inf.ontouml.xtext.OntoUMLStandaloneSetup
+import org.eclipse.xtext.resource.XtextResourceSet
+import org.eclipse.emf.common.util.URI
+import java.io.File
+import it.unibz.inf.ontouml.xtext.xcore.XcoreFactory
+import java.util.Collections
+import java.util.Scanner
 
 @RunWith(XtextRunner)
 @InjectWith(OntoUMLInjectorProvider)
 class OntoUMLParsingTest {
-	@Inject
-	ParseHelper<Model> parseHelper
+	
+	@Inject extension ParseHelper<Model> parseHelper
+//	@Inject extension ValidationTestHelper
+	@Inject extension ModelUtils
 	
 	@Test
 	def void loadModel() {
-		val result = parseHelper.parse('''
-			Model { elements { OntoUMLClass Batata } }
-		''')
-		Assert.assertNotNull(result)
-		val errors = result.eResource.errors
-		Assert.assertTrue('''Unexpected errors: «errors.join(", ")»''', errors.isEmpty)
+//		val result = parseHelper.parse('''
+//			Model  { Class Batata }
+//		''')
+//		Assert.assertNotNull(result)
+//		val errors = result.eResource.errors
+//		Assert.assertTrue('''Unexpected errors: «errors.join(", ")»''', errors.isEmpty)
 	}
+	
+	@Test
+	def void getAncestorsTest() {
+		val result = '''
+		class A class B class C class D
+		
+		generalization gen1 A B
+		generalization gen2 A C
+		generalization gen3 B D
+		generalization gen4 C D
+		
+		association "A_A"
+			[0..*] A
+			[0..*] A
+		
+		association "A_B"
+			[0..*] A
+			[1..*] B
+		
+		association "A_C"
+			[0..*] A
+			[1..*] C
+		
+		association "A_D"
+			[0..*] A
+			[1..1] D
+		
+		generalization gen5 "A_A" "A_B"
+		generalization gen6 "A_A" "A_C"
+		generalization gen7 "A_B" "A_D"
+		generalization gen8 "A_C" "A_D"
+		'''.parse
+		
+		for (me : result.elements) {
+			if(me instanceof OntoUMLClass) {
+				println(me.name + " descendent of " + me.ancestors.map[ it.name ])
+			}
+			if(me instanceof Association) {
+				println(me.name + " descendent of " + me.ancestors.map[ it.name ])
+			}
+		}
+	}
+	
+	@Test
+	def void stringOrIdRuleTest() {
+		val model = '''
+		class "zxc"
+		class asd
+		class a
+		class "b"
+		class ""
+		'''.parse
+		
+		for (element : model.elements) {
+			println(element.name)
+		}
+	}
+	
+	@Test
+	def void standaloneTest() {
+		// do this only once per application
+		val injector = new OntoUMLStandaloneSetup().createInjectorAndDoEMFRegistration();
+		// obtain a resourceset from the injector
+		val resourceSet = injector.getInstance(XtextResourceSet);
+		
+		val user = File.createTempFile("mymodel", ".ontouml");
+        // Delete the file when the virtual machine is terminated.
+        user.deleteOnExit();
+		
+		// load a resource by URI, in this case from the file system
+		val resource = resourceSet.getResource(URI.createFileURI(user.absolutePath), true);
+		
+		val m = XcoreFactory.eINSTANCE.createModel();
+		resource.getContents().add(m);
+		
+		val c1 = XcoreFactory.eINSTANCE.createOntoUMLClass
+		c1.name = "asd"
+		val c2 = XcoreFactory.eINSTANCE.createOntoUMLClass
+		c2.name = "zxc qwe"
+		
+		m.elements.add(c1)
+		m.elements.add(c2)
+		
+		resource.save(Collections.EMPTY_MAP);
+		
+		val scn = new Scanner(user)
+		while(scn.hasNextLine) {
+			println(scn.nextLine)
+		}
+	}
+	
 }

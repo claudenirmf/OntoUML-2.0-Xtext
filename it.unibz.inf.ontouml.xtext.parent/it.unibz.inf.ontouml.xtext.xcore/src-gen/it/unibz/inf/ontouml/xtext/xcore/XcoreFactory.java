@@ -31,15 +31,6 @@ public interface XcoreFactory extends EFactory {
 	Model createModel();
 
 	/**
-	 * Returns a new object of class '<em>Model Element</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Model Element</em>'.
-	 * @generated
-	 */
-	ModelElement createModelElement();
-
-	/**
 	 * Returns a new object of class '<em>Onto UML Class</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -47,6 +38,51 @@ public interface XcoreFactory extends EFactory {
 	 * @generated
 	 */
 	OntoUMLClass createOntoUMLClass();
+
+	/**
+	 * Returns a new object of class '<em>Multiplicity</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Multiplicity</em>'.
+	 * @generated
+	 */
+	Multiplicity createMultiplicity();
+
+	/**
+	 * Returns a new object of class '<em>Regular Association</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Regular Association</em>'.
+	 * @generated
+	 */
+	RegularAssociation createRegularAssociation();
+
+	/**
+	 * Returns a new object of class '<em>Derivation Association</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Derivation Association</em>'.
+	 * @generated
+	 */
+	DerivationAssociation createDerivationAssociation();
+
+	/**
+	 * Returns a new object of class '<em>Generalization</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Generalization</em>'.
+	 * @generated
+	 */
+	Generalization createGeneralization();
+
+	/**
+	 * Returns a new object of class '<em>Generalization Set</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Generalization Set</em>'.
+	 * @generated
+	 */
+	GeneralizationSet createGeneralizationSet();
 
 	/**
 	 * Returns the package supported by this factory.

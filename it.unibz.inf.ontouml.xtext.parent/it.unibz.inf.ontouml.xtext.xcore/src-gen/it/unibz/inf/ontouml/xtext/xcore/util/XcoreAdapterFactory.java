@@ -76,8 +76,36 @@ public class XcoreAdapterFactory extends AdapterFactoryImpl {
 				return createModelElementAdapter();
 			}
 			@Override
+			public Adapter caseClassifier(Classifier object) {
+				return createClassifierAdapter();
+			}
+			@Override
 			public Adapter caseOntoUMLClass(OntoUMLClass object) {
 				return createOntoUMLClassAdapter();
+			}
+			@Override
+			public Adapter caseAssociation(Association object) {
+				return createAssociationAdapter();
+			}
+			@Override
+			public Adapter caseMultiplicity(Multiplicity object) {
+				return createMultiplicityAdapter();
+			}
+			@Override
+			public Adapter caseRegularAssociation(RegularAssociation object) {
+				return createRegularAssociationAdapter();
+			}
+			@Override
+			public Adapter caseDerivationAssociation(DerivationAssociation object) {
+				return createDerivationAssociationAdapter();
+			}
+			@Override
+			public Adapter caseGeneralization(Generalization object) {
+				return createGeneralizationAdapter();
+			}
+			@Override
+			public Adapter caseGeneralizationSet(GeneralizationSet object) {
+				return createGeneralizationSetAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -128,6 +156,20 @@ public class XcoreAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link it.unibz.inf.ontouml.xtext.xcore.Classifier <em>Classifier</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.Classifier
+	 * @generated
+	 */
+	public Adapter createClassifierAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link it.unibz.inf.ontouml.xtext.xcore.OntoUMLClass <em>Onto UML Class</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -138,6 +180,90 @@ public class XcoreAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createOntoUMLClassAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link it.unibz.inf.ontouml.xtext.xcore.Association <em>Association</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.Association
+	 * @generated
+	 */
+	public Adapter createAssociationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link it.unibz.inf.ontouml.xtext.xcore.Multiplicity <em>Multiplicity</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.Multiplicity
+	 * @generated
+	 */
+	public Adapter createMultiplicityAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation <em>Regular Association</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.RegularAssociation
+	 * @generated
+	 */
+	public Adapter createRegularAssociationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation <em>Derivation Association</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation
+	 * @generated
+	 */
+	public Adapter createDerivationAssociationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link it.unibz.inf.ontouml.xtext.xcore.Generalization <em>Generalization</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.Generalization
+	 * @generated
+	 */
+	public Adapter createGeneralizationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link it.unibz.inf.ontouml.xtext.xcore.GeneralizationSet <em>Generalization Set</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.GeneralizationSet
+	 * @generated
+	 */
+	public Adapter createGeneralizationSetAdapter() {
 		return null;
 	}
 

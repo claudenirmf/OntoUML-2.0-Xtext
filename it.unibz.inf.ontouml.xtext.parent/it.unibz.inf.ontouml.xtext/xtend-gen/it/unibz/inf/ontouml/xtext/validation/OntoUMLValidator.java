@@ -3,7 +3,31 @@
  */
 package it.unibz.inf.ontouml.xtext.validation;
 
+import com.google.common.base.Objects;
+import com.google.inject.Inject;
+import it.unibz.inf.ontouml.xtext.utils.ModelUtils;
 import it.unibz.inf.ontouml.xtext.validation.AbstractOntoUMLValidator;
+import it.unibz.inf.ontouml.xtext.xcore.Classifier;
+import it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation;
+import it.unibz.inf.ontouml.xtext.xcore.EndurantType;
+import it.unibz.inf.ontouml.xtext.xcore.Generalization;
+import it.unibz.inf.ontouml.xtext.xcore.GeneralizationSet;
+import it.unibz.inf.ontouml.xtext.xcore.Model;
+import it.unibz.inf.ontouml.xtext.xcore.ModelElement;
+import it.unibz.inf.ontouml.xtext.xcore.OntoUMLClass;
+import it.unibz.inf.ontouml.xtext.xcore.RegularAssociation;
+import it.unibz.inf.ontouml.xtext.xcore.RelationType;
+import it.unibz.inf.ontouml.xtext.xcore.XcorePackage;
+import java.util.function.Consumer;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.validation.CheckType;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 /**
  * This class contains custom validation rules.
@@ -12,4 +36,363 @@ import it.unibz.inf.ontouml.xtext.validation.AbstractOntoUMLValidator;
  */
 @SuppressWarnings("all")
 public class OntoUMLValidator extends AbstractOntoUMLValidator {
+  @Inject
+  @Extension
+  private ModelUtils _modelUtils;
+  
+  public final static String DUPLICATED_NAME = "it.unibz.inf.ontouml.xtext.validation.DUPLICATED_NAME";
+  
+  public final static String INVALID_GENERALIZATION_SET = "it.unibz.inf.ontouml.xtext.validation.INVALID_GENERALIZATION_SET";
+  
+  public final static String UNKOWN_NATURE = "it.unibz.inf.ontouml.xtext.validation.UNKOWN_NATURE";
+  
+  public final static String MISSING_IDENTITY_SUPPLIER = "it.unibz.inf.ontouml.xtext.validation.MISSING_IDENTITY_SUPPLIER";
+  
+  public final static String ULTIMATE_SORTAL_SPECIALIZATION = "it.unibz.inf.ontouml.xtext.validation.ULTIMATE_SORTAL_SPECIALIZATION";
+  
+  public final static String MULTIPLE_IDENTITY_SUPPLIERS = "it.unibz.inf.ontouml.xtext.validation.MULTIPLE_IDENTITY_SUPPLIERS";
+  
+  public final static String NONSORTAL_SPECIALIZATION_TO_SORTAL = "it.unibz.inf.ontouml.xtext.validation.NONSORTAL_SPECIALIZATION_TO_SORTAL";
+  
+  public final static String RIGID_SPECIALIZATION_TO_ANTI_RIGID = "it.unibz.inf.ontouml.xtext.validation.RIGID_SPECIALIZATION_TO_ANTI_RIGID";
+  
+  public final static String SEMI_RIGID_SPECIALIZATION_TO_ANTI_RIGID = "it.unibz.inf.ontouml.xtext.validation.SEMI_RIGID_SPECIALIZATION_TO_ANTI_RIGID";
+  
+  public final static String PHASE_MISSING_PARTITION = "it.unibz.inf.ontouml.xtext.validation.PHASE_MISSING_PARTITION";
+  
+  public final static String MULTIPLE_DERIVATIONS = "it.unibz.inf.ontouml.xtext.validation.MULTIPLE_DERIVATIONS";
+  
+  public final static String MISSING_DERIVATION = "it.unibz.inf.ontouml.xtext.validation.MISSING_DERIVATION";
+  
+  public final static String PROHIBITED_DERIVATION = "it.unibz.inf.ontouml.xtext.validation.PROHIBITED_DERIVATION";
+  
+  @Check
+  public void checkDuplicatedName(final ModelElement me) {
+    EObject _eContainer = me.eContainer();
+    final EList<ModelElement> list = ((Model) _eContainer).getElements();
+    final Function1<ModelElement, Boolean> _function = (ModelElement it) -> {
+      return Boolean.valueOf(((Objects.equal(it.getName(), me.getName()) && Objects.equal(it.eClass(), me.eClass())) && (!Objects.equal(it, me))));
+    };
+    boolean _exists = IterableExtensions.<ModelElement>exists(list, _function);
+    if (_exists) {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("Duplicated name for this type of model element (\"");
+      String _name = me.getName();
+      _builder.append(_name);
+      _builder.append("\").");
+      this.error(_builder.toString(), me, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.DUPLICATED_NAME);
+    }
+  }
+  
+  @Check
+  public void checkValidGeneralizationSet(final GeneralizationSet gs) {
+    final BasicEList<ModelElement> list = new BasicEList<ModelElement>();
+    final Consumer<Generalization> _function = (Generalization it) -> {
+      boolean _contains = list.contains(it.getGeneric());
+      boolean _not = (!_contains);
+      if (_not) {
+        list.add(it.getGeneric());
+      }
+    };
+    gs.getGeneralizations().forEach(_function);
+    int _size = list.size();
+    boolean _notEquals = (_size != 1);
+    if (_notEquals) {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("Invalid generalization set (does not aggregate generalizations ");
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("of a unique generic classifier).");
+      String _plus = (_builder.toString() + _builder_1);
+      this.error(_plus, gs, 
+        XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.INVALID_GENERALIZATION_SET);
+    }
+  }
+  
+  @Check
+  public void checkUnkownOntologicalProperties(final ModelElement me) {
+    if (((me instanceof OntoUMLClass) && Objects.equal(((OntoUMLClass) me).get_type(), EndurantType.NONE))) {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("The model element has an unknown ontological nature due to the abscence of");
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append(" ");
+      _builder_1.append("some decorating stereotype from the OntomUML profile (\"");
+      String _name = me.getName();
+      _builder_1.append(_name, " ");
+      _builder_1.append("\").");
+      String _plus = (_builder.toString() + _builder_1);
+      this.warning(_plus, me, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.UNKOWN_NATURE);
+    } else {
+      if (((me instanceof RegularAssociation) && Objects.equal(((RegularAssociation) me).get_type(), RelationType.NONE))) {
+        StringConcatenation _builder_2 = new StringConcatenation();
+        _builder_2.append("The model element has an unknown ontological nature due to the abscence of");
+        StringConcatenation _builder_3 = new StringConcatenation();
+        _builder_3.append(" ");
+        _builder_3.append("some decorating stereotype from the OntomUML profile (\"");
+        String _name_1 = me.getName();
+        _builder_3.append(_name_1, " ");
+        _builder_3.append("\").");
+        String _plus_1 = (_builder_2.toString() + _builder_3);
+        this.warning(_plus_1, me, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.UNKOWN_NATURE);
+      }
+    }
+  }
+  
+  @Check(CheckType.NORMAL)
+  public void checkUltimateSortalSpecialization(final OntoUMLClass c) {
+    boolean _isSortal = c.isSortal();
+    if (_isSortal) {
+      final Function1<OntoUMLClass, Boolean> _function = (OntoUMLClass it) -> {
+        return Boolean.valueOf(it.isUltimateSortal());
+      };
+      final Iterable<OntoUMLClass> kinds = IterableExtensions.<OntoUMLClass>filter(this._modelUtils.getAncestors(c), _function);
+      if ((IterableExtensions.isEmpty(kinds) && (!c.isUltimateSortal()))) {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("The class \"");
+        String _nameOrAlias = this._modelUtils.nameOrAlias(c);
+        _builder.append(_nameOrAlias);
+        _builder.append("\" must specialize a ultimate sortal ");
+        StringConcatenation _builder_1 = new StringConcatenation();
+        _builder_1.append("i.e., a class decorated with one stereotype from the set {");
+        String _plus = (_builder.toString() + _builder_1);
+        String _plus_1 = (_plus + "«kind»,«relatorKind»,«modeKind»,«qualityKind»}).");
+        this.error(_plus_1, c, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.MISSING_IDENTITY_SUPPLIER);
+      }
+      if (((!IterableExtensions.isEmpty(kinds)) && c.isUltimateSortal())) {
+        StringConcatenation _builder_2 = new StringConcatenation();
+        _builder_2.append("The class \"");
+        String _nameOrAlias_1 = this._modelUtils.nameOrAlias(c);
+        _builder_2.append(_nameOrAlias_1);
+        _builder_2.append("\" is a ultimate sortal and cannot specialize ");
+        StringConcatenation _builder_3 = new StringConcatenation();
+        _builder_3.append("other ultimate sortals (");
+        {
+          for(final OntoUMLClass k : kinds) {
+            {
+              OntoUMLClass _head = IterableExtensions.<OntoUMLClass>head(kinds);
+              boolean _notEquals = (!Objects.equal(_head, k));
+              if (_notEquals) {
+                _builder_3.append(", ");
+              }
+            }
+            _builder_3.append("\"");
+            String _nameOrAlias_2 = this._modelUtils.nameOrAlias(k);
+            _builder_3.append(_nameOrAlias_2);
+            _builder_3.append("\"");
+          }
+        }
+        _builder_3.append(").");
+        String _plus_2 = (_builder_2.toString() + _builder_3);
+        this.error(_plus_2, c, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.ULTIMATE_SORTAL_SPECIALIZATION);
+      }
+      if (((IterableExtensions.size(kinds) > 1) && (!c.isUltimateSortal()))) {
+        StringConcatenation _builder_4 = new StringConcatenation();
+        _builder_4.append("The class \"");
+        String _nameOrAlias_3 = this._modelUtils.nameOrAlias(c);
+        _builder_4.append(_nameOrAlias_3);
+        _builder_4.append("\" is specializing mutiple ultimate sortals ");
+        StringConcatenation _builder_5 = new StringConcatenation();
+        _builder_5.append("(");
+        {
+          for(final OntoUMLClass k_1 : kinds) {
+            {
+              OntoUMLClass _head_1 = IterableExtensions.<OntoUMLClass>head(kinds);
+              boolean _notEquals_1 = (!Objects.equal(_head_1, k_1));
+              if (_notEquals_1) {
+                _builder_5.append(", ");
+              }
+            }
+            _builder_5.append("\"");
+            String _nameOrAlias_4 = this._modelUtils.nameOrAlias(k_1);
+            _builder_5.append(_nameOrAlias_4);
+            _builder_5.append("\"");
+          }
+        }
+        _builder_5.append(").");
+        String _plus_3 = (_builder_4.toString() + _builder_5);
+        this.error(_plus_3, c, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.MULTIPLE_IDENTITY_SUPPLIERS);
+      }
+    }
+  }
+  
+  @Check(CheckType.NORMAL)
+  public void checkNonSortalSpecializationToSortal(final OntoUMLClass c) {
+    boolean _isNonSortal = c.isNonSortal();
+    if (_isNonSortal) {
+      final Function1<OntoUMLClass, Boolean> _function = (OntoUMLClass it) -> {
+        return Boolean.valueOf(it.isSortal());
+      };
+      final Iterable<OntoUMLClass> sortals = IterableExtensions.<OntoUMLClass>filter(this._modelUtils.getAncestors(c), _function);
+      boolean _isEmpty = IterableExtensions.isEmpty(sortals);
+      boolean _not = (!_isEmpty);
+      if (_not) {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("The class \"");
+        String _nameOrAlias = this._modelUtils.nameOrAlias(c);
+        _builder.append(_nameOrAlias);
+        _builder.append("\" is non-sortal and cannot specialize sortal classes (");
+        StringConcatenation _builder_1 = new StringConcatenation();
+        {
+          for(final OntoUMLClass s : sortals) {
+            {
+              OntoUMLClass _head = IterableExtensions.<OntoUMLClass>head(sortals);
+              boolean _notEquals = (!Objects.equal(_head, s));
+              if (_notEquals) {
+                _builder_1.append(", ");
+              }
+            }
+            _builder_1.append("\"");
+            String _nameOrAlias_1 = this._modelUtils.nameOrAlias(s);
+            _builder_1.append(_nameOrAlias_1);
+            _builder_1.append("\"");
+          }
+        }
+        _builder_1.append(").");
+        String _plus = (_builder.toString() + _builder_1);
+        this.error(_plus, c, 
+          XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.NONSORTAL_SPECIALIZATION_TO_SORTAL);
+      }
+    }
+  }
+  
+  @Check(CheckType.NORMAL)
+  public void checkNonAntiRigidSpecializationToAntiRigid(final OntoUMLClass c) {
+    if ((c.isRigid() || c.isSemiRigid())) {
+      final Function1<OntoUMLClass, Boolean> _function = (OntoUMLClass it) -> {
+        return Boolean.valueOf(it.isAntiRigid());
+      };
+      final Iterable<OntoUMLClass> antiRigids = IterableExtensions.<OntoUMLClass>filter(this._modelUtils.getAncestors(c), _function);
+      if (((!IterableExtensions.isEmpty(antiRigids)) && c.isRigid())) {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("The class \"");
+        String _nameOrAlias = this._modelUtils.nameOrAlias(c);
+        _builder.append(_nameOrAlias);
+        _builder.append("\" is rigid and cannot specialize anti-rigid classes (");
+        StringConcatenation _builder_1 = new StringConcatenation();
+        {
+          for(final OntoUMLClass ar : antiRigids) {
+            {
+              OntoUMLClass _head = IterableExtensions.<OntoUMLClass>head(antiRigids);
+              boolean _notEquals = (!Objects.equal(_head, ar));
+              if (_notEquals) {
+                _builder_1.append(", ");
+              }
+            }
+            _builder_1.append("\"");
+            String _nameOrAlias_1 = this._modelUtils.nameOrAlias(ar);
+            _builder_1.append(_nameOrAlias_1);
+            _builder_1.append("\"");
+          }
+        }
+        _builder_1.append(").");
+        String _plus = (_builder.toString() + _builder_1);
+        this.error(_plus, c, 
+          XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.RIGID_SPECIALIZATION_TO_ANTI_RIGID);
+      }
+      if (((!IterableExtensions.isEmpty(antiRigids)) && c.isSemiRigid())) {
+        StringConcatenation _builder_2 = new StringConcatenation();
+        _builder_2.append("The class \"");
+        String _nameOrAlias_2 = this._modelUtils.nameOrAlias(c);
+        _builder_2.append(_nameOrAlias_2);
+        _builder_2.append("\" is semi-rigid and cannot specialize anti-rigid classes (");
+        StringConcatenation _builder_3 = new StringConcatenation();
+        {
+          for(final OntoUMLClass ar_1 : antiRigids) {
+            {
+              OntoUMLClass _head_1 = IterableExtensions.<OntoUMLClass>head(antiRigids);
+              boolean _notEquals_1 = (!Objects.equal(_head_1, ar_1));
+              if (_notEquals_1) {
+                _builder_3.append(", ");
+              }
+            }
+            _builder_3.append("\"");
+            String _nameOrAlias_3 = this._modelUtils.nameOrAlias(ar_1);
+            _builder_3.append(_nameOrAlias_3);
+            _builder_3.append("\"");
+          }
+        }
+        _builder_3.append(").");
+        String _plus_1 = (_builder_2.toString() + _builder_3);
+        this.error(_plus_1, c, 
+          XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.SEMI_RIGID_SPECIALIZATION_TO_ANTI_RIGID);
+      }
+    }
+  }
+  
+  @Check(CheckType.NORMAL)
+  public void checkPhaseInPartition(final OntoUMLClass c) {
+    boolean _isPhase = c.isPhase();
+    if (_isPhase) {
+      EObject _eContainer = c.eContainer();
+      final Function1<ModelElement, Boolean> _function = (ModelElement it) -> {
+        boolean _xifexpression = false;
+        if ((it instanceof GeneralizationSet)) {
+          _xifexpression = (((((GeneralizationSet)it).isIsDisjoint() && ((GeneralizationSet)it).isIsComplete()) && ((GeneralizationSet)it).getSpecifics().contains(c)) && IterableExtensions.<Classifier>forall(((GeneralizationSet)it).getSpecifics(), 
+            ((Function1<Classifier, Boolean>) (Classifier it_1) -> {
+              return Boolean.valueOf(((it_1 instanceof OntoUMLClass) && Objects.equal(((OntoUMLClass) it_1).get_type(), c.get_type())));
+            })));
+        } else {
+          _xifexpression = false;
+        }
+        return Boolean.valueOf(_xifexpression);
+      };
+      final boolean partitionFound = IterableExtensions.<ModelElement>exists(((Model) _eContainer).getElements(), _function);
+      if ((!partitionFound)) {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("The class \"");
+        String _nameOrAlias = this._modelUtils.nameOrAlias(c);
+        _builder.append(_nameOrAlias);
+        _builder.append("\" is a phase and must be a member of some partition of phase ");
+        StringConcatenation _builder_1 = new StringConcatenation();
+        _builder_1.append("(i.e., a disjoint and complete generalization set of classes decorated as ");
+        String _plus = (_builder.toString() + _builder_1);
+        StringConcatenation _builder_2 = new StringConcatenation();
+        EndurantType __type = c.get_type();
+        String _plus_1 = ("«" + __type);
+        String _plus_2 = (_plus_1 + "»");
+        _builder_2.append(_plus_2);
+        _builder_2.append(").");
+        String _plus_3 = (_plus + _builder_2);
+        this.error(_plus_3, c, XcorePackage.eINSTANCE.getModelElement_Name(), 
+          OntoUMLValidator.PHASE_MISSING_PARTITION);
+      }
+    }
+  }
+  
+  @Check(CheckType.NORMAL)
+  public void checkMultipleDerivationOfSingleAssociation(final DerivationAssociation d) {
+    final Function1<ModelElement, Boolean> _function = (ModelElement it) -> {
+      return Boolean.valueOf((((it instanceof DerivationAssociation) && (!Objects.equal(it, d))) && Objects.equal(((DerivationAssociation) it).getDerivingAssociation(), d.getDerivingAssociation())));
+    };
+    final boolean cond = IterableExtensions.<ModelElement>exists(this._modelUtils.getContainerModel(d).getElements(), _function);
+    if (cond) {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("Multiple derivations of the same association are not allowed.");
+      this.error(_builder.toString(), d, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.MULTIPLE_DERIVATIONS);
+    }
+  }
+  
+  @Check(CheckType.NORMAL)
+  public void checkDescriptiveRelationDerivation(final RegularAssociation a) {
+    RelationType __type = a.get_type();
+    boolean _equals = Objects.equal(__type, RelationType.DESCRIPTIVE);
+    if (_equals) {
+      final DerivationAssociation d = this._modelUtils.getDerivation(a);
+      if ((d == null)) {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("Every descriptive relation should derive some class representing its truthmaker.");
+        this.warning(_builder.toString(), a, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.MISSING_DERIVATION);
+      } else {
+        boolean _isMomentType = this._modelUtils.isMomentType(d.getDerivedClass());
+        boolean _not = (!_isMomentType);
+        if (_not) {
+          StringConcatenation _builder_1 = new StringConcatenation();
+          _builder_1.append("Descriptive relations cannot be deriving substantial types (\"");
+          String _name = d.getDerivedClass().getName();
+          _builder_1.append(_name);
+          _builder_1.append("\").");
+          this.warning(_builder_1.toString(), a, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.PROHIBITED_DERIVATION);
+        }
+      }
+    }
+  }
 }

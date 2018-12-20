@@ -2,9 +2,13 @@
  */
 package it.unibz.inf.ontouml.xtext.xcore.impl;
 
+import com.google.common.base.Objects;
+
 import it.unibz.inf.ontouml.xtext.xcore.Model;
 import it.unibz.inf.ontouml.xtext.xcore.ModelElement;
 import it.unibz.inf.ontouml.xtext.xcore.XcorePackage;
+
+import java.lang.reflect.InvocationTargetException;
 
 import java.util.Collection;
 
@@ -19,6 +23,10 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 /**
  * <!-- begin-user-doc -->
@@ -73,6 +81,21 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 			elements = new EObjectContainmentEList<ModelElement>(ModelElement.class, this, XcorePackage.MODEL__ELEMENTS);
 		}
 		return elements;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ModelElement getElementByName(final String name) {
+		final Function1<ModelElement, Boolean> _function = new Function1<ModelElement, Boolean>() {
+			public Boolean apply(final ModelElement it) {
+				String _name = it.getName();
+				return Boolean.valueOf(Objects.equal(_name, name));
+			}
+		};
+		return IterableExtensions.<ModelElement>findFirst(this.getElements(), _function);
 	}
 
 	/**
@@ -147,6 +170,20 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 				return elements != null && !elements.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case XcorePackage.MODEL___GET_ELEMENT_BY_NAME__STRING:
+				return getElementByName((String)arguments.get(0));
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 } //ModelImpl

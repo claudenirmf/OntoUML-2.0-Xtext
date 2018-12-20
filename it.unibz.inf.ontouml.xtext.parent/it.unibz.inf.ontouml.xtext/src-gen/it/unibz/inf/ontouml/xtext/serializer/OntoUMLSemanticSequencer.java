@@ -5,9 +5,13 @@ package it.unibz.inf.ontouml.xtext.serializer;
 
 import com.google.inject.Inject;
 import it.unibz.inf.ontouml.xtext.services.OntoUMLGrammarAccess;
+import it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation;
+import it.unibz.inf.ontouml.xtext.xcore.Generalization;
+import it.unibz.inf.ontouml.xtext.xcore.GeneralizationSet;
 import it.unibz.inf.ontouml.xtext.xcore.Model;
-import it.unibz.inf.ontouml.xtext.xcore.ModelElement;
+import it.unibz.inf.ontouml.xtext.xcore.Multiplicity;
 import it.unibz.inf.ontouml.xtext.xcore.OntoUMLClass;
+import it.unibz.inf.ontouml.xtext.xcore.RegularAssociation;
 import it.unibz.inf.ontouml.xtext.xcore.XcorePackage;
 import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
@@ -34,14 +38,26 @@ public class OntoUMLSemanticSequencer extends AbstractDelegatingSemanticSequence
 		Set<Parameter> parameters = context.getEnabledBooleanParameters();
 		if (epackage == XcorePackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
+			case XcorePackage.DERIVATION_ASSOCIATION:
+				sequence_DerivationAssociation(context, (DerivationAssociation) semanticObject); 
+				return; 
+			case XcorePackage.GENERALIZATION:
+				sequence_Generalization(context, (Generalization) semanticObject); 
+				return; 
+			case XcorePackage.GENERALIZATION_SET:
+				sequence_GeneralizationSet(context, (GeneralizationSet) semanticObject); 
+				return; 
 			case XcorePackage.MODEL:
 				sequence_Model(context, (Model) semanticObject); 
 				return; 
-			case XcorePackage.MODEL_ELEMENT:
-				sequence_ModelElement_Impl(context, (ModelElement) semanticObject); 
+			case XcorePackage.MULTIPLICITY:
+				sequence_Multiplicity(context, (Multiplicity) semanticObject); 
 				return; 
 			case XcorePackage.ONTO_UML_CLASS:
 				sequence_OntoUMLClass(context, (OntoUMLClass) semanticObject); 
+				return; 
+			case XcorePackage.REGULAR_ASSOCIATION:
+				sequence_RegularAssociation(context, (RegularAssociation) semanticObject); 
 				return; 
 			}
 		if (errorAcceptor != null)
@@ -50,13 +66,46 @@ public class OntoUMLSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
-	 *     ModelElement returns ModelElement
-	 *     ModelElement_Impl returns ModelElement
+	 *     ModelElement returns DerivationAssociation
+	 *     DerivationAssociation returns DerivationAssociation
 	 *
 	 * Constraint:
-	 *     {ModelElement}
+	 *     (
+	 *         name=StringOrID 
+	 *         alias=StringOrID? 
+	 *         (
+	 *             (endAMultiplicity=Multiplicity? derivingAssociation=[RegularAssociation|StringOrID]) | 
+	 *             (endBMultiplicity=Multiplicity? derivedClass=[OntoUMLClass|StringOrID])
+	 *         )+
+	 *     )
 	 */
-	protected void sequence_ModelElement_Impl(ISerializationContext context, ModelElement semanticObject) {
+	protected void sequence_DerivationAssociation(ISerializationContext context, DerivationAssociation semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ModelElement returns GeneralizationSet
+	 *     GeneralizationSet returns GeneralizationSet
+	 *
+	 * Constraint:
+	 *     ((isDisjoint?='disjoint' | isComplete?='complete')* name=StringOrID alias=StringOrID? generalizations+=[Generalization|StringOrID]*)
+	 */
+	protected void sequence_GeneralizationSet(ISerializationContext context, GeneralizationSet semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ModelElement returns Generalization
+	 *     Generalization returns Generalization
+	 *
+	 * Constraint:
+	 *     (name=StringOrID alias=StringOrID? generic=[OntoUMLClass|StringOrID] specific=[OntoUMLClass|StringOrID])
+	 */
+	protected void sequence_Generalization(ISerializationContext context, Generalization semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -66,10 +115,31 @@ public class OntoUMLSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     Model returns Model
 	 *
 	 * Constraint:
-	 *     (elements+=ModelElement elements+=ModelElement*)?
+	 *     elements+=ModelElement+
 	 */
 	protected void sequence_Model(ISerializationContext context, Model semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Multiplicity returns Multiplicity
+	 *
+	 * Constraint:
+	 *     (lowerBound=CARDINALITY upperBound=CARDINALITY)
+	 */
+	protected void sequence_Multiplicity(ISerializationContext context, Multiplicity semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, XcorePackage.Literals.MULTIPLICITY__LOWER_BOUND) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XcorePackage.Literals.MULTIPLICITY__LOWER_BOUND));
+			if (transientValues.isValueTransient(semanticObject, XcorePackage.Literals.MULTIPLICITY__UPPER_BOUND) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XcorePackage.Literals.MULTIPLICITY__UPPER_BOUND));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getMultiplicityAccess().getLowerBoundCARDINALITYTerminalRuleCall_1_0(), semanticObject.getLowerBound());
+		feeder.accept(grammarAccess.getMultiplicityAccess().getUpperBoundCARDINALITYTerminalRuleCall_3_0(), semanticObject.getUpperBound());
+		feeder.finish();
 	}
 	
 	
@@ -79,16 +149,31 @@ public class OntoUMLSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     OntoUMLClass returns OntoUMLClass
 	 *
 	 * Constraint:
-	 *     name=EString
+	 *     ((_type=EndurantType | _type=EndurantType)? name=StringOrID alias=StringOrID?)
 	 */
 	protected void sequence_OntoUMLClass(ISerializationContext context, OntoUMLClass semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, XcorePackage.Literals.ONTO_UML_CLASS__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XcorePackage.Literals.ONTO_UML_CLASS__NAME));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getOntoUMLClassAccess().getNameEStringParserRuleCall_2_0(), semanticObject.getName());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ModelElement returns RegularAssociation
+	 *     RegularAssociation returns RegularAssociation
+	 *
+	 * Constraint:
+	 *     (
+	 *         (_type=RelationType | _type=RelationType)? 
+	 *         name=StringOrID 
+	 *         alias=StringOrID? 
+	 *         endAMultiplicity=Multiplicity? 
+	 *         endA=[OntoUMLClass|StringOrID] 
+	 *         endBMultiplicity=Multiplicity? 
+	 *         endB=[OntoUMLClass|StringOrID]
+	 *     )
+	 */
+	protected void sequence_RegularAssociation(ISerializationContext context, RegularAssociation semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

@@ -3,6 +3,21 @@
  */
 package it.unibz.inf.ontouml.xtext.validation
 
+import org.eclipse.xtext.validation.Check
+import org.eclipse.xtext.validation.CheckType
+import it.unibz.inf.ontouml.xtext.xcore.OntoUMLClass
+import com.google.inject.Inject
+import it.unibz.inf.ontouml.xtext.utils.ModelUtils
+import it.unibz.inf.ontouml.xtext.xcore.XcorePackage
+import it.unibz.inf.ontouml.xtext.xcore.Model
+import it.unibz.inf.ontouml.xtext.xcore.GeneralizationSet
+import it.unibz.inf.ontouml.xtext.xcore.ModelElement
+import it.unibz.inf.ontouml.xtext.xcore.Association
+import it.unibz.inf.ontouml.xtext.xcore.EndurantType
+import it.unibz.inf.ontouml.xtext.xcore.RegularAssociation
+import it.unibz.inf.ontouml.xtext.xcore.RelationType
+import org.eclipse.emf.common.util.BasicEList
+import it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation
 
 /**
  * This class contains custom validation rules. 
@@ -11,15 +26,176 @@ package it.unibz.inf.ontouml.xtext.validation
  */
 class OntoUMLValidator extends AbstractOntoUMLValidator {
 	
-//	public static val INVALID_NAME = 'invalidName'
-//
-//	@Check
-//	def checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//			warning('Name should start with a capital', 
-//					OntoUMLPackage.Literals.GREETING__NAME,
-//					INVALID_NAME)
-//		}
-//	}
+	@Inject extension ModelUtils
+	
+	public static val DUPLICATED_NAME = "it.unibz.inf.ontouml.xtext.validation.DUPLICATED_NAME"
+	public static val INVALID_GENERALIZATION_SET = "it.unibz.inf.ontouml.xtext.validation.INVALID_GENERALIZATION_SET"
+	public static val UNKOWN_NATURE = "it.unibz.inf.ontouml.xtext.validation.UNKOWN_NATURE"
+	public static val MISSING_IDENTITY_SUPPLIER = "it.unibz.inf.ontouml.xtext.validation.MISSING_IDENTITY_SUPPLIER"
+	public static val ULTIMATE_SORTAL_SPECIALIZATION = "it.unibz.inf.ontouml.xtext.validation.ULTIMATE_SORTAL_SPECIALIZATION"
+	public static val MULTIPLE_IDENTITY_SUPPLIERS = "it.unibz.inf.ontouml.xtext.validation.MULTIPLE_IDENTITY_SUPPLIERS"
+	public static val NONSORTAL_SPECIALIZATION_TO_SORTAL = "it.unibz.inf.ontouml.xtext.validation.NONSORTAL_SPECIALIZATION_TO_SORTAL"
+	public static val RIGID_SPECIALIZATION_TO_ANTI_RIGID = "it.unibz.inf.ontouml.xtext.validation.RIGID_SPECIALIZATION_TO_ANTI_RIGID"
+	public static val SEMI_RIGID_SPECIALIZATION_TO_ANTI_RIGID = "it.unibz.inf.ontouml.xtext.validation.SEMI_RIGID_SPECIALIZATION_TO_ANTI_RIGID"
+	public static val PHASE_MISSING_PARTITION = "it.unibz.inf.ontouml.xtext.validation.PHASE_MISSING_PARTITION"
+	public static val MULTIPLE_DERIVATIONS = "it.unibz.inf.ontouml.xtext.validation.MULTIPLE_DERIVATIONS"
+	public static val MISSING_DERIVATION = "it.unibz.inf.ontouml.xtext.validation.MISSING_DERIVATION"
+	public static val PROHIBITED_DERIVATION = "it.unibz.inf.ontouml.xtext.validation.PROHIBITED_DERIVATION"
+	
+	
+	@Check
+	def checkDuplicatedName(ModelElement me) {
+		val list = (me.eContainer as Model).elements
+		if (list.exists[ it.name == me.name && it.eClass == me.eClass && it != me ])
+			error('''Duplicated name for this type of model element ("«me.name»").''',
+				me, XcorePackage.eINSTANCE.modelElement_Name, DUPLICATED_NAME)
+	}
+	
+	@Check
+	def checkValidGeneralizationSet(GeneralizationSet gs) {
+		val list = new BasicEList<ModelElement>
+		gs.generalizations.forEach[ if(!list.contains(generic)) { list.add(generic) } ]
+		if(list.size != 1)
+			error('''Invalid generalization set (does not aggregate generalizations '''
+				+'''of a unique generic classifier).''', gs, 
+				XcorePackage.eINSTANCE.modelElement_Name, INVALID_GENERALIZATION_SET)
+	}
+	
+	@Check
+	def checkUnkownOntologicalProperties(ModelElement me) {
+		if(me instanceof OntoUMLClass && (me as OntoUMLClass)._type==EndurantType.NONE) {
+			warning('''The model element has an unknown ontological nature due to the abscence of'''+
+				''' some decorating stereotype from the OntomUML profile ("«me.name»").''',
+				me, XcorePackage.eINSTANCE.modelElement_Name, UNKOWN_NATURE)
+		}
+		else if(me instanceof RegularAssociation && (me as RegularAssociation)._type==RelationType.NONE) {
+			warning('''The model element has an unknown ontological nature due to the abscence of'''+
+				''' some decorating stereotype from the OntomUML profile ("«me.name»").''',
+				me, XcorePackage.eINSTANCE.modelElement_Name, UNKOWN_NATURE)
+		}
+	}
+
+	@Check(CheckType.NORMAL)
+	def checkUltimateSortalSpecialization(OntoUMLClass c) {
+		if (c.isSortal) {
+			val kinds = c.ancestors.filter[it.isUltimateSortal]
+			if (kinds.isEmpty && !c.isUltimateSortal) {
+				error(
+					'''The class "«c.nameOrAlias»" must specialize a ultimate sortal '''+
+					'''i.e., a class decorated with one stereotype from the set {'''+"«kind»,«relatorKind»,«modeKind»,«qualityKind»}).", 
+					c, XcorePackage.eINSTANCE.modelElement_Name, MISSING_IDENTITY_SUPPLIER)
+			}
+			if (!kinds.isEmpty && c.isUltimateSortal) {
+				error(
+				'''The class "«c.nameOrAlias»" is a ultimate sortal and cannot specialize '''+
+					'''other ultimate sortals («FOR k : kinds»«IF kinds.head!=k», «ENDIF»"«k.nameOrAlias»"«ENDFOR»).''',
+					c, XcorePackage.eINSTANCE.modelElement_Name, ULTIMATE_SORTAL_SPECIALIZATION)
+			}
+			if (kinds.size > 1 && !c.isUltimateSortal) {
+				error(
+				'''The class "«c.nameOrAlias»" is specializing mutiple ultimate sortals '''+
+					'''(«FOR k : kinds»«IF kinds.head!=k», «ENDIF»"«k.nameOrAlias»"«ENDFOR»).''',
+					c, XcorePackage.eINSTANCE.modelElement_Name,MULTIPLE_IDENTITY_SUPPLIERS)
+			}
+		}
+	}
+	
+	@Check(CheckType.NORMAL)
+	def checkNonSortalSpecializationToSortal(OntoUMLClass c) {
+		if (c.isNonSortal) {
+			val sortals = c.ancestors.filter[it.isSortal]
+			if (!sortals.isEmpty) {
+				error(
+				'''The class "«c.nameOrAlias»" is non-sortal and cannot specialize sortal classes ('''+
+					'''«FOR s : sortals»«IF sortals.head!=s», «ENDIF»"«s.nameOrAlias»"«ENDFOR»).''', c, 
+					XcorePackage.eINSTANCE.modelElement_Name, NONSORTAL_SPECIALIZATION_TO_SORTAL)
+			}
+		}
+	}
+	
+	@Check(CheckType.NORMAL)
+	def checkNonAntiRigidSpecializationToAntiRigid(OntoUMLClass c) {
+		if (c.isRigid || c.isSemiRigid) {
+			val antiRigids = c.ancestors.filter[it.isAntiRigid]
+			if (!antiRigids.isEmpty && c.isRigid) {
+				error(
+				'''The class "«c.nameOrAlias»" is rigid and cannot specialize anti-rigid classes ('''+
+					'''«FOR ar : antiRigids»«IF antiRigids.head!=ar», «ENDIF»"«ar.nameOrAlias»"«ENDFOR»).''', c, 
+					XcorePackage.eINSTANCE.modelElement_Name, RIGID_SPECIALIZATION_TO_ANTI_RIGID)
+			}
+			if (!antiRigids.isEmpty && c.isSemiRigid) {
+				error(
+				'''The class "«c.nameOrAlias»" is semi-rigid and cannot specialize anti-rigid classes ('''+
+					'''«FOR ar : antiRigids»«IF antiRigids.head!=ar», «ENDIF»"«ar.nameOrAlias»"«ENDFOR»).''', c, 
+					XcorePackage.eINSTANCE.modelElement_Name, SEMI_RIGID_SPECIALIZATION_TO_ANTI_RIGID)
+			}
+		}
+	}
+	
+	@Check(CheckType.NORMAL)
+	def checkPhaseInPartition(OntoUMLClass c) {
+		if (c.isPhase) {
+			val partitionFound = (c.eContainer as Model).elements
+				.exists[ 
+					if(it instanceof GeneralizationSet)
+						isIsDisjoint 
+						&& isIsComplete 
+						&& specifics.contains(c) 
+						&& specifics.forall[ 
+							it instanceof OntoUMLClass 
+							&& (it as OntoUMLClass)._type == c._type
+						]
+					else 
+						false
+				]
+			if(!partitionFound) {
+				error(
+					'''The class "«c.nameOrAlias»" is a phase and must be a member of some partition of phase '''
+					+'''(i.e., a disjoint and complete generalization set of classes decorated as '''
+					+'''«"«"+c._type+"»"»).''', c, XcorePackage.eINSTANCE.modelElement_Name, 
+					PHASE_MISSING_PARTITION)
+			}
+		}
+	}
+	
+	@Check(CheckType.NORMAL)
+	def checkMultipleDerivationOfSingleAssociation(DerivationAssociation d) {
+		val cond = d.containerModel.elements.exists[ 
+			it instanceof DerivationAssociation
+			&& it != d
+			&& (it as DerivationAssociation).derivingAssociation == d.derivingAssociation
+		]
+		if(cond)
+			error('''Multiple derivations of the same association are not allowed.''',
+				d, XcorePackage.eINSTANCE.modelElement_Name, MULTIPLE_DERIVATIONS)
+	}
+	
+	@Check(CheckType.NORMAL)
+	def checkDescriptiveRelationDerivation(RegularAssociation a) {
+		if(a._type==RelationType.DESCRIPTIVE) {
+			val d = a.derivation
+			if(d===null)
+				warning('''Every descriptive relation should derive some class representing its truthmaker.''',
+					a, XcorePackage.eINSTANCE.modelElement_Name, MISSING_DERIVATION)
+			else if(!d.derivedClass.isMomentType)
+				warning('''Descriptive relations cannot be deriving substantial types ("«d.derivedClass.name»").''',
+					a, XcorePackage.eINSTANCE.modelElement_Name, PROHIBITED_DERIVATION)
+		}
+		
+	}
+	
+	// TODO every descriptive relation should be bound to some moment type through derivation relations (a unique)
+	// TODO modes bound to descriptive relations through derivation must have external dependence
+	// TODO relators bound to descriptive relations through derivation must involve all relata
+	// TODO check parts of relators derived from relations
+	// TODO check inherence of modes that are parts of relators
+	// TODO check external dependence of modes that are parts of relators
+	
+	// TODO Prohibit multiple derivations of a single association
+	// TODO Validate disjointness and generalization
+	// TODO Validate duplicated generalizations
+	// TODO Validate generalization cycles
+	// TODO check cardinality constraints between relations and their derivations
+	// TODO I need to define the rules and reification patterns for OntoUML class stereotypes
 	
 }

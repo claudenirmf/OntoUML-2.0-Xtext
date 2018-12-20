@@ -4,25 +4,65 @@ grammar it.unibz.inf.ontouml.xtext.OntoUML with org.eclipse.xtext.common.Termina
 import "http://www.inf.unibz.it/ontouml/xtext/xcore" 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
-Model returns Model:
-	{Model}
-	'Model'
-	'{'
-		('elements' '{' elements+=ModelElement ( "," elements+=ModelElement)* '}' )?
-	'}';
-
-ModelElement returns ModelElement:
-	ModelElement_Impl | OntoUMLClass;
-
-ModelElement_Impl returns ModelElement:
-	{ModelElement}
-	'ModelElement'
+Model:
+	elements+=ModelElement*
 	;
 
-OntoUMLClass returns OntoUMLClass:
-	{OntoUMLClass}
-	'OntoUMLClass'
-	name=EString;
+//QualifiedName returns ecore::EString:
+//	ID ('.' ID)*;
 
-EString returns ecore::EString:
-	STRING | ID;
+//QualifiedNameWithWildcard:
+//	QualifiedName '.*'?;
+
+ModelElement:
+	( OntoUMLClass | RegularAssociation | DerivationAssociation 
+	| Generalization | GeneralizationSet ) ;// ';' ;
+
+OntoUMLClass returns OntoUMLClass:
+	('class' | _type=EndurantType 'class' | _type=EndurantType ) name=StringOrID ('aka' alias=StringOrID)?
+	;
+//	('supers...' '{' generalizationsToSuperclasses+=[Generalization] (',' generalizationsToSuperclasses+=[Generalization])* '}')?
+//	('subs...' '{' generalizationsToSubclasses+=[Generalization] (',' generalizationsToSubclasses+=[Generalization])* '}')?
+
+enum EndurantType:
+	Kind | RelatorKind | ModeKind
+	| QualityKind | Subkind | Role | Phase
+	| Category | Mixin | RoleMixin | PhaseMixin ;
+
+RegularAssociation returns RegularAssociation:
+	( 'association' | _type=RelationType 'association' | _type=RelationType ) name=StringOrID ('aka' alias=StringOrID)?
+	endAMultiplicity=Multiplicity? endA=[OntoUMLClass | StringOrID]
+	endBMultiplicity=Multiplicity? endB=[OntoUMLClass | StringOrID]
+	;
+
+DerivationAssociation returns DerivationAssociation:
+	'derivation' name=StringOrID ('aka' alias=StringOrID)?
+	(endAMultiplicity=Multiplicity? derivingAssociation=[RegularAssociation | StringOrID]
+	& endBMultiplicity=Multiplicity? derivedClass=[OntoUMLClass | StringOrID])
+	;
+
+enum RelationType:
+	Descriptive | NonDescriptive
+	| Inherence | Involvement | Dependence ;
+
+Multiplicity returns Multiplicity:
+	'[' lowerBound=CARDINALITY '..' upperBound=CARDINALITY ']'
+	;
+
+Generalization:
+	'generalization' name=StringOrID ('aka' alias=StringOrID)?
+	generic=[OntoUMLClass | StringOrID]
+	specific=[OntoUMLClass | StringOrID] ;
+
+GeneralizationSet:
+	(isDisjoint?='disjoint'? & isComplete?='complete'?)
+	'generalizationset' name=StringOrID ('aka' alias=StringOrID)?
+	'{' generalizations+=[Generalization | StringOrID]* '}' ;
+
+StringOrID returns ecore::EString:
+	STRING | ID
+;
+
+terminal CARDINALITY returns ecore::EString: 
+	INT | '*'
+	;

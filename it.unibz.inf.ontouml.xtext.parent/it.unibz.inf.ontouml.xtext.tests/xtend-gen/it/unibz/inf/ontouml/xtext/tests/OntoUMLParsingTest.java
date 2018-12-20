@@ -4,17 +4,31 @@
 package it.unibz.inf.ontouml.xtext.tests;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
+import it.unibz.inf.ontouml.xtext.OntoUMLStandaloneSetup;
 import it.unibz.inf.ontouml.xtext.tests.OntoUMLInjectorProvider;
+import it.unibz.inf.ontouml.xtext.utils.ModelUtils;
+import it.unibz.inf.ontouml.xtext.xcore.Association;
 import it.unibz.inf.ontouml.xtext.xcore.Model;
+import it.unibz.inf.ontouml.xtext.xcore.ModelElement;
+import it.unibz.inf.ontouml.xtext.xcore.OntoUMLClass;
+import it.unibz.inf.ontouml.xtext.xcore.XcoreFactory;
+import java.io.File;
+import java.util.Collections;
+import java.util.Scanner;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
 import org.eclipse.xtext.testing.util.ParseHelper;
 import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -23,22 +37,153 @@ import org.junit.runner.RunWith;
 @SuppressWarnings("all")
 public class OntoUMLParsingTest {
   @Inject
+  @Extension
   private ParseHelper<Model> parseHelper;
+  
+  @Inject
+  @Extension
+  private ModelUtils _modelUtils;
   
   @Test
   public void loadModel() {
+  }
+  
+  @Test
+  public void getAncestorsTest() {
     try {
       StringConcatenation _builder = new StringConcatenation();
-      _builder.append("Model { elements { OntoUMLClass Batata } }");
+      _builder.append("class A class B class C class D");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("generalization gen1 A B");
+      _builder.newLine();
+      _builder.append("generalization gen2 A C");
+      _builder.newLine();
+      _builder.append("generalization gen3 B D");
+      _builder.newLine();
+      _builder.append("generalization gen4 C D");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("association \"A_A\"");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("[0..*] A");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("[0..*] A");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("association \"A_B\"");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("[0..*] A");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("[1..*] B");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("association \"A_C\"");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("[0..*] A");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("[1..*] C");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("association \"A_D\"");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("[0..*] A");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("[1..1] D");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("generalization gen5 \"A_A\" \"A_B\"");
+      _builder.newLine();
+      _builder.append("generalization gen6 \"A_A\" \"A_C\"");
+      _builder.newLine();
+      _builder.append("generalization gen7 \"A_B\" \"A_D\"");
+      _builder.newLine();
+      _builder.append("generalization gen8 \"A_C\" \"A_D\"");
       _builder.newLine();
       final Model result = this.parseHelper.parse(_builder);
-      Assert.assertNotNull(result);
-      final EList<Resource.Diagnostic> errors = result.eResource().getErrors();
-      StringConcatenation _builder_1 = new StringConcatenation();
-      _builder_1.append("Unexpected errors: ");
-      String _join = IterableExtensions.join(errors, ", ");
-      _builder_1.append(_join);
-      Assert.assertTrue(_builder_1.toString(), errors.isEmpty());
+      EList<ModelElement> _elements = result.getElements();
+      for (final ModelElement me : _elements) {
+        {
+          if ((me instanceof OntoUMLClass)) {
+            String _name = ((OntoUMLClass)me).getName();
+            String _plus = (_name + " descendent of ");
+            final Function1<OntoUMLClass, String> _function = (OntoUMLClass it) -> {
+              return it.getName();
+            };
+            Iterable<String> _map = IterableExtensions.<OntoUMLClass, String>map(this._modelUtils.getAncestors(((OntoUMLClass)me)), _function);
+            String _plus_1 = (_plus + _map);
+            InputOutput.<String>println(_plus_1);
+          }
+          if ((me instanceof Association)) {
+            String _name_1 = ((Association)me).getName();
+            String _plus_2 = (_name_1 + " descendent of ");
+            final Function1<Association, String> _function_1 = (Association it) -> {
+              return it.getName();
+            };
+            Iterable<String> _map_1 = IterableExtensions.<Association, String>map(this._modelUtils.getAncestors(((Association)me)), _function_1);
+            String _plus_3 = (_plus_2 + _map_1);
+            InputOutput.<String>println(_plus_3);
+          }
+        }
+      }
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void stringOrIdRuleTest() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("class \"zxc\"");
+      _builder.newLine();
+      _builder.append("class asd");
+      _builder.newLine();
+      _builder.append("class a");
+      _builder.newLine();
+      _builder.append("class \"b\"");
+      _builder.newLine();
+      _builder.append("class \"\"");
+      _builder.newLine();
+      final Model model = this.parseHelper.parse(_builder);
+      EList<ModelElement> _elements = model.getElements();
+      for (final ModelElement element : _elements) {
+        InputOutput.<String>println(element.getName());
+      }
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void standaloneTest() {
+    try {
+      final Injector injector = new OntoUMLStandaloneSetup().createInjectorAndDoEMFRegistration();
+      final XtextResourceSet resourceSet = injector.<XtextResourceSet>getInstance(XtextResourceSet.class);
+      final File user = File.createTempFile("mymodel", ".ontouml");
+      user.deleteOnExit();
+      final Resource resource = resourceSet.getResource(URI.createFileURI(user.getAbsolutePath()), true);
+      final Model m = XcoreFactory.eINSTANCE.createModel();
+      resource.getContents().add(m);
+      final OntoUMLClass c1 = XcoreFactory.eINSTANCE.createOntoUMLClass();
+      c1.setName("asd");
+      final OntoUMLClass c2 = XcoreFactory.eINSTANCE.createOntoUMLClass();
+      c2.setName("zxc qwe");
+      m.getElements().add(c1);
+      m.getElements().add(c2);
+      resource.save(Collections.EMPTY_MAP);
+      final Scanner scn = new Scanner(user);
+      while (scn.hasNextLine()) {
+        InputOutput.<String>println(scn.nextLine());
+      }
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

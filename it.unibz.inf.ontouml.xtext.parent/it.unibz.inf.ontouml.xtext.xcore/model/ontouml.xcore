@@ -2,14 +2,278 @@
 @GenModel(modelDirectory="it.unibz.inf.ontouml.xtext.xcore/src-gen")
 package it.unibz.inf.ontouml.xtext.xcore
 
+import org.eclipse.emf.common.util.BasicEList
+
 class Model
 {
 	contains ModelElement[] elements
+	
+	op ModelElement getElementByName(String name)
+	{
+		return elements.findFirst[ it.name==name ]
+	}
 }
 
-class ModelElement {}
-
-class OntoUMLClass extends ModelElement
+abstract class ModelElement 
 {
 	String name
+	String alias = "unnamed"
+}
+
+abstract class Classifier extends ModelElement
+{
+	/** Returns generalizations of the Classifier, i.e. inheritance links towards
+	 * its parents (or immediate ancestors). */
+	op Generalization[] getGeneralizations()
+	{
+		val generalizations = new BasicEList<Generalization>()
+		(eContainer as Model).elements.forEach[ e |
+			if(e instanceof Generalization)
+				if(e.specific == this)
+					generalizations.add(e)
+		]
+		generalizations
+	}
+	
+	/** Returns specializations of the Classifier, i.e. inheritance links towards
+	 * its children (or immediate descendants). */
+	op Generalization[] getSpecializations()
+	{
+		val specializations = new BasicEList<Generalization>()
+		(eContainer as Model).elements.forEach[ e |
+			if(e instanceof Generalization)
+				if(e.generic == this)
+					specializations.add(e)
+		]
+		specializations
+	}
+}
+
+class OntoUMLClass extends Classifier
+{
+	EndurantType _type = "none"
+	
+	/** Returns the immediate ancestors (or parents) of the OntoUMLClass.  */
+	op OntoUMLClass[] getParents()
+	{
+		val parents = new BasicEList<OntoUMLClass>()
+		generalizations.forEach[ 
+			val g = it.generic
+			if(g instanceof OntoUMLClass)
+				parents.add(g)
+		]
+		parents
+	}
+	
+	/** Returns the immediate descendents (or children) of the OntoUMLClass.  */
+	op OntoUMLClass[] getChildren()
+	{
+		val children = new BasicEList<OntoUMLClass>()
+		specializations.forEach[ 
+			val s = it.specific
+			if(s instanceof OntoUMLClass)
+				children.add(s)
+		]
+		children
+	}
+	
+	/** Returns true in case the object represents an ultimate sortal class,
+	 * regardless the ontological nature (i.e., substantial, relator, mode or quality.
+	 */
+	op boolean isUltimateSortal()
+	{
+		return _type==EndurantType.KIND 
+				|| _type==EndurantType.RELATOR_KIND 
+				|| _type==EndurantType.MODE_KIND 
+				|| _type==EndurantType.QUALITY_KIND
+	}
+	
+	/** Returns true in case the object represents a sortal class. */
+	op boolean isSortal() 
+	{ 
+		return isUltimateSortal
+				|| _type==EndurantType.SUBKIND
+				|| _type==EndurantType.ROLE
+				|| _type==EndurantType.PHASE
+	}
+	
+	/** Returns true in case the object represents a non-sortal class. */
+	op boolean isNonSortal()
+	{
+		return !isSortal && _type!=EndurantType.NONE
+	}
+	
+	/** Returns true in case the object represents a rigid class. */
+	op boolean isRigid()
+	{
+		return !isSemiRigid && !isAntiRigid && _type!=EndurantType.NONE
+	}
+	
+	/** Returns true in case the object represents a semi-rigid class. */
+	op boolean isSemiRigid()
+	{
+		return _type==EndurantType.MIXIN
+	}
+	
+	/** Returns true in case the object represents a anti-rigid class. */
+	op boolean isAntiRigid()
+	{
+		return _type==EndurantType.ROLE
+				|| _type==EndurantType.PHASE 
+				|| _type==EndurantType.ROLE_MIXIN
+				|| _type==EndurantType.PHASE_MIXIN
+	}
+	
+	/** Returns true in case the object represents a phased class (i.e.,
+	 * a phase or a phase mixin).
+	 */
+	op boolean isPhase()
+	{
+		return _type==EndurantType.PHASE || _type==EndurantType.PHASE_MIXIN
+	}
+	
+	/** Returns true in case the object represents a relational dependent
+	 * class (i.e., a role or a role mixin).
+	 */
+	op boolean isRole()
+	{
+		return _type==EndurantType.ROLE || _type==EndurantType.ROLE_MIXIN
+	}
+	
+	op boolean isSubstantialKind()
+	{
+		return _type==EndurantType.KIND
+	}
+	
+	op boolean isMomentKind()
+	{
+		return isUltimateSortal && !isSubstantialKind
+	}
+	
+}
+
+enum EndurantType 
+{
+	None as "none" = 0
+	Kind as "kind" = 1
+	RelatorKind as "relatorKind" = 2
+	ModeKind as "modeKind" = 3
+	QualityKind as "qualityKind" = 4
+	Subkind as "subkind" = 5
+	Role as "role" = 6
+	Phase as "phase" = 7
+	Category as "category" = 8
+	Mixin as "mixin" = 9
+	RoleMixin as "roleMixin" = 10
+	PhaseMixin as "phaseMixin" = 11
+}
+
+abstract class Association extends Classifier
+{
+	
+	contains Multiplicity endAMultiplicity
+	contains Multiplicity endBMultiplicity
+	
+	/** Returns the immediate ancestors (or parents) of the OntoUMLClass.  */
+	op Association[] getParents()
+	{
+		val parents = new BasicEList<Association>()
+		generalizations.forEach[ 
+			val g = it.generic
+			if(g instanceof Association)
+				parents.add(g)
+		]
+		parents
+	}
+	
+	/** Returns the immediate descendents (or children) of the OntoUMLClass.  */
+	op Association[] getChildren()
+	{
+		val children = new BasicEList<Association>()
+		specializations.forEach[ 
+			val s = it.specific
+			if(s instanceof Association)
+				children.add(s)
+		]
+		children
+	}
+}
+
+class Multiplicity 
+{
+	String lowerBound = "0"
+	String upperBound = "*"
+	
+	op void setMultiplicity(String lowerBound, String upperBound)
+	{
+		this.lowerBound = lowerBound
+		this.upperBound = upperBound
+	}
+	
+	op void setZeroToOne() { setMultiplicity("0","1") }
+	op void setZeroToMany() { setMultiplicity("0","*") }
+	op void setOneToOne() { setMultiplicity("1","1") }
+	op void setOneToMany() { setMultiplicity("*","*") }
+}
+
+class RegularAssociation extends Association
+{
+	
+	RelationType _type = "none"
+	
+	refers OntoUMLClass endA
+	refers OntoUMLClass endB
+	
+}
+
+enum RelationType 
+{
+	None as "none" = 0
+	Descriptive as "descriptive" = 1
+	NonDescriptive as "non-descriptive" = 2
+	Inherence as "inherence" = 3
+	Involvement as "involvement" = 4
+	Dependence as "dependence" = 5
+}
+
+class DerivationAssociation extends Association
+{
+	
+	refers RegularAssociation derivingAssociation
+	refers OntoUMLClass derivedClass
+	
+}
+
+class Generalization extends ModelElement
+{
+	refers Classifier generic
+	refers Classifier specific
+	
+	op GeneralizationSet[] getGeneralizationSets() {
+		val genSets = new BasicEList<GeneralizationSet>()
+		(eContainer as Model).elements.forEach[ 
+				if(it instanceof GeneralizationSet)
+					if(it.generalizations.contains(this))
+						genSets.add(it )
+			]
+		return genSets
+	}
+}
+
+class GeneralizationSet extends ModelElement
+{
+	boolean isDisjoint = "false"
+	boolean isComplete = "false"
+	
+	refers Generalization[] generalizations
+	
+	op Classifier getGeneric() {
+		return generalizations.head.generic
+	}
+	
+	op Classifier[] getSpecifics() {
+		val specifics = new BasicEList<Classifier>()
+		generalizations.forEach[ specifics.add(specific) ]
+		return specifics
+	}
 }

@@ -4,10 +4,16 @@
 package it.unibz.inf.ontouml.xtext;
 
 import it.unibz.inf.ontouml.xtext.AbstractOntoUMLRuntimeModule;
+import it.unibz.inf.ontouml.xtext.utils.OntoUMLValueConverter;
+import org.eclipse.xtext.conversion.IValueConverterService;
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
  */
 @SuppressWarnings("all")
 public class OntoUMLRuntimeModule extends AbstractOntoUMLRuntimeModule {
+  @Override
+  public Class<? extends IValueConverterService> bindIValueConverterService() {
+    return OntoUMLValueConverter.class;
+  }
 }

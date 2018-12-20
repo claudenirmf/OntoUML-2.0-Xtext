@@ -78,10 +78,64 @@ public class XcoreSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case XcorePackage.CLASSIFIER: {
+				Classifier classifier = (Classifier)theEObject;
+				T result = caseClassifier(classifier);
+				if (result == null) result = caseModelElement(classifier);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case XcorePackage.ONTO_UML_CLASS: {
 				OntoUMLClass ontoUMLClass = (OntoUMLClass)theEObject;
 				T result = caseOntoUMLClass(ontoUMLClass);
+				if (result == null) result = caseClassifier(ontoUMLClass);
 				if (result == null) result = caseModelElement(ontoUMLClass);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case XcorePackage.ASSOCIATION: {
+				Association association = (Association)theEObject;
+				T result = caseAssociation(association);
+				if (result == null) result = caseClassifier(association);
+				if (result == null) result = caseModelElement(association);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case XcorePackage.MULTIPLICITY: {
+				Multiplicity multiplicity = (Multiplicity)theEObject;
+				T result = caseMultiplicity(multiplicity);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case XcorePackage.REGULAR_ASSOCIATION: {
+				RegularAssociation regularAssociation = (RegularAssociation)theEObject;
+				T result = caseRegularAssociation(regularAssociation);
+				if (result == null) result = caseAssociation(regularAssociation);
+				if (result == null) result = caseClassifier(regularAssociation);
+				if (result == null) result = caseModelElement(regularAssociation);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case XcorePackage.DERIVATION_ASSOCIATION: {
+				DerivationAssociation derivationAssociation = (DerivationAssociation)theEObject;
+				T result = caseDerivationAssociation(derivationAssociation);
+				if (result == null) result = caseAssociation(derivationAssociation);
+				if (result == null) result = caseClassifier(derivationAssociation);
+				if (result == null) result = caseModelElement(derivationAssociation);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case XcorePackage.GENERALIZATION: {
+				Generalization generalization = (Generalization)theEObject;
+				T result = caseGeneralization(generalization);
+				if (result == null) result = caseModelElement(generalization);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case XcorePackage.GENERALIZATION_SET: {
+				GeneralizationSet generalizationSet = (GeneralizationSet)theEObject;
+				T result = caseGeneralizationSet(generalizationSet);
+				if (result == null) result = caseModelElement(generalizationSet);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -120,6 +174,21 @@ public class XcoreSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Classifier</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Classifier</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClassifier(Classifier object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Onto UML Class</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -131,6 +200,96 @@ public class XcoreSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseOntoUMLClass(OntoUMLClass object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Association</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Association</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAssociation(Association object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMultiplicity(Multiplicity object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Regular Association</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Regular Association</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseRegularAssociation(RegularAssociation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Derivation Association</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Derivation Association</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDerivationAssociation(DerivationAssociation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Generalization</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Generalization</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGeneralization(Generalization object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Generalization Set</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Generalization Set</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGeneralizationSet(GeneralizationSet object) {
 		return null;
 	}
 
