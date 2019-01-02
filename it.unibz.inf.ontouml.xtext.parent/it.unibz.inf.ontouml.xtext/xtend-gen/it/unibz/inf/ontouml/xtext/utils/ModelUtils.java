@@ -3,12 +3,15 @@ package it.unibz.inf.ontouml.xtext.utils;
 import com.google.common.base.Objects;
 import it.unibz.inf.ontouml.xtext.xcore.Association;
 import it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation;
+import it.unibz.inf.ontouml.xtext.xcore.EndurantType;
 import it.unibz.inf.ontouml.xtext.xcore.Model;
 import it.unibz.inf.ontouml.xtext.xcore.ModelElement;
 import it.unibz.inf.ontouml.xtext.xcore.OntoUMLClass;
 import it.unibz.inf.ontouml.xtext.xcore.RegularAssociation;
+import it.unibz.inf.ontouml.xtext.xcore.RelationType;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
@@ -92,15 +95,6 @@ public class ModelUtils {
     return _xblockexpression;
   }
   
-  public Model getContainerModel(final ModelElement me) {
-    final EObject m = me.eContainer();
-    if ((m instanceof Model)) {
-      return ((Model)m);
-    } else {
-      return null;
-    }
-  }
-  
   public boolean isSubstantialType(final OntoUMLClass c) {
     return (c.isSubstantialKind() || IterableExtensions.<OntoUMLClass>exists(this.getAncestors(c), ((Function1<OntoUMLClass, Boolean>) (OntoUMLClass it) -> {
       return Boolean.valueOf(it.isSubstantialKind());
@@ -111,5 +105,86 @@ public class ModelUtils {
     return (c.isMomentKind() || IterableExtensions.<OntoUMLClass>exists(this.getAncestors(c), ((Function1<OntoUMLClass, Boolean>) (OntoUMLClass it) -> {
       return Boolean.valueOf(it.isMomentKind());
     })));
+  }
+  
+  public boolean isRelatorType(final OntoUMLClass c) {
+    return (Objects.equal(c.get_type(), EndurantType.RELATOR_KIND) || IterableExtensions.<OntoUMLClass>exists(this.getAncestors(c), ((Function1<OntoUMLClass, Boolean>) (OntoUMLClass it) -> {
+      EndurantType __type = it.get_type();
+      return Boolean.valueOf(Objects.equal(__type, EndurantType.RELATOR_KIND));
+    })));
+  }
+  
+  public boolean isModeType(final OntoUMLClass c) {
+    return (Objects.equal(c.get_type(), EndurantType.MODE_KIND) || IterableExtensions.<OntoUMLClass>exists(this.getAncestors(c), ((Function1<OntoUMLClass, Boolean>) (OntoUMLClass it) -> {
+      EndurantType __type = it.get_type();
+      return Boolean.valueOf(Objects.equal(__type, EndurantType.MODE_KIND));
+    })));
+  }
+  
+  public boolean isQualityType(final OntoUMLClass c) {
+    return (Objects.equal(c.get_type(), EndurantType.QUALITY_KIND) || IterableExtensions.<OntoUMLClass>exists(this.getAncestors(c), ((Function1<OntoUMLClass, Boolean>) (OntoUMLClass it) -> {
+      EndurantType __type = it.get_type();
+      return Boolean.valueOf(Objects.equal(__type, EndurantType.QUALITY_KIND));
+    })));
+  }
+  
+  public EndurantType getKindType(final OntoUMLClass c) {
+    boolean _isUltimateSortal = c.isUltimateSortal();
+    if (_isUltimateSortal) {
+      return c.get_type();
+    } else {
+      final Function1<OntoUMLClass, Boolean> _function = (OntoUMLClass it) -> {
+        return Boolean.valueOf(it.isUltimateSortal());
+      };
+      final OntoUMLClass kind = IterableExtensions.<OntoUMLClass>findFirst(this.getAncestors(c), _function);
+      if ((kind == null)) {
+        return EndurantType.NONE;
+      } else {
+        return kind.get_type();
+      }
+    }
+  }
+  
+  /**
+   * @return Regular association that binds the given class (as first argument) and represent inherence. Null if there are none.
+   */
+  public RegularAssociation getInherence(final OntoUMLClass c) {
+    final Function1<ModelElement, Boolean> _function = (ModelElement it) -> {
+      return Boolean.valueOf((((it instanceof RegularAssociation) && Objects.equal(((RegularAssociation) it).get_type(), RelationType.INHERENCE)) && Objects.equal(((RegularAssociation) it).getEndA(), c)));
+    };
+    ModelElement _findFirst = IterableExtensions.<ModelElement>findFirst(c.getReacheableElements(), _function);
+    return ((RegularAssociation) _findFirst);
+  }
+  
+  /**
+   * @return Set of regular associations that bind the given class and represent existential dependences. Never null.
+   */
+  public Set<RegularAssociation> getDependences(final OntoUMLClass c) {
+    final HashSet<RegularAssociation> dependences = new HashSet<RegularAssociation>();
+    final Consumer<ModelElement> _function = (ModelElement it) -> {
+      if ((it instanceof RegularAssociation)) {
+        if ((Objects.equal(((RegularAssociation)it).get_type(), RelationType.DEPENDENCE) && (Objects.equal(((RegularAssociation)it).getEndA(), c) || Objects.equal(((RegularAssociation)it).getEndB(), c)))) {
+          dependences.add(((RegularAssociation)it));
+        }
+      }
+    };
+    c.getReacheableElements().forEach(_function);
+    return dependences;
+  }
+  
+  /**
+   * @return Set of regular associations that bind the given class and represent involvements. Never null.
+   */
+  public Set<RegularAssociation> getInvolvements(final OntoUMLClass c) {
+    final HashSet<RegularAssociation> involvements = new HashSet<RegularAssociation>();
+    final Consumer<ModelElement> _function = (ModelElement it) -> {
+      if ((it instanceof RegularAssociation)) {
+        if ((Objects.equal(((RegularAssociation)it).get_type(), RelationType.INVOLVEMENT) && (Objects.equal(((RegularAssociation)it).getEndA(), c) || Objects.equal(((RegularAssociation)it).getEndB(), c)))) {
+          involvements.add(((RegularAssociation)it));
+        }
+      }
+    };
+    c.getReacheableElements().forEach(_function);
+    return involvements;
   }
 }

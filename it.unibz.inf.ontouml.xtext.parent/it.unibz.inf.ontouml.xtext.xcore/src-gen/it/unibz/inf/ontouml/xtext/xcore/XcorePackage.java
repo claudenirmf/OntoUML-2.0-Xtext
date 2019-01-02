@@ -143,13 +143,31 @@ public interface XcorePackage extends EPackage {
 	int MODEL_ELEMENT_FEATURE_COUNT = 2;
 
 	/**
+	 * The operation id for the '<em>Get Container Model</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODEL_ELEMENT___GET_CONTAINER_MODEL = 0;
+
+	/**
+	 * The operation id for the '<em>Get Reacheable Elements</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODEL_ELEMENT___GET_REACHEABLE_ELEMENTS = 1;
+
+	/**
 	 * The number of operations of the '<em>Model Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODEL_ELEMENT_OPERATION_COUNT = 0;
+	int MODEL_ELEMENT_OPERATION_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link it.unibz.inf.ontouml.xtext.xcore.impl.ClassifierImpl <em>Classifier</em>}' class.
@@ -187,6 +205,24 @@ public interface XcorePackage extends EPackage {
 	 * @ordered
 	 */
 	int CLASSIFIER_FEATURE_COUNT = MODEL_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Get Container Model</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CLASSIFIER___GET_CONTAINER_MODEL = MODEL_ELEMENT___GET_CONTAINER_MODEL;
+
+	/**
+	 * The operation id for the '<em>Get Reacheable Elements</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CLASSIFIER___GET_REACHEABLE_ELEMENTS = MODEL_ELEMENT___GET_REACHEABLE_ELEMENTS;
 
 	/**
 	 * The operation id for the '<em>Get Generalizations</em>' operation.
@@ -260,6 +296,24 @@ public interface XcorePackage extends EPackage {
 	 * @ordered
 	 */
 	int ONTO_UML_CLASS_FEATURE_COUNT = CLASSIFIER_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Get Container Model</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ONTO_UML_CLASS___GET_CONTAINER_MODEL = CLASSIFIER___GET_CONTAINER_MODEL;
+
+	/**
+	 * The operation id for the '<em>Get Reacheable Elements</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ONTO_UML_CLASS___GET_REACHEABLE_ELEMENTS = CLASSIFIER___GET_REACHEABLE_ELEMENTS;
 
 	/**
 	 * The operation id for the '<em>Get Generalizations</em>' operation.
@@ -450,6 +504,24 @@ public interface XcorePackage extends EPackage {
 	 * @ordered
 	 */
 	int ASSOCIATION_FEATURE_COUNT = CLASSIFIER_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Get Container Model</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ASSOCIATION___GET_CONTAINER_MODEL = CLASSIFIER___GET_CONTAINER_MODEL;
+
+	/**
+	 * The operation id for the '<em>Get Reacheable Elements</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ASSOCIATION___GET_REACHEABLE_ELEMENTS = CLASSIFIER___GET_REACHEABLE_ELEMENTS;
 
 	/**
 	 * The operation id for the '<em>Get Generalizations</em>' operation.
@@ -670,6 +742,24 @@ public interface XcorePackage extends EPackage {
 	int REGULAR_ASSOCIATION_FEATURE_COUNT = ASSOCIATION_FEATURE_COUNT + 3;
 
 	/**
+	 * The operation id for the '<em>Get Container Model</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REGULAR_ASSOCIATION___GET_CONTAINER_MODEL = ASSOCIATION___GET_CONTAINER_MODEL;
+
+	/**
+	 * The operation id for the '<em>Get Reacheable Elements</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REGULAR_ASSOCIATION___GET_REACHEABLE_ELEMENTS = ASSOCIATION___GET_REACHEABLE_ELEMENTS;
+
+	/**
 	 * The operation id for the '<em>Get Generalizations</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -788,6 +878,24 @@ public interface XcorePackage extends EPackage {
 	int DERIVATION_ASSOCIATION_FEATURE_COUNT = ASSOCIATION_FEATURE_COUNT + 2;
 
 	/**
+	 * The operation id for the '<em>Get Container Model</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DERIVATION_ASSOCIATION___GET_CONTAINER_MODEL = ASSOCIATION___GET_CONTAINER_MODEL;
+
+	/**
+	 * The operation id for the '<em>Get Reacheable Elements</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DERIVATION_ASSOCIATION___GET_REACHEABLE_ELEMENTS = ASSOCIATION___GET_REACHEABLE_ELEMENTS;
+
+	/**
 	 * The operation id for the '<em>Get Generalizations</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -888,6 +996,24 @@ public interface XcorePackage extends EPackage {
 	int GENERALIZATION_FEATURE_COUNT = MODEL_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
+	 * The operation id for the '<em>Get Container Model</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GENERALIZATION___GET_CONTAINER_MODEL = MODEL_ELEMENT___GET_CONTAINER_MODEL;
+
+	/**
+	 * The operation id for the '<em>Get Reacheable Elements</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GENERALIZATION___GET_REACHEABLE_ELEMENTS = MODEL_ELEMENT___GET_REACHEABLE_ELEMENTS;
+
+	/**
 	 * The operation id for the '<em>Get Generalization Sets</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -968,6 +1094,24 @@ public interface XcorePackage extends EPackage {
 	 * @ordered
 	 */
 	int GENERALIZATION_SET_FEATURE_COUNT = MODEL_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
+	 * The operation id for the '<em>Get Container Model</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GENERALIZATION_SET___GET_CONTAINER_MODEL = MODEL_ELEMENT___GET_CONTAINER_MODEL;
+
+	/**
+	 * The operation id for the '<em>Get Reacheable Elements</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GENERALIZATION_SET___GET_REACHEABLE_ELEMENTS = MODEL_ELEMENT___GET_REACHEABLE_ELEMENTS;
 
 	/**
 	 * The operation id for the '<em>Get Generic</em>' operation.
@@ -1079,6 +1223,26 @@ public interface XcorePackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getModelElement_Alias();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.ModelElement#getContainerModel() <em>Get Container Model</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Container Model</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.ModelElement#getContainerModel()
+	 * @generated
+	 */
+	EOperation getModelElement__GetContainerModel();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.ModelElement#getReacheableElements() <em>Get Reacheable Elements</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Reacheable Elements</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.ModelElement#getReacheableElements()
+	 * @generated
+	 */
+	EOperation getModelElement__GetReacheableElements();
 
 	/**
 	 * Returns the meta object for class '{@link it.unibz.inf.ontouml.xtext.xcore.Classifier <em>Classifier</em>}'.
@@ -1659,6 +1823,22 @@ public interface XcorePackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute MODEL_ELEMENT__ALIAS = eINSTANCE.getModelElement_Alias();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Container Model</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation MODEL_ELEMENT___GET_CONTAINER_MODEL = eINSTANCE.getModelElement__GetContainerModel();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Reacheable Elements</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation MODEL_ELEMENT___GET_REACHEABLE_ELEMENTS = eINSTANCE.getModelElement__GetReacheableElements();
 
 		/**
 		 * The meta object literal for the '{@link it.unibz.inf.ontouml.xtext.xcore.impl.ClassifierImpl <em>Classifier</em>}' class.

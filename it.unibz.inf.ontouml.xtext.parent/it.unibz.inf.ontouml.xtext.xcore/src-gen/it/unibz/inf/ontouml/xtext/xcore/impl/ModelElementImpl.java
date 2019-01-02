@@ -2,12 +2,18 @@
  */
 package it.unibz.inf.ontouml.xtext.xcore.impl;
 
+import it.unibz.inf.ontouml.xtext.xcore.Model;
 import it.unibz.inf.ontouml.xtext.xcore.ModelElement;
 import it.unibz.inf.ontouml.xtext.xcore.XcorePackage;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
@@ -133,6 +139,30 @@ public abstract class ModelElementImpl extends MinimalEObjectImpl.Container impl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Model getContainerModel() {
+		final EObject m = this.eContainer();
+		if ((m instanceof Model)) {
+			return ((Model)m);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<ModelElement> getReacheableElements() {
+		return this.getContainerModel().getElements();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -194,6 +224,22 @@ public abstract class ModelElementImpl extends MinimalEObjectImpl.Container impl
 				return ALIAS_EDEFAULT == null ? alias != null : !ALIAS_EDEFAULT.equals(alias);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case XcorePackage.MODEL_ELEMENT___GET_CONTAINER_MODEL:
+				return getContainerModel();
+			case XcorePackage.MODEL_ELEMENT___GET_REACHEABLE_ELEMENTS:
+				return getReacheableElements();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 	/**

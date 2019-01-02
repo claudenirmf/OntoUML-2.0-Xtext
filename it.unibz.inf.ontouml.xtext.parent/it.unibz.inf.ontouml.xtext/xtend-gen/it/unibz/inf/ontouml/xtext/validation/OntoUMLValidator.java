@@ -18,6 +18,7 @@ import it.unibz.inf.ontouml.xtext.xcore.OntoUMLClass;
 import it.unibz.inf.ontouml.xtext.xcore.RegularAssociation;
 import it.unibz.inf.ontouml.xtext.xcore.RelationType;
 import it.unibz.inf.ontouml.xtext.xcore.XcorePackage;
+import java.util.Set;
 import java.util.function.Consumer;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -66,6 +67,14 @@ public class OntoUMLValidator extends AbstractOntoUMLValidator {
   
   public final static String PROHIBITED_DERIVATION = "it.unibz.inf.ontouml.xtext.validation.PROHIBITED_DERIVATION";
   
+  public final static String MISSING_INHERENCE = "it.unibz.inf.ontouml.xtext.validation.MISSING_INHERENCE";
+  
+  public final static String INVALID_INHERENCE = "it.unibz.inf.ontouml.xtext.validation.INVALID_INHERENCE";
+  
+  public final static String MISSING_DEPENDENCE = "it.unibz.inf.ontouml.xtext.validation.MISSING_DEPENDENCE";
+  
+  public final static String MISSING_INVOLVEMENT = "it.unibz.inf.ontouml.xtext.validation.MISSING_INVOLVEMENT";
+  
   @Check
   public void checkDuplicatedName(final ModelElement me) {
     EObject _eContainer = me.eContainer();
@@ -77,8 +86,8 @@ public class OntoUMLValidator extends AbstractOntoUMLValidator {
     if (_exists) {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("Duplicated name for this type of model element (\"");
-      String _name = me.getName();
-      _builder.append(_name);
+      String _nameOrAlias = this._modelUtils.nameOrAlias(me);
+      _builder.append(_nameOrAlias);
       _builder.append("\").");
       this.error(_builder.toString(), me, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.DUPLICATED_NAME);
     }
@@ -116,8 +125,8 @@ public class OntoUMLValidator extends AbstractOntoUMLValidator {
       StringConcatenation _builder_1 = new StringConcatenation();
       _builder_1.append(" ");
       _builder_1.append("some decorating stereotype from the OntomUML profile (\"");
-      String _name = me.getName();
-      _builder_1.append(_name, " ");
+      String _nameOrAlias = this._modelUtils.nameOrAlias(me);
+      _builder_1.append(_nameOrAlias, " ");
       _builder_1.append("\").");
       String _plus = (_builder.toString() + _builder_1);
       this.warning(_plus, me, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.UNKOWN_NATURE);
@@ -128,8 +137,8 @@ public class OntoUMLValidator extends AbstractOntoUMLValidator {
         StringConcatenation _builder_3 = new StringConcatenation();
         _builder_3.append(" ");
         _builder_3.append("some decorating stereotype from the OntomUML profile (\"");
-        String _name_1 = me.getName();
-        _builder_3.append(_name_1, " ");
+        String _nameOrAlias_1 = this._modelUtils.nameOrAlias(me);
+        _builder_3.append(_nameOrAlias_1, " ");
         _builder_3.append("\").");
         String _plus_1 = (_builder_2.toString() + _builder_3);
         this.warning(_plus_1, me, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.UNKOWN_NATURE);
@@ -363,7 +372,7 @@ public class OntoUMLValidator extends AbstractOntoUMLValidator {
     final Function1<ModelElement, Boolean> _function = (ModelElement it) -> {
       return Boolean.valueOf((((it instanceof DerivationAssociation) && (!Objects.equal(it, d))) && Objects.equal(((DerivationAssociation) it).getDerivingAssociation(), d.getDerivingAssociation())));
     };
-    final boolean cond = IterableExtensions.<ModelElement>exists(this._modelUtils.getContainerModel(d).getElements(), _function);
+    final boolean cond = IterableExtensions.<ModelElement>exists(d.getContainerModel().getElements(), _function);
     if (cond) {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("Multiple derivations of the same association are not allowed.");
@@ -394,5 +403,91 @@ public class OntoUMLValidator extends AbstractOntoUMLValidator {
         }
       }
     }
+  }
+  
+  @Check(CheckType.NORMAL)
+  public Object checkDerivedMomentDependences(final DerivationAssociation d) {
+    Object _xblockexpression = null;
+    {
+      final BasicEList<OntoUMLClass> relata = new BasicEList<OntoUMLClass>();
+      relata.add(d.getDerivingAssociation().getEndA());
+      relata.add(d.getDerivingAssociation().getEndB());
+      final OntoUMLClass dc = d.getDerivedClass();
+      final EndurantType dcKind = this._modelUtils.getKindType(dc);
+      Object _xifexpression = null;
+      boolean _equals = Objects.equal(dcKind, EndurantType.MODE_KIND);
+      if (_equals) {
+        final Set<RegularAssociation> dependences = this._modelUtils.getDependences(dc);
+        final RegularAssociation inherence = this._modelUtils.getInherence(dc);
+        if ((inherence == null)) {
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append("Derived classes representing mode types must inhere in one of the relata");
+          this.error(_builder.toString(), d, XcorePackage.eINSTANCE.getDerivationAssociation_DerivedClass(), OntoUMLValidator.MISSING_INHERENCE);
+        } else {
+          boolean _contains = relata.contains(inherence.getEndB());
+          boolean _not = (!_contains);
+          if (_not) {
+            StringConcatenation _builder_1 = new StringConcatenation();
+            _builder_1.append("Derived classes representing mode types must inhere in one of the relata");
+            this.error(_builder_1.toString(), d, XcorePackage.eINSTANCE.getDerivationAssociation_DerivedClass(), OntoUMLValidator.INVALID_INHERENCE);
+          } else {
+            boolean _isEmpty = dependences.isEmpty();
+            if (_isEmpty) {
+              StringConcatenation _builder_2 = new StringConcatenation();
+              _builder_2.append("Derived classes representing mode types must depende (externally) in one of the relata");
+              this.error(_builder_2.toString(), d, XcorePackage.eINSTANCE.getDerivationAssociation_DerivedClass(), OntoUMLValidator.MISSING_DEPENDENCE);
+            } else {
+              final Function1<RegularAssociation, Boolean> _function = (RegularAssociation it) -> {
+                return Boolean.valueOf((relata.contains(it.getEndA()) || relata.contains(it.getEndB())));
+              };
+              boolean _exists = IterableExtensions.<RegularAssociation>exists(dependences, _function);
+              boolean _not_1 = (!_exists);
+              if (_not_1) {
+                StringConcatenation _builder_3 = new StringConcatenation();
+                _builder_3.append("Derived classes representing mode types must depende (externally) in one of the relata");
+                this.error(_builder_3.toString(), d, XcorePackage.eINSTANCE.getDerivationAssociation_DerivedClass(), OntoUMLValidator.MISSING_DEPENDENCE);
+              }
+            }
+          }
+        }
+      } else {
+        Object _xifexpression_1 = null;
+        boolean _equals_1 = Objects.equal(dcKind, EndurantType.RELATOR_KIND);
+        if (_equals_1) {
+          final Set<RegularAssociation> involvements = this._modelUtils.getInvolvements(dc);
+          boolean _isEmpty_1 = involvements.isEmpty();
+          if (_isEmpty_1) {
+            StringConcatenation _builder_4 = new StringConcatenation();
+            _builder_4.append("Derived classes representing relator types must involve all of the relata");
+            this.error(_builder_4.toString(), d, XcorePackage.eINSTANCE.getDerivationAssociation_DerivedClass(), OntoUMLValidator.MISSING_INVOLVEMENT);
+          } else {
+            if (((!IterableExtensions.<RegularAssociation>exists(involvements, ((Function1<RegularAssociation, Boolean>) (RegularAssociation it) -> {
+              return Boolean.valueOf((Objects.equal(IterableExtensions.<OntoUMLClass>head(relata), it.getEndA()) || Objects.equal(IterableExtensions.<OntoUMLClass>head(relata), it.getEndB())));
+            }))) || (!(!IterableExtensions.<RegularAssociation>exists(involvements, ((Function1<RegularAssociation, Boolean>) (RegularAssociation it) -> {
+              return Boolean.valueOf((Objects.equal(IterableExtensions.<OntoUMLClass>tail(relata), it.getEndA()) || Objects.equal(IterableExtensions.<OntoUMLClass>tail(relata), it.getEndB())));
+            })))))) {
+              StringConcatenation _builder_5 = new StringConcatenation();
+              _builder_5.append("Derived classes representing relator types must involve all of the relata");
+              this.error(_builder_5.toString(), d, XcorePackage.eINSTANCE.getDerivationAssociation_DerivedClass(), OntoUMLValidator.MISSING_INVOLVEMENT);
+            }
+          }
+        } else {
+          Object _xifexpression_2 = null;
+          boolean _equals_2 = Objects.equal(dcKind, EndurantType.QUALITY_KIND);
+          if (_equals_2) {
+            _xifexpression_2 = null;
+          }
+          _xifexpression_1 = _xifexpression_2;
+        }
+        _xifexpression = _xifexpression_1;
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
+  }
+  
+  @Check(CheckType.NORMAL)
+  public Object checkRelatorParts() {
+    return null;
   }
 }

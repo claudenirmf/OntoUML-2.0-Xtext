@@ -2,6 +2,8 @@
  */
 package it.unibz.inf.ontouml.xtext.xcore;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -74,5 +76,23 @@ public interface ModelElement extends EObject {
 	 * @generated
 	 */
 	void setAlias(String value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final &lt;%org.eclipse.emf.ecore.EObject%&gt; m = this.eContainer();\nif ((m instanceof &lt;%it.unibz.inf.ontouml.xtext.xcore.Model%&gt;))\n{\n\treturn ((&lt;%it.unibz.inf.ontouml.xtext.xcore.Model%&gt;)m);\n}\nelse\n{\n\treturn null;\n}'"
+	 * @generated
+	 */
+	Model getContainerModel();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.getContainerModel().getElements();'"
+	 * @generated
+	 */
+	EList<ModelElement> getReacheableElements();
 
 } // ModelElement

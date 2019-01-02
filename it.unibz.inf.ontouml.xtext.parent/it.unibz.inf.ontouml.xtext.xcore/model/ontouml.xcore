@@ -18,6 +18,19 @@ abstract class ModelElement
 {
 	String name
 	String alias = "unnamed"
+	
+	op Model getContainerModel()
+	{
+		val m = eContainer
+		if(m instanceof Model) return m
+		else return null
+	}
+	
+	op ModelElement[] getReacheableElements()
+	{
+		return containerModel.elements
+	}
+	
 }
 
 abstract class Classifier extends ModelElement

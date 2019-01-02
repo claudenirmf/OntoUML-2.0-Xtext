@@ -41,13 +41,17 @@ class OntoUMLValidator extends AbstractOntoUMLValidator {
 	public static val MULTIPLE_DERIVATIONS = "it.unibz.inf.ontouml.xtext.validation.MULTIPLE_DERIVATIONS"
 	public static val MISSING_DERIVATION = "it.unibz.inf.ontouml.xtext.validation.MISSING_DERIVATION"
 	public static val PROHIBITED_DERIVATION = "it.unibz.inf.ontouml.xtext.validation.PROHIBITED_DERIVATION"
-	
+	public static val MISSING_INHERENCE = "it.unibz.inf.ontouml.xtext.validation.MISSING_INHERENCE"
+	public static val INVALID_INHERENCE = "it.unibz.inf.ontouml.xtext.validation.INVALID_INHERENCE"
+	public static val MISSING_DEPENDENCE = "it.unibz.inf.ontouml.xtext.validation.MISSING_DEPENDENCE"
+	public static val MISSING_INVOLVEMENT = "it.unibz.inf.ontouml.xtext.validation.MISSING_INVOLVEMENT"
+		
 	
 	@Check
 	def checkDuplicatedName(ModelElement me) {
 		val list = (me.eContainer as Model).elements
 		if (list.exists[ it.name == me.name && it.eClass == me.eClass && it != me ])
-			error('''Duplicated name for this type of model element ("«me.name»").''',
+			error('''Duplicated name for this type of model element ("«me.nameOrAlias»").''',
 				me, XcorePackage.eINSTANCE.modelElement_Name, DUPLICATED_NAME)
 	}
 	
@@ -65,12 +69,12 @@ class OntoUMLValidator extends AbstractOntoUMLValidator {
 	def checkUnkownOntologicalProperties(ModelElement me) {
 		if(me instanceof OntoUMLClass && (me as OntoUMLClass)._type==EndurantType.NONE) {
 			warning('''The model element has an unknown ontological nature due to the abscence of'''+
-				''' some decorating stereotype from the OntomUML profile ("«me.name»").''',
+				''' some decorating stereotype from the OntomUML profile ("«me.nameOrAlias»").''',
 				me, XcorePackage.eINSTANCE.modelElement_Name, UNKOWN_NATURE)
 		}
 		else if(me instanceof RegularAssociation && (me as RegularAssociation)._type==RelationType.NONE) {
 			warning('''The model element has an unknown ontological nature due to the abscence of'''+
-				''' some decorating stereotype from the OntomUML profile ("«me.name»").''',
+				''' some decorating stereotype from the OntomUML profile ("«me.nameOrAlias»").''',
 				me, XcorePackage.eINSTANCE.modelElement_Name, UNKOWN_NATURE)
 		}
 	}
@@ -181,17 +185,77 @@ class OntoUMLValidator extends AbstractOntoUMLValidator {
 				warning('''Descriptive relations cannot be deriving substantial types ("«d.derivedClass.name»").''',
 					a, XcorePackage.eINSTANCE.modelElement_Name, PROHIBITED_DERIVATION)
 		}
+	}
+	
+	@Check(CheckType.NORMAL)
+	def checkDerivedMomentDependences(DerivationAssociation d) {
+		val relata = new BasicEList<OntoUMLClass>
+		relata.add(d.derivingAssociation.endA)
+		relata.add(d.derivingAssociation.endB)
+		val dc = d.derivedClass
+		val dcKind = dc.kindType
+		if(dcKind==EndurantType.MODE_KIND) {
+			// TODO modes bound to descriptive relations through derivation must have external dependence
+			// This code might ignore specializations...
+			// TODO reconsider implementation
+			val dependences = dc.dependences
+			val inherence = dc.inherence
+			
+			if(inherence===null) {
+				// TODO error externally dependent mode without inherence
+				error('''Derived classes representing mode types must inhere in one of the relata''',
+					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, MISSING_INHERENCE)
+			}
+			else if(!relata.contains(inherence.endB)) {
+				// TODO check inherence of modes that are parts of relators
+				// TODO error externally dependent mode with inherence to something other than the relata
+				error('''Derived classes representing mode types must inhere in one of the relata''',
+					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, INVALID_INHERENCE)
+			}
+			else if(dependences.isEmpty) {
+				// TODO error externally dependent mode without dependece
+				// TODO review (also, this clause may be unnecessary)
+				error('''Derived classes representing mode types must depende (externally) in one of the relata''',
+					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, MISSING_DEPENDENCE)
+			}
+			else if(!dependences.exists[ relata.contains(endA) || relata.contains(endB) ]) {
+				// TODO check external dependence of modes that are parts of relators
+				// TODO error externally dependent mode with dependence to something other than the relata
+				error('''Derived classes representing mode types must depende (externally) in one of the relata''',
+					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, MISSING_DEPENDENCE)
+			}
+		}
+		else if(dcKind==EndurantType.RELATOR_KIND) {
+			val involvements = dc.involvements
+			
+			if(involvements.isEmpty) {
+				// TODO error relator without involvements
+				error('''Derived classes representing relator types must involve all of the relata''',
+					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, MISSING_INVOLVEMENT)
+			}
+			else if(!involvements.exists[ relata.head==endA||relata.head==endB ]
+				|| !!involvements.exists[ relata.tail==endA||relata.tail==endB ] 
+			){
+				// TODO relators bound to descriptive relations through derivation must involve all relata
+				// TODO error relator with involvemnts to something other than the relata
+				error('''Derived classes representing relator types must involve all of the relata''',
+					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, MISSING_INVOLVEMENT)
+			}
+		}
+		else if(dcKind==EndurantType.QUALITY_KIND) {}
+	}
+	
+	@Check(CheckType.NORMAL)
+	def checkRelatorParts() {
 		
 	}
 	
-	// TODO every descriptive relation should be bound to some moment type through derivation relations (a unique)
-	// TODO modes bound to descriptive relations through derivation must have external dependence
-	// TODO relators bound to descriptive relations through derivation must involve all relata
 	// TODO check parts of relators derived from relations
-	// TODO check inherence of modes that are parts of relators
-	// TODO check external dependence of modes that are parts of relators
 	
-	// TODO Prohibit multiple derivations of a single association
+	// TODO Validate inherence relations
+	// TODO Validate dependence relations
+	// TODO Validate involvement relations
+	// TODO Replace getName for getNameOrAlias in error/warning messages
 	// TODO Validate disjointness and generalization
 	// TODO Validate duplicated generalizations
 	// TODO Validate generalization cycles

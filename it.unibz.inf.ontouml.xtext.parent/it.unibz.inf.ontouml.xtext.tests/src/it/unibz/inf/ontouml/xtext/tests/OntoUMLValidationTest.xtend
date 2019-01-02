@@ -10,6 +10,7 @@ import org.eclipse.xtext.testing.util.ParseHelper
 import org.eclipse.xtext.testing.validation.ValidationTestHelper
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.Assert
 
 @RunWith(XtextRunner)
 @InjectWith(OntoUMLInjectorProvider)
@@ -49,6 +50,8 @@ class OntoUMLValidationTest {
 		generalization "gen2" "Harbor" "Under Maintenance Harbor"
 		generalization "gen3" "Harbor" "Extinct Harbor"
 		disjoint complete generalizationset "gs1" { "gen1" "gen2" "gen3" }
+		
+		class a class b gen g a b
 		'''.parse
 		m1.assertNoError(OntoUMLValidator.INVALID_GENERALIZATION_SET)
 		
@@ -62,6 +65,18 @@ class OntoUMLValidationTest {
 		'''.parse
 		
 		m2.assertError(XcorePackage.eINSTANCE.generalizationSet,OntoUMLValidator.INVALID_GENERALIZATION_SET)
+		
+		val m3 = '''
+		complete generalizationset "SRsDvUaD.AAAAQkd" aka "Set" { "MRnqDUaD.AAAAQXL" "964DvUaD.AAAAQjI" }
+		
+		generalization "MRnqDUaD.AAAAQXL" aka "gen" "fY7qDUaD.AAAAQWy" ".u7qDUaD.AAAAQW7"
+		generalization "964DvUaD.AAAAQjI" aka "gen2" "fY7qDUaD.AAAAQWy" "M64DvUaD.AAAAQi8"
+		
+		class "fY7qDUaD.AAAAQWy" aka "Class"
+		subkind ".u7qDUaD.AAAAQW7" aka "Class2"
+		class "M64DvUaD.AAAAQi8" aka "Class4"
+		'''.parse
+		m3.assertNoError(OntoUMLValidator.INVALID_GENERALIZATION_SET)
 	}
 	
 	@Test
@@ -72,7 +87,7 @@ class OntoUMLValidationTest {
 				[0..*] a
 				[0..*] a
 			'''.parse
-		m1.assertError(XcorePackage.eINSTANCE.modelElement,OntoUMLValidator.UNKOWN_NATURE)
+		m1.assertWarning(XcorePackage.eINSTANCE.regularAssociation,OntoUMLValidator.UNKOWN_NATURE)
 		
 		val m2 = '''
 			class a
@@ -80,7 +95,7 @@ class OntoUMLValidationTest {
 				[0..*] a
 				[0..*] a
 			'''.parse
-		m2.assertError(XcorePackage.eINSTANCE.modelElement,OntoUMLValidator.UNKOWN_NATURE)
+		m2.assertWarning(XcorePackage.eINSTANCE.ontoUMLClass,OntoUMLValidator.UNKOWN_NATURE)
 	}
 	
 	@Test
@@ -265,7 +280,139 @@ class OntoUMLValidationTest {
 		m5.assertError(XcorePackage.eINSTANCE.ontoUMLClass,OntoUMLValidator.PHASE_MISSING_PARTITION)
 	}
 	
+	@Test
+	def void checkMultipleDerivationOfSingleAssociationTest() {
+		val m1 = '''
+		class a class d_a
+		association a_a a a
+		derivation d_a_a a_a d_a
+		association a_a2 a a
+		'''.parse
+		m1.assertNoError(OntoUMLValidator.MULTIPLE_DERIVATIONS)
+		
+		val m2 = '''
+		class a class d_a
+		association a_a a a
+		derivation d_a_a a_a d_a
+		derivation d_a_a2 a_a d_a
+		'''.parse
+		m2.assertError(XcorePackage.eINSTANCE.derivationAssociation, OntoUMLValidator.MULTIPLE_DERIVATIONS)
+	}
+
+	@Test
+	def void checkDescriptiveRelationDerivationTest() {
+		val m1 = '''
+		relatorKind enrollment
+		kind person kind school
+		descriptive studies_at person school
+		derivation d_studies_at studies_at enrollment
+		'''.parse
+		m1.assertNoWarnings(XcorePackage.eINSTANCE.regularAssociation,OntoUMLValidator.MISSING_DERIVATION)
+		m1.assertNoWarnings(XcorePackage.eINSTANCE.regularAssociation,OntoUMLValidator.MISSING_DERIVATION)
+		
+		val m2 = '''
+		relatorKind enrollment
+		kind person kind school
+		descriptive studies_at person school
+		'''.parse
+		m2.assertWarning(XcorePackage.eINSTANCE.regularAssociation,OntoUMLValidator.MISSING_DERIVATION)
+		
+		val m3 = '''
+		category substance
+		kind person kind school
+		descriptive studies_at person school
+		derivation d_studies_at studies_at substance
+		'''.parse
+		m3.assertWarning(XcorePackage.eINSTANCE.regularAssociation,OntoUMLValidator.PROHIBITED_DERIVATION)
+	}	
+
+	@Test
+	def void checkDerivedMomentDependencesTest() {
+		val m1 = '''
+		roleMixin Lover
+		roleMixin LovedOne
+		modeKind Love
+		descriptive loves Lover LovedOne
+		derivation d_loves loves Love
+		inherence inh Love Lover
+		dependence dep Love LovedOne
+		
+		roleMixin Customer
+		roleMixin Provider
+		relatorKind ServiceAgreement
+		descriptive subscribes_to Customer Provider
+		derivation d_subscribes_to subscribes_to ServiceAgreement
+		involvement inv1 ServiceAgreement Customer
+		involvement inv2 ServiceAgreement Provider
+		'''.parse
+		m1.assertNoIssue(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_INHERENCE)
+		m1.assertNoIssue(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.INVALID_INHERENCE)
+		m1.assertNoIssue(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_DEPENDENCE)
+		m1.assertNoIssue(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_INVOLVEMENT)
+		
+		val m2 = '''
+		roleMixin Lover
+		roleMixin LovedOne
+		modeKind Love
+		descriptive loves Lover LovedOne
+		derivation d_loves loves Love
+		'''.parse
+		m2.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_INHERENCE)
+		
+		val m3 = '''
+		roleMixin Lover
+		roleMixin LovedOne
+		modeKind Love
+		descriptive loves Lover LovedOne
+		derivation d_loves loves Love
+		inherence inh Love Lover
+		'''.parse
+		m3.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_DEPENDENCE)
+		
+		val m4 = '''
+		class Other
+		roleMixin Lover
+		roleMixin LovedOne
+		modeKind Love
+		descriptive loves Lover LovedOne
+		derivation d_loves loves Love
+		inherence inh Love Other
+		'''.parse
+		m4.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.INVALID_INHERENCE)
+		
+		val m5 = '''
+		class Other
+		roleMixin Lover
+		roleMixin LovedOne
+		modeKind Love
+		descriptive loves Lover LovedOne
+		derivation d_loves loves Love
+		inherence inh Love Lover
+		dependence dep Love Other
+		'''.parse
+		m5.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_DEPENDENCE)
+		
+		val m6 = '''
+		roleMixin Customer
+		roleMixin Provider
+		relatorKind ServiceAgreement
+		descriptive subscribes_to Customer Provider
+		derivation d_subscribes_to subscribes_to ServiceAgreement
+		involvement inv2 ServiceAgreement Provider
+		'''.parse
+		m6.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_INVOLVEMENT)
+		
+		val m7 = '''
+		roleMixin Customer
+		roleMixin Provider
+		relatorKind ServiceAgreement
+		descriptive subscribes_to Customer Provider
+		derivation d_subscribes_to subscribes_to ServiceAgreement
+		'''.parse
+		m7.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_INVOLVEMENT)
+	}
+
 	
-	
+		
 }
 

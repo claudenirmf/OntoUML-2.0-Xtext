@@ -241,6 +241,24 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getModelElement__GetContainerModel() {
+		return modelElementEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getModelElement__GetReacheableElements() {
+		return modelElementEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getClassifier() {
 		return classifierEClass;
 	}
@@ -712,6 +730,8 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 		modelElementEClass = createEClass(MODEL_ELEMENT);
 		createEAttribute(modelElementEClass, MODEL_ELEMENT__NAME);
 		createEAttribute(modelElementEClass, MODEL_ELEMENT__ALIAS);
+		createEOperation(modelElementEClass, MODEL_ELEMENT___GET_CONTAINER_MODEL);
+		createEOperation(modelElementEClass, MODEL_ELEMENT___GET_REACHEABLE_ELEMENTS);
 
 		classifierEClass = createEClass(CLASSIFIER);
 		createEOperation(classifierEClass, CLASSIFIER___GET_GENERALIZATIONS);
@@ -822,6 +842,10 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 		initEClass(modelElementEClass, ModelElement.class, "ModelElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getModelElement_Name(), theEcorePackage.getEString(), "name", null, 0, 1, ModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getModelElement_Alias(), theEcorePackage.getEString(), "alias", "unnamed", 0, 1, ModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getModelElement__GetContainerModel(), this.getModel(), "getContainerModel", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getModelElement__GetReacheableElements(), this.getModelElement(), "getReacheableElements", 0, -1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(classifierEClass, Classifier.class, "Classifier", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
