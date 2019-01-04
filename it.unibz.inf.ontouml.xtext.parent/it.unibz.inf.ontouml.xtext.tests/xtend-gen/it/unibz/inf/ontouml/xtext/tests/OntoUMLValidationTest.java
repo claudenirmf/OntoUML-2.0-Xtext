@@ -381,7 +381,7 @@ public class OntoUMLValidationTest {
       _builder.append("disjoint complete generalizationset gs2 { gen3 gen4 }");
       _builder.newLine();
       final Model m1 = this.parseHelper.parse(_builder);
-      this._validationTestHelper.assertNoError(m1, OntoUMLValidator.PHASE_MISSING_PARTITION);
+      this._validationTestHelper.assertNoIssue(m1, XcorePackage.eINSTANCE.getOntoUMLClass(), OntoUMLValidator.PHASE_MISSING_PARTITION);
       StringConcatenation _builder_1 = new StringConcatenation();
       _builder_1.append("kind k");
       _builder_1.newLine();
@@ -390,7 +390,7 @@ public class OntoUMLValidationTest {
       _builder_1.append("generalization gen1 k p1");
       _builder_1.newLine();
       final Model m2 = this.parseHelper.parse(_builder_1);
-      this._validationTestHelper.assertError(m2, XcorePackage.eINSTANCE.getOntoUMLClass(), OntoUMLValidator.PHASE_MISSING_PARTITION);
+      this._validationTestHelper.assertWarning(m2, XcorePackage.eINSTANCE.getModelElement(), OntoUMLValidator.PHASE_MISSING_PARTITION);
       StringConcatenation _builder_2 = new StringConcatenation();
       _builder_2.append("category c");
       _builder_2.newLine();
@@ -399,7 +399,7 @@ public class OntoUMLValidationTest {
       _builder_2.append("generalization gen3 c pm1");
       _builder_2.newLine();
       final Model m3 = this.parseHelper.parse(_builder_2);
-      this._validationTestHelper.assertError(m3, XcorePackage.eINSTANCE.getOntoUMLClass(), OntoUMLValidator.PHASE_MISSING_PARTITION);
+      this._validationTestHelper.assertWarning(m3, XcorePackage.eINSTANCE.getModelElement(), OntoUMLValidator.PHASE_MISSING_PARTITION);
       StringConcatenation _builder_3 = new StringConcatenation();
       _builder_3.append("kind k");
       _builder_3.newLine();
@@ -420,7 +420,7 @@ public class OntoUMLValidationTest {
       _builder_3.append("disjoint complete generalizationset gs1 { gen1 gen2 gen3 }");
       _builder_3.newLine();
       final Model m4 = this.parseHelper.parse(_builder_3);
-      this._validationTestHelper.assertError(m4, XcorePackage.eINSTANCE.getOntoUMLClass(), OntoUMLValidator.PHASE_MISSING_PARTITION);
+      this._validationTestHelper.assertWarning(m4, XcorePackage.eINSTANCE.getModelElement(), OntoUMLValidator.PHASE_MISSING_PARTITION);
       StringConcatenation _builder_4 = new StringConcatenation();
       _builder_4.append("kind k");
       _builder_4.newLine();
@@ -435,7 +435,7 @@ public class OntoUMLValidationTest {
       _builder_4.append("disjoint generalizationset gs1 { gen1 gen2 }");
       _builder_4.newLine();
       final Model m5 = this.parseHelper.parse(_builder_4);
-      this._validationTestHelper.assertError(m5, XcorePackage.eINSTANCE.getOntoUMLClass(), OntoUMLValidator.PHASE_MISSING_PARTITION);
+      this._validationTestHelper.assertWarning(m5, XcorePackage.eINSTANCE.getModelElement(), OntoUMLValidator.PHASE_MISSING_PARTITION);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

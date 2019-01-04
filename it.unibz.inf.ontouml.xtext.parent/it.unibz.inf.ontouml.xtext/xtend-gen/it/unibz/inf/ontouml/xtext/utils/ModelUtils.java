@@ -128,6 +128,9 @@ public class ModelUtils {
     })));
   }
   
+  /**
+   * Returns the ultimate sortal specialized by the given class.
+   */
   public EndurantType getKindType(final OntoUMLClass c) {
     boolean _isUltimateSortal = c.isUltimateSortal();
     if (_isUltimateSortal) {

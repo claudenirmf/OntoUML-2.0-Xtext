@@ -87,6 +87,7 @@ class ModelUtils {
 		return c._type==EndurantType.QUALITY_KIND || c.ancestors.exists[ _type==EndurantType.QUALITY_KIND ]
 	}
 	
+	/** Returns the ultimate sortal specialized by the given class. */
 	def EndurantType getKindType(OntoUMLClass c) {
 		if(c.isUltimateSortal) return c._type
 		else {

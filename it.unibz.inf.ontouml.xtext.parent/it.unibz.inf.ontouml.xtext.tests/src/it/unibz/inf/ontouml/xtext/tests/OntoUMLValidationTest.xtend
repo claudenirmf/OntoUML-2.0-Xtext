@@ -239,21 +239,21 @@ class OntoUMLValidationTest {
 		generalization gen4 c pm2
 		disjoint complete generalizationset gs2 { gen3 gen4 }
 		'''.parse
-		m1.assertNoError(OntoUMLValidator.PHASE_MISSING_PARTITION)
+		m1.assertNoIssue(XcorePackage.eINSTANCE.ontoUMLClass, OntoUMLValidator.PHASE_MISSING_PARTITION)
 		
 		val m2 = '''
 		kind k
 		phase p1
 		generalization gen1 k p1
 		'''.parse
-		m2.assertError(XcorePackage.eINSTANCE.ontoUMLClass,OntoUMLValidator.PHASE_MISSING_PARTITION)
+		m2.assertWarning(XcorePackage.eINSTANCE.modelElement,OntoUMLValidator.PHASE_MISSING_PARTITION)
 		
 		val m3 = '''
 		category c
 		phaseMixin pm1
 		generalization gen3 c pm1
 		'''.parse
-		m3.assertError(XcorePackage.eINSTANCE.ontoUMLClass,OntoUMLValidator.PHASE_MISSING_PARTITION)
+		m3.assertWarning(XcorePackage.eINSTANCE.modelElement,OntoUMLValidator.PHASE_MISSING_PARTITION)
 		
 		val m4 = '''
 		kind k
@@ -267,7 +267,7 @@ class OntoUMLValidationTest {
 		
 		disjoint complete generalizationset gs1 { gen1 gen2 gen3 }
 		'''.parse
-		m4.assertError(XcorePackage.eINSTANCE.ontoUMLClass,OntoUMLValidator.PHASE_MISSING_PARTITION)
+		m4.assertWarning(XcorePackage.eINSTANCE.modelElement,OntoUMLValidator.PHASE_MISSING_PARTITION)
 		
 		val m5 = '''
 		kind k
@@ -277,7 +277,7 @@ class OntoUMLValidationTest {
 		generalization gen2 k p2
 		disjoint generalizationset gs1 { gen1 gen2 }
 		'''.parse
-		m5.assertError(XcorePackage.eINSTANCE.ontoUMLClass,OntoUMLValidator.PHASE_MISSING_PARTITION)
+		m5.assertWarning(XcorePackage.eINSTANCE.modelElement,OntoUMLValidator.PHASE_MISSING_PARTITION)
 	}
 	
 	@Test

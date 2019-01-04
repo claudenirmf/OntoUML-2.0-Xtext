@@ -47,60 +47,65 @@ class OntoUMLValidator extends AbstractOntoUMLValidator {
 	public static val MISSING_INVOLVEMENT = "it.unibz.inf.ontouml.xtext.validation.MISSING_INVOLVEMENT"
 		
 	
-	@Check
+	@Check(CheckType.FAST)
 	def checkDuplicatedName(ModelElement me) {
 		val list = (me.eContainer as Model).elements
 		if (list.exists[ it.name == me.name && it.eClass == me.eClass && it != me ])
-			error('''Duplicated name for this type of model element ("«me.nameOrAlias»").''',
+			error('''There cannot be different model elements of the same type with a common name ("«me.nameOrAlias»").''',
 				me, XcorePackage.eINSTANCE.modelElement_Name, DUPLICATED_NAME)
 	}
 	
-	@Check
+	@Check(CheckType.FAST)
 	def checkValidGeneralizationSet(GeneralizationSet gs) {
 		val list = new BasicEList<ModelElement>
 		gs.generalizations.forEach[ if(!list.contains(generic)) { list.add(generic) } ]
 		if(list.size != 1)
-			error('''Invalid generalization set (does not aggregate generalizations '''
-				+'''of a unique generic classifier).''', gs, 
-				XcorePackage.eINSTANCE.modelElement_Name, INVALID_GENERALIZATION_SET)
+			error('''All generalizations in a generalization set must have a common generic classifier''',
+				gs, XcorePackage.eINSTANCE.modelElement_Name, INVALID_GENERALIZATION_SET)
 	}
 	
-	@Check
-	def checkUnkownOntologicalProperties(ModelElement me) {
-		if(me instanceof OntoUMLClass && (me as OntoUMLClass)._type==EndurantType.NONE) {
-			warning('''The model element has an unknown ontological nature due to the abscence of'''+
-				''' some decorating stereotype from the OntomUML profile ("«me.nameOrAlias»").''',
-				me, XcorePackage.eINSTANCE.modelElement_Name, UNKOWN_NATURE)
+	@Check(CheckType.FAST)
+	def checkUnkownOntologicalProperties(OntoUMLClass c) {
+		if(c._type==EndurantType.NONE) {
+			warning('''Unkown ontological nature. Classes without a valid OntoUML stereotype cannot '''
+			 	+ '''be properly considered in model verification.''', c, 
+			 	XcorePackage.eINSTANCE.modelElement_Name, UNKOWN_NATURE)
 		}
-		else if(me instanceof RegularAssociation && (me as RegularAssociation)._type==RelationType.NONE) {
-			warning('''The model element has an unknown ontological nature due to the abscence of'''+
-				''' some decorating stereotype from the OntomUML profile ("«me.nameOrAlias»").''',
-				me, XcorePackage.eINSTANCE.modelElement_Name, UNKOWN_NATURE)
+	}
+	
+	@Check(CheckType.FAST)
+	def checkUnkownOntologicalProperties(RegularAssociation a) {
+		if(a._type==RelationType.NONE) {
+			warning(''''Unkown ontological nature. Associations without a valid OntoUML stereotype cannot '''
+				+ '''be properly considered in model verification.''', a, 
+			 	XcorePackage.eINSTANCE.modelElement_Name, UNKOWN_NATURE)
 		}
 	}
 
 	@Check(CheckType.NORMAL)
 	def checkUltimateSortalSpecialization(OntoUMLClass c) {
 		if (c.isSortal) {
+			// This is the only heavy call for this rule. Thus I've decided to set CheckType as 
+			// NORMAL but allow all if statements to be processed (no if-else declarations.
 			val kinds = c.ancestors.filter[it.isUltimateSortal]
-			if (kinds.isEmpty && !c.isUltimateSortal) {
-				error(
-					'''The class "«c.nameOrAlias»" must specialize a ultimate sortal '''+
-					'''i.e., a class decorated with one stereotype from the set {'''+"«kind»,«relatorKind»,«modeKind»,«qualityKind»}).", 
-					c, XcorePackage.eINSTANCE.modelElement_Name, MISSING_IDENTITY_SUPPLIER)
-			}
-			if (!kinds.isEmpty && c.isUltimateSortal) {
-				error(
-				'''The class "«c.nameOrAlias»" is a ultimate sortal and cannot specialize '''+
-					'''other ultimate sortals («FOR k : kinds»«IF kinds.head!=k», «ENDIF»"«k.nameOrAlias»"«ENDFOR»).''',
+			
+			if (kinds.isEmpty && !c.isUltimateSortal)
+				error('''Missing specialization (direct or not) of an identity provider. Add '''
+					+ '''generalization of some class decorated as «'«'»kind», «'«'»relatorKind»,'''
+					+ '''«'«'»modeKind» or «'«'»qualityKind».''', c, 
+					XcorePackage.eINSTANCE.modelElement_Name, MISSING_IDENTITY_SUPPLIER)
+
+			if (!kinds.isEmpty && c.isUltimateSortal)
+				error('''Identity providers cannot specialize other specialize others. Prohibited'''
+					+ ''' specialization of the following classes ('''
+					+ '''«FOR k : kinds»«IF kinds.head!=k», «ENDIF»"«k.nameOrAlias»"«ENDFOR»).''',
 					c, XcorePackage.eINSTANCE.modelElement_Name, ULTIMATE_SORTAL_SPECIALIZATION)
-			}
-			if (kinds.size > 1 && !c.isUltimateSortal) {
-				error(
-				'''The class "«c.nameOrAlias»" is specializing mutiple ultimate sortals '''+
-					'''(«FOR k : kinds»«IF kinds.head!=k», «ENDIF»"«k.nameOrAlias»"«ENDFOR»).''',
+
+			if (kinds.size > 1 && !c.isUltimateSortal)
+				error('''Sortal classes cannot specialize multiple identity providers. Prohibited'''
+					+ ''' specialization of the following classes ('''
+					+ '''«FOR k : kinds»«IF kinds.head!=k», «ENDIF»"«k.nameOrAlias»"«ENDFOR»).''',
 					c, XcorePackage.eINSTANCE.modelElement_Name,MULTIPLE_IDENTITY_SUPPLIERS)
-			}
 		}
 	}
 	
@@ -108,31 +113,32 @@ class OntoUMLValidator extends AbstractOntoUMLValidator {
 	def checkNonSortalSpecializationToSortal(OntoUMLClass c) {
 		if (c.isNonSortal) {
 			val sortals = c.ancestors.filter[it.isSortal]
-			if (!sortals.isEmpty) {
-				error(
-				'''The class "«c.nameOrAlias»" is non-sortal and cannot specialize sortal classes ('''+
-					'''«FOR s : sortals»«IF sortals.head!=s», «ENDIF»"«s.nameOrAlias»"«ENDFOR»).''', c, 
+			
+			if (!sortals.isEmpty)
+				error('''Non-sortal classes cannot specialize sortal ones. Prohibited'''
+					+ ''' specialization of the following classes ('''
+					+ '''«FOR s : sortals»«IF sortals.head!=s», «ENDIF»'«s.nameOrAlias»'«ENDFOR»).''',
 					XcorePackage.eINSTANCE.modelElement_Name, NONSORTAL_SPECIALIZATION_TO_SORTAL)
-			}
 		}
 	}
 	
+	// TODO Shifting validations to generalizations could be expressive enough and much more efficient
 	@Check(CheckType.NORMAL)
 	def checkNonAntiRigidSpecializationToAntiRigid(OntoUMLClass c) {
 		if (c.isRigid || c.isSemiRigid) {
 			val antiRigids = c.ancestors.filter[it.isAntiRigid]
-			if (!antiRigids.isEmpty && c.isRigid) {
-				error(
-				'''The class "«c.nameOrAlias»" is rigid and cannot specialize anti-rigid classes ('''+
-					'''«FOR ar : antiRigids»«IF antiRigids.head!=ar», «ENDIF»"«ar.nameOrAlias»"«ENDFOR»).''', c, 
-					XcorePackage.eINSTANCE.modelElement_Name, RIGID_SPECIALIZATION_TO_ANTI_RIGID)
-			}
-			if (!antiRigids.isEmpty && c.isSemiRigid) {
-				error(
-				'''The class "«c.nameOrAlias»" is semi-rigid and cannot specialize anti-rigid classes ('''+
-					'''«FOR ar : antiRigids»«IF antiRigids.head!=ar», «ENDIF»"«ar.nameOrAlias»"«ENDFOR»).''', c, 
-					XcorePackage.eINSTANCE.modelElement_Name, SEMI_RIGID_SPECIALIZATION_TO_ANTI_RIGID)
-			}
+			
+			if (!antiRigids.isEmpty && c.isRigid)
+				error('''Rigid classes cannot specialize anti-rigid ones. Prohibited'''
+					+ ''' specialization of the following classes ('''
+					+ '''«FOR at : antiRigids»«IF antiRigids.head!=at», «ENDIF»'«at.nameOrAlias»'«ENDFOR»).''',
+					c, XcorePackage.eINSTANCE.modelElement_Name, RIGID_SPECIALIZATION_TO_ANTI_RIGID)
+			
+			else if (!antiRigids.isEmpty && c.isSemiRigid)
+				error('''Mixin classes cannot specialize anti-rigid ones. Prohibited'''
+					+ ''' specialization of the following classes ('''
+					+ '''«FOR at : antiRigids»«IF antiRigids.head!=at», «ENDIF»'«at.nameOrAlias»'«ENDFOR»).''',
+					c, XcorePackage.eINSTANCE.modelElement_Name, SEMI_RIGID_SPECIALIZATION_TO_ANTI_RIGID)
 		}
 	}
 	
@@ -142,7 +148,7 @@ class OntoUMLValidator extends AbstractOntoUMLValidator {
 			val partitionFound = (c.eContainer as Model).elements
 				.exists[ 
 					if(it instanceof GeneralizationSet)
-						isIsDisjoint 
+						isIsDisjoint
 						&& isIsComplete 
 						&& specifics.contains(c) 
 						&& specifics.forall[ 
@@ -152,13 +158,11 @@ class OntoUMLValidator extends AbstractOntoUMLValidator {
 					else 
 						false
 				]
-			if(!partitionFound) {
-				error(
-					'''The class "«c.nameOrAlias»" is a phase and must be a member of some partition of phase '''
-					+'''(i.e., a disjoint and complete generalization set of classes decorated as '''
-					+'''«"«"+c._type+"»"»).''', c, XcorePackage.eINSTANCE.modelElement_Name, 
-					PHASE_MISSING_PARTITION)
-			}
+			 // TODO change attribute's name
+			 
+			if(!partitionFound)
+				warning('''Phase and phase-mixin classes should be grouped into phases-only generalization sets. ''',
+					c, XcorePackage.eINSTANCE.modelElement_Name, PHASE_MISSING_PARTITION)
 		}
 	}
 	
@@ -169,6 +173,7 @@ class OntoUMLValidator extends AbstractOntoUMLValidator {
 			&& it != d
 			&& (it as DerivationAssociation).derivingAssociation == d.derivingAssociation
 		]
+		
 		if(cond)
 			error('''Multiple derivations of the same association are not allowed.''',
 				d, XcorePackage.eINSTANCE.modelElement_Name, MULTIPLE_DERIVATIONS)
@@ -182,80 +187,72 @@ class OntoUMLValidator extends AbstractOntoUMLValidator {
 				warning('''Every descriptive relation should derive some class representing its truthmaker.''',
 					a, XcorePackage.eINSTANCE.modelElement_Name, MISSING_DERIVATION)
 			else if(!d.derivedClass.isMomentType)
-				warning('''Descriptive relations cannot be deriving substantial types ("«d.derivedClass.name»").''',
+				warning('''Descriptive relations cannot be deriving substantial types ('«d.derivedClass.name»').''',
 					a, XcorePackage.eINSTANCE.modelElement_Name, PROHIBITED_DERIVATION)
 		}
 	}
 	
 	@Check(CheckType.NORMAL)
 	def checkDerivedMomentDependences(DerivationAssociation d) {
-		val relata = new BasicEList<OntoUMLClass>
-		relata.add(d.derivingAssociation.endA)
-		relata.add(d.derivingAssociation.endB)
 		val dc = d.derivedClass
 		val dcKind = dc.kindType
+		val relata = new BasicEList<OntoUMLClass>
+		
+		relata.add(d.derivingAssociation.endA)
+		relata.add(d.derivingAssociation.endB)
+		
 		if(dcKind==EndurantType.MODE_KIND) {
-			// TODO modes bound to descriptive relations through derivation must have external dependence
 			// This code might ignore specializations...
 			// TODO reconsider implementation
-			val dependences = dc.dependences
 			val inherence = dc.inherence
 			
 			if(inherence===null) {
-				// TODO error externally dependent mode without inherence
 				error('''Derived classes representing mode types must inhere in one of the relata''',
 					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, MISSING_INHERENCE)
+				return ;
 			}
-			else if(!relata.contains(inherence.endB)) {
-				// TODO check inherence of modes that are parts of relators
-				// TODO error externally dependent mode with inherence to something other than the relata
-				error('''Derived classes representing mode types must inhere in one of the relata''',
-					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, INVALID_INHERENCE)
+			else if (!relata.contains(inherence.endB)) {
+				error('''Derived classes representing mode types must inhere in one of the relata''', d,
+					XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, INVALID_INHERENCE)
+				return;
 			}
-			else if(dependences.isEmpty) {
-				// TODO error externally dependent mode without dependece
-				// TODO review (also, this clause may be unnecessary)
+			
+			val dependences = dc.dependences
+			
+			if(dependences.isEmpty || !dependences.exists[ relata.contains(endA) || relata.contains(endB) ]) {
 				error('''Derived classes representing mode types must depende (externally) in one of the relata''',
 					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, MISSING_DEPENDENCE)
-			}
-			else if(!dependences.exists[ relata.contains(endA) || relata.contains(endB) ]) {
-				// TODO check external dependence of modes that are parts of relators
-				// TODO error externally dependent mode with dependence to something other than the relata
-				error('''Derived classes representing mode types must depende (externally) in one of the relata''',
-					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, MISSING_DEPENDENCE)
+				return ;
 			}
 		}
-		else if(dcKind==EndurantType.RELATOR_KIND) {
+		
+		if(dcKind==EndurantType.RELATOR_KIND) {
 			val involvements = dc.involvements
 			
-			if(involvements.isEmpty) {
-				// TODO error relator without involvements
-				error('''Derived classes representing relator types must involve all of the relata''',
-					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, MISSING_INVOLVEMENT)
-			}
-			else if(!involvements.exists[ relata.head==endA||relata.head==endB ]
-				|| !!involvements.exists[ relata.tail==endA||relata.tail==endB ] 
+			if(involvements.isEmpty
+				|| !involvements.exists[ relata.head==endA || relata.head==endB ]
+				|| !!involvements.exists[ relata.tail==endA || relata.tail==endB ] 
 			){
-				// TODO relators bound to descriptive relations through derivation must involve all relata
-				// TODO error relator with involvemnts to something other than the relata
 				error('''Derived classes representing relator types must involve all of the relata''',
 					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, MISSING_INVOLVEMENT)
 			}
 		}
-		else if(dcKind==EndurantType.QUALITY_KIND) {}
 	}
 	
-	@Check(CheckType.NORMAL)
-	def checkRelatorParts() {
-		
-	}
+//	@Check(CheckType.NORMAL)
+//	def checkRelatorParts() {
+//		
+//	}
 	
 	// TODO check parts of relators derived from relations
 	
-	// TODO Validate inherence relations
+	// TODO Validate generalization relations
 	// TODO Validate dependence relations
 	// TODO Validate involvement relations
-	// TODO Replace getName for getNameOrAlias in error/warning messages
+	// TODO Validate inherence relations (multiple occurrences, bounded entities...)
+	// TODO check inherence of modes that are parts of relators
+	// TODO Consider derivation relations involving qualities
+	// TODO check external dependence of modes that are parts of relators
 	// TODO Validate disjointness and generalization
 	// TODO Validate duplicated generalizations
 	// TODO Validate generalization cycles
