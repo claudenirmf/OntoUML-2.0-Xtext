@@ -10,6 +10,7 @@ import it.unibz.inf.ontouml.xtext.xcore.RegularAssociation
 import it.unibz.inf.ontouml.xtext.xcore.Model
 import it.unibz.inf.ontouml.xtext.xcore.RelationType
 import it.unibz.inf.ontouml.xtext.xcore.EndurantType
+import it.unibz.inf.ontouml.xtext.xcore.AggregationKind
 
 class ModelUtils {
 	
@@ -98,34 +99,45 @@ class ModelUtils {
 	}
 	
 	/** @return Regular association that binds the given class (as first argument) and represent inherence. Null if there are none. */
-	def RegularAssociation getInherence(OntoUMLClass c) {
+	def RegularAssociation getCharacterization(OntoUMLClass c) {
 		c.reacheableElements.findFirst[ 
 			it instanceof RegularAssociation
-			&& (it as RegularAssociation)._type == RelationType.INHERENCE
-			&& (it as RegularAssociation).endA == c
+			&& (it as RegularAssociation)._type == RelationType.CHARACTERIZATION
+			&& (it as RegularAssociation).getSource == c
 		] as RegularAssociation
 	}
 	
 	/** @return Set of regular associations that bind the given class and represent existential dependences. Never null. */
-	def Set<RegularAssociation> getDependences(OntoUMLClass c) {
+	def Set<RegularAssociation> getExternalDependences(OntoUMLClass c) {
 		val dependences = new HashSet<RegularAssociation>
 		c.reacheableElements.forEach[
 			if(it instanceof RegularAssociation)
-				if(_type == RelationType.DEPENDENCE && (endA == c || endB == c))
+				if(_type == RelationType.EXTERNAL_DEPEDENCE && (getSource == c || getTarget == c))
 					dependences.add(it)
 		]
 		return dependences
 	}
 	
 	/** @return Set of regular associations that bind the given class and represent involvements. Never null. */
-	def Set<RegularAssociation> getInvolvements(OntoUMLClass c) {
+	def Set<RegularAssociation> getMediations(OntoUMLClass c) {
 		val involvements = new HashSet<RegularAssociation>
 		c.reacheableElements.forEach[
 			if(it instanceof RegularAssociation)
-				if(_type == RelationType.INVOLVEMENT && (endA == c || endB == c))
+				if(_type == RelationType.MEDIATION && (getSource == c || getTarget == c))
 					involvements.add(it)
 		]
 		return involvements
+	}
+	
+	/** @return Set of regular associations that bind the given class and represent involvements. Never null. */
+	def Set<RegularAssociation> getParthoods(OntoUMLClass c) {
+		val parthoods = new HashSet<RegularAssociation>
+		c.reacheableElements.forEach[
+			if(it instanceof RegularAssociation)
+				if(it.isParthood && (c == it.source || c == it.target))
+					parthoods.add(it)
+		]
+		return parthoods
 	}
 	
 }

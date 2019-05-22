@@ -40,13 +40,13 @@ public interface XcoreFactory extends EFactory {
 	OntoUMLClass createOntoUMLClass();
 
 	/**
-	 * Returns a new object of class '<em>Multiplicity</em>'.
+	 * Returns a new object of class '<em>Association End</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Multiplicity</em>'.
+	 * @return a new object of class '<em>Association End</em>'.
 	 * @generated
 	 */
-	Multiplicity createMultiplicity();
+	AssociationEnd createAssociationEnd();
 
 	/**
 	 * Returns a new object of class '<em>Regular Association</em>'.

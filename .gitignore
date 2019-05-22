@@ -9,3 +9,4 @@ target/
 *.java._trace
 *.smap
 *.xtendbin
+*.DS_Store

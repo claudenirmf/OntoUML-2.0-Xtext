@@ -13,8 +13,8 @@ package it.unibz.inf.ontouml.xtext.xcore;
  * </p>
  * <ul>
  *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#get_type <em>type</em>}</li>
- *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getEndA <em>End A</em>}</li>
- *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getEndB <em>End B</em>}</li>
+ *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getSource <em>Source</em>}</li>
+ *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getTarget <em>Target</em>}</li>
  * </ul>
  *
  * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getRegularAssociation()
@@ -53,55 +53,136 @@ public interface RegularAssociation extends Association {
 	void set_type(RelationType value);
 
 	/**
-	 * Returns the value of the '<em><b>End A</b></em>' reference.
+	 * Returns the value of the '<em><b>Source</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>End A</em>' reference isn't clear,
+	 * If the meaning of the '<em>Source</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>End A</em>' reference.
-	 * @see #setEndA(OntoUMLClass)
-	 * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getRegularAssociation_EndA()
+	 * @return the value of the '<em>Source</em>' reference.
+	 * @see #setSource(OntoUMLClass)
+	 * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getRegularAssociation_Source()
 	 * @model
 	 * @generated
 	 */
-	OntoUMLClass getEndA();
+	OntoUMLClass getSource();
 
 	/**
-	 * Sets the value of the '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getEndA <em>End A</em>}' reference.
+	 * Sets the value of the '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getSource <em>Source</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>End A</em>' reference.
-	 * @see #getEndA()
+	 * @param value the new value of the '<em>Source</em>' reference.
+	 * @see #getSource()
 	 * @generated
 	 */
-	void setEndA(OntoUMLClass value);
+	void setSource(OntoUMLClass value);
 
 	/**
-	 * Returns the value of the '<em><b>End B</b></em>' reference.
+	 * Returns the value of the '<em><b>Target</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>End B</em>' reference isn't clear,
+	 * If the meaning of the '<em>Target</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>End B</em>' reference.
-	 * @see #setEndB(OntoUMLClass)
-	 * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getRegularAssociation_EndB()
+	 * @return the value of the '<em>Target</em>' reference.
+	 * @see #setTarget(OntoUMLClass)
+	 * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getRegularAssociation_Target()
 	 * @model
 	 * @generated
 	 */
-	OntoUMLClass getEndB();
+	OntoUMLClass getTarget();
 
 	/**
-	 * Sets the value of the '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getEndB <em>End B</em>}' reference.
+	 * Sets the value of the '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getTarget <em>Target</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>End B</em>' reference.
-	 * @see #getEndB()
+	 * @param value the new value of the '<em>Target</em>' reference.
+	 * @see #getTarget()
 	 * @generated
 	 */
-	void setEndB(OntoUMLClass value);
+	void setTarget(OntoUMLClass value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (&lt;%com.google.common.base.Objects%&gt;.equal(this.get_type(), &lt;%it.unibz.inf.ontouml.xtext.xcore.RelationType%&gt;.MATERIAL) || &lt;%com.google.common.base.Objects%&gt;.equal(this.get_type(), &lt;%it.unibz.inf.ontouml.xtext.xcore.RelationType%&gt;.COMPARATIVE));'"
+	 * @generated
+	 */
+	boolean isDescriptive();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (((&lt;%com.google.common.base.Objects%&gt;.equal(this.get_type(), &lt;%it.unibz.inf.ontouml.xtext.xcore.RelationType%&gt;.HISTORICAL) || &lt;%com.google.common.base.Objects%&gt;.equal(this.get_type(), &lt;%it.unibz.inf.ontouml.xtext.xcore.RelationType%&gt;.CHARACTERIZATION)) || &lt;%com.google.common.base.Objects%&gt;.equal(this.get_type(), &lt;%it.unibz.inf.ontouml.xtext.xcore.RelationType%&gt;.MEDIATION)) || &lt;%com.google.common.base.Objects%&gt;.equal(this.get_type(), &lt;%it.unibz.inf.ontouml.xtext.xcore.RelationType%&gt;.EXTERNAL_DEPEDENCE));'"
+	 * @generated
+	 */
+	boolean isNonDescriptive();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (((&lt;%com.google.common.base.Objects%&gt;.equal(this.get_type(), &lt;%it.unibz.inf.ontouml.xtext.xcore.RelationType%&gt;.COMPARATIVE) || &lt;%com.google.common.base.Objects%&gt;.equal(this.get_type(), &lt;%it.unibz.inf.ontouml.xtext.xcore.RelationType%&gt;.CHARACTERIZATION)) || &lt;%com.google.common.base.Objects%&gt;.equal(this.get_type(), &lt;%it.unibz.inf.ontouml.xtext.xcore.RelationType%&gt;.MEDIATION)) || &lt;%com.google.common.base.Objects%&gt;.equal(this.get_type(), &lt;%it.unibz.inf.ontouml.xtext.xcore.RelationType%&gt;.EXTERNAL_DEPEDENCE));'"
+	 * @generated
+	 */
+	boolean isInternal();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (&lt;%com.google.common.base.Objects%&gt;.equal(this.get_type(), &lt;%it.unibz.inf.ontouml.xtext.xcore.RelationType%&gt;.MATERIAL) || &lt;%com.google.common.base.Objects%&gt;.equal(this.get_type(), &lt;%it.unibz.inf.ontouml.xtext.xcore.RelationType%&gt;.HISTORICAL));'"
+	 * @generated
+	 */
+	boolean isExternal();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (this.getSourceEnd().isRepresentingWhole() || this.getTargetEnd().isRepresentingWhole());'"
+	 * @generated
+	 */
+	boolean isParthood();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.getSourceEnd().isRepresentingWhole();'"
+	 * @generated
+	 */
+	boolean isSourceAWhole();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.getTargetEnd().isRepresentingWhole();'"
+	 * @generated
+	 */
+	boolean isTargetAWhole();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.isTargetAWhole();'"
+	 * @generated
+	 */
+	boolean isSourceAPart();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.isSourceAWhole();'"
+	 * @generated
+	 */
+	boolean isTargetAPart();
 
 } // RegularAssociation

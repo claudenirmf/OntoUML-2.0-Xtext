@@ -5,11 +5,11 @@ package it.unibz.inf.ontouml.xtext.serializer;
 
 import com.google.inject.Inject;
 import it.unibz.inf.ontouml.xtext.services.OntoUMLGrammarAccess;
+import it.unibz.inf.ontouml.xtext.xcore.AssociationEnd;
 import it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation;
 import it.unibz.inf.ontouml.xtext.xcore.Generalization;
 import it.unibz.inf.ontouml.xtext.xcore.GeneralizationSet;
 import it.unibz.inf.ontouml.xtext.xcore.Model;
-import it.unibz.inf.ontouml.xtext.xcore.Multiplicity;
 import it.unibz.inf.ontouml.xtext.xcore.OntoUMLClass;
 import it.unibz.inf.ontouml.xtext.xcore.RegularAssociation;
 import it.unibz.inf.ontouml.xtext.xcore.XcorePackage;
@@ -20,9 +20,7 @@ import org.eclipse.xtext.Action;
 import org.eclipse.xtext.Parameter;
 import org.eclipse.xtext.ParserRule;
 import org.eclipse.xtext.serializer.ISerializationContext;
-import org.eclipse.xtext.serializer.acceptor.SequenceFeeder;
 import org.eclipse.xtext.serializer.sequencer.AbstractDelegatingSemanticSequencer;
-import org.eclipse.xtext.serializer.sequencer.ITransientValueService.ValueTransient;
 
 @SuppressWarnings("all")
 public class OntoUMLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
@@ -38,6 +36,9 @@ public class OntoUMLSemanticSequencer extends AbstractDelegatingSemanticSequence
 		Set<Parameter> parameters = context.getEnabledBooleanParameters();
 		if (epackage == XcorePackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
+			case XcorePackage.ASSOCIATION_END:
+				sequence_AssociationEnd(context, (AssociationEnd) semanticObject); 
+				return; 
 			case XcorePackage.DERIVATION_ASSOCIATION:
 				sequence_DerivationAssociation(context, (DerivationAssociation) semanticObject); 
 				return; 
@@ -49,9 +50,6 @@ public class OntoUMLSemanticSequencer extends AbstractDelegatingSemanticSequence
 				return; 
 			case XcorePackage.MODEL:
 				sequence_Model(context, (Model) semanticObject); 
-				return; 
-			case XcorePackage.MULTIPLICITY:
-				sequence_Multiplicity(context, (Multiplicity) semanticObject); 
 				return; 
 			case XcorePackage.ONTO_UML_CLASS:
 				sequence_OntoUMLClass(context, (OntoUMLClass) semanticObject); 
@@ -66,6 +64,18 @@ public class OntoUMLSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
+	 *     AssociationEnd returns AssociationEnd
+	 *
+	 * Constraint:
+	 *     (aggregationKind=AggregationKind? (lowerBound=CARDINALITY upperBound=CARDINALITY)?)
+	 */
+	protected void sequence_AssociationEnd(ISerializationContext context, AssociationEnd semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     ModelElement returns DerivationAssociation
 	 *     DerivationAssociation returns DerivationAssociation
 	 *
@@ -74,8 +84,8 @@ public class OntoUMLSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *         name=StringOrID 
 	 *         alias=StringOrID? 
 	 *         (
-	 *             (endAMultiplicity=Multiplicity? derivingAssociation=[RegularAssociation|StringOrID]) | 
-	 *             (endBMultiplicity=Multiplicity? derivedClass=[OntoUMLClass|StringOrID])
+	 *             (sourceEnd=AssociationEnd derivingAssociation=[RegularAssociation|StringOrID]) | 
+	 *             (targetEnd=AssociationEnd derivedClass=[OntoUMLClass|StringOrID])
 	 *         )+
 	 *     )
 	 */
@@ -124,27 +134,6 @@ public class OntoUMLSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
-	 *     Multiplicity returns Multiplicity
-	 *
-	 * Constraint:
-	 *     (lowerBound=CARDINALITY upperBound=CARDINALITY)
-	 */
-	protected void sequence_Multiplicity(ISerializationContext context, Multiplicity semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, XcorePackage.Literals.MULTIPLICITY__LOWER_BOUND) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XcorePackage.Literals.MULTIPLICITY__LOWER_BOUND));
-			if (transientValues.isValueTransient(semanticObject, XcorePackage.Literals.MULTIPLICITY__UPPER_BOUND) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XcorePackage.Literals.MULTIPLICITY__UPPER_BOUND));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getMultiplicityAccess().getLowerBoundCARDINALITYTerminalRuleCall_1_0(), semanticObject.getLowerBound());
-		feeder.accept(grammarAccess.getMultiplicityAccess().getUpperBoundCARDINALITYTerminalRuleCall_3_0(), semanticObject.getUpperBound());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     ModelElement returns OntoUMLClass
 	 *     OntoUMLClass returns OntoUMLClass
 	 *
@@ -166,10 +155,10 @@ public class OntoUMLSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *         (_type=RelationType | _type=RelationType)? 
 	 *         name=StringOrID 
 	 *         alias=StringOrID? 
-	 *         endAMultiplicity=Multiplicity? 
-	 *         endA=[OntoUMLClass|StringOrID] 
-	 *         endBMultiplicity=Multiplicity? 
-	 *         endB=[OntoUMLClass|StringOrID]
+	 *         sourceEnd=AssociationEnd 
+	 *         source=[OntoUMLClass|StringOrID] 
+	 *         targetEnd=AssociationEnd 
+	 *         target=[OntoUMLClass|StringOrID]
 	 *     )
 	 */
 	protected void sequence_RegularAssociation(ISerializationContext context, RegularAssociation semanticObject) {

@@ -6,6 +6,7 @@ package it.unibz.inf.ontouml.xtext.services;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.List;
+import org.eclipse.xtext.Action;
 import org.eclipse.xtext.Alternatives;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.CrossReference;
@@ -51,10 +52,6 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cGeneralizationParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		private final RuleCall cGeneralizationSetParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		
-		////QualifiedName returns ecore::EString:
-		////	ID ('.' ID)*;
-		////QualifiedNameWithWildcard:
-		////	QualifiedName '.*'?;
 		//ModelElement:
 		//	OntoUMLClass | RegularAssociation | DerivationAssociation
 		//	| Generalization | GeneralizationSet;
@@ -163,26 +160,24 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cAkaKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final Assignment cAliasAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
 		private final RuleCall cAliasStringOrIDParserRuleCall_2_1_0 = (RuleCall)cAliasAssignment_2_1.eContents().get(0);
-		private final Assignment cEndAMultiplicityAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cEndAMultiplicityMultiplicityParserRuleCall_3_0 = (RuleCall)cEndAMultiplicityAssignment_3.eContents().get(0);
-		private final Assignment cEndAAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final CrossReference cEndAOntoUMLClassCrossReference_4_0 = (CrossReference)cEndAAssignment_4.eContents().get(0);
-		private final RuleCall cEndAOntoUMLClassStringOrIDParserRuleCall_4_0_1 = (RuleCall)cEndAOntoUMLClassCrossReference_4_0.eContents().get(1);
-		private final Assignment cEndBMultiplicityAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final RuleCall cEndBMultiplicityMultiplicityParserRuleCall_5_0 = (RuleCall)cEndBMultiplicityAssignment_5.eContents().get(0);
-		private final Assignment cEndBAssignment_6 = (Assignment)cGroup.eContents().get(6);
-		private final CrossReference cEndBOntoUMLClassCrossReference_6_0 = (CrossReference)cEndBAssignment_6.eContents().get(0);
-		private final RuleCall cEndBOntoUMLClassStringOrIDParserRuleCall_6_0_1 = (RuleCall)cEndBOntoUMLClassCrossReference_6_0.eContents().get(1);
+		private final Assignment cSourceEndAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cSourceEndAssociationEndParserRuleCall_3_0 = (RuleCall)cSourceEndAssignment_3.eContents().get(0);
+		private final Assignment cSourceAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final CrossReference cSourceOntoUMLClassCrossReference_4_0 = (CrossReference)cSourceAssignment_4.eContents().get(0);
+		private final RuleCall cSourceOntoUMLClassStringOrIDParserRuleCall_4_0_1 = (RuleCall)cSourceOntoUMLClassCrossReference_4_0.eContents().get(1);
+		private final Assignment cTargetEndAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cTargetEndAssociationEndParserRuleCall_5_0 = (RuleCall)cTargetEndAssignment_5.eContents().get(0);
+		private final Assignment cTargetAssignment_6 = (Assignment)cGroup.eContents().get(6);
+		private final CrossReference cTargetOntoUMLClassCrossReference_6_0 = (CrossReference)cTargetAssignment_6.eContents().get(0);
+		private final RuleCall cTargetOntoUMLClassStringOrIDParserRuleCall_6_0_1 = (RuleCall)cTargetOntoUMLClassCrossReference_6_0.eContents().get(1);
 		
 		//RegularAssociation:
 		//	('association' | _type=RelationType 'association' | _type=RelationType) name=StringOrID ('aka' alias=StringOrID)?
-		//	endAMultiplicity=Multiplicity? endA=[OntoUMLClass|StringOrID] endBMultiplicity=Multiplicity?
-		//	endB=[OntoUMLClass|StringOrID];
+		//	sourceEnd=AssociationEnd source=[OntoUMLClass|StringOrID] targetEnd=AssociationEnd target=[OntoUMLClass|StringOrID];
 		@Override public ParserRule getRule() { return rule; }
 		
 		//('association' | _type=RelationType 'association' | _type=RelationType) name=StringOrID ('aka' alias=StringOrID)?
-		//endAMultiplicity=Multiplicity? endA=[OntoUMLClass|StringOrID] endBMultiplicity=Multiplicity?
-		//endB=[OntoUMLClass|StringOrID]
+		//sourceEnd=AssociationEnd source=[OntoUMLClass|StringOrID] targetEnd=AssociationEnd target=[OntoUMLClass|StringOrID]
 		public Group getGroup() { return cGroup; }
 		
 		//'association' | _type=RelationType 'association' | _type=RelationType
@@ -227,35 +222,35 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 		//StringOrID
 		public RuleCall getAliasStringOrIDParserRuleCall_2_1_0() { return cAliasStringOrIDParserRuleCall_2_1_0; }
 		
-		//endAMultiplicity=Multiplicity?
-		public Assignment getEndAMultiplicityAssignment_3() { return cEndAMultiplicityAssignment_3; }
+		//sourceEnd=AssociationEnd
+		public Assignment getSourceEndAssignment_3() { return cSourceEndAssignment_3; }
 		
-		//Multiplicity
-		public RuleCall getEndAMultiplicityMultiplicityParserRuleCall_3_0() { return cEndAMultiplicityMultiplicityParserRuleCall_3_0; }
+		//AssociationEnd
+		public RuleCall getSourceEndAssociationEndParserRuleCall_3_0() { return cSourceEndAssociationEndParserRuleCall_3_0; }
 		
-		//endA=[OntoUMLClass|StringOrID]
-		public Assignment getEndAAssignment_4() { return cEndAAssignment_4; }
-		
-		//[OntoUMLClass|StringOrID]
-		public CrossReference getEndAOntoUMLClassCrossReference_4_0() { return cEndAOntoUMLClassCrossReference_4_0; }
-		
-		//StringOrID
-		public RuleCall getEndAOntoUMLClassStringOrIDParserRuleCall_4_0_1() { return cEndAOntoUMLClassStringOrIDParserRuleCall_4_0_1; }
-		
-		//endBMultiplicity=Multiplicity?
-		public Assignment getEndBMultiplicityAssignment_5() { return cEndBMultiplicityAssignment_5; }
-		
-		//Multiplicity
-		public RuleCall getEndBMultiplicityMultiplicityParserRuleCall_5_0() { return cEndBMultiplicityMultiplicityParserRuleCall_5_0; }
-		
-		//endB=[OntoUMLClass|StringOrID]
-		public Assignment getEndBAssignment_6() { return cEndBAssignment_6; }
+		//source=[OntoUMLClass|StringOrID]
+		public Assignment getSourceAssignment_4() { return cSourceAssignment_4; }
 		
 		//[OntoUMLClass|StringOrID]
-		public CrossReference getEndBOntoUMLClassCrossReference_6_0() { return cEndBOntoUMLClassCrossReference_6_0; }
+		public CrossReference getSourceOntoUMLClassCrossReference_4_0() { return cSourceOntoUMLClassCrossReference_4_0; }
 		
 		//StringOrID
-		public RuleCall getEndBOntoUMLClassStringOrIDParserRuleCall_6_0_1() { return cEndBOntoUMLClassStringOrIDParserRuleCall_6_0_1; }
+		public RuleCall getSourceOntoUMLClassStringOrIDParserRuleCall_4_0_1() { return cSourceOntoUMLClassStringOrIDParserRuleCall_4_0_1; }
+		
+		//targetEnd=AssociationEnd
+		public Assignment getTargetEndAssignment_5() { return cTargetEndAssignment_5; }
+		
+		//AssociationEnd
+		public RuleCall getTargetEndAssociationEndParserRuleCall_5_0() { return cTargetEndAssociationEndParserRuleCall_5_0; }
+		
+		//target=[OntoUMLClass|StringOrID]
+		public Assignment getTargetAssignment_6() { return cTargetAssignment_6; }
+		
+		//[OntoUMLClass|StringOrID]
+		public CrossReference getTargetOntoUMLClassCrossReference_6_0() { return cTargetOntoUMLClassCrossReference_6_0; }
+		
+		//StringOrID
+		public RuleCall getTargetOntoUMLClassStringOrIDParserRuleCall_6_0_1() { return cTargetOntoUMLClassStringOrIDParserRuleCall_6_0_1; }
 	}
 	public class DerivationAssociationElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "it.unibz.inf.ontouml.xtext.OntoUML.DerivationAssociation");
@@ -269,27 +264,26 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cAliasStringOrIDParserRuleCall_2_1_0 = (RuleCall)cAliasAssignment_2_1.eContents().get(0);
 		private final UnorderedGroup cUnorderedGroup_3 = (UnorderedGroup)cGroup.eContents().get(3);
 		private final Group cGroup_3_0 = (Group)cUnorderedGroup_3.eContents().get(0);
-		private final Assignment cEndAMultiplicityAssignment_3_0_0 = (Assignment)cGroup_3_0.eContents().get(0);
-		private final RuleCall cEndAMultiplicityMultiplicityParserRuleCall_3_0_0_0 = (RuleCall)cEndAMultiplicityAssignment_3_0_0.eContents().get(0);
+		private final Assignment cSourceEndAssignment_3_0_0 = (Assignment)cGroup_3_0.eContents().get(0);
+		private final RuleCall cSourceEndAssociationEndParserRuleCall_3_0_0_0 = (RuleCall)cSourceEndAssignment_3_0_0.eContents().get(0);
 		private final Assignment cDerivingAssociationAssignment_3_0_1 = (Assignment)cGroup_3_0.eContents().get(1);
 		private final CrossReference cDerivingAssociationRegularAssociationCrossReference_3_0_1_0 = (CrossReference)cDerivingAssociationAssignment_3_0_1.eContents().get(0);
 		private final RuleCall cDerivingAssociationRegularAssociationStringOrIDParserRuleCall_3_0_1_0_1 = (RuleCall)cDerivingAssociationRegularAssociationCrossReference_3_0_1_0.eContents().get(1);
 		private final Group cGroup_3_1 = (Group)cUnorderedGroup_3.eContents().get(1);
-		private final Assignment cEndBMultiplicityAssignment_3_1_0 = (Assignment)cGroup_3_1.eContents().get(0);
-		private final RuleCall cEndBMultiplicityMultiplicityParserRuleCall_3_1_0_0 = (RuleCall)cEndBMultiplicityAssignment_3_1_0.eContents().get(0);
+		private final Assignment cTargetEndAssignment_3_1_0 = (Assignment)cGroup_3_1.eContents().get(0);
+		private final RuleCall cTargetEndAssociationEndParserRuleCall_3_1_0_0 = (RuleCall)cTargetEndAssignment_3_1_0.eContents().get(0);
 		private final Assignment cDerivedClassAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
 		private final CrossReference cDerivedClassOntoUMLClassCrossReference_3_1_1_0 = (CrossReference)cDerivedClassAssignment_3_1_1.eContents().get(0);
 		private final RuleCall cDerivedClassOntoUMLClassStringOrIDParserRuleCall_3_1_1_0_1 = (RuleCall)cDerivedClassOntoUMLClassCrossReference_3_1_1_0.eContents().get(1);
 		
 		//DerivationAssociation:
-		//	'derivation' name=StringOrID ('aka' alias=StringOrID)? (endAMultiplicity=Multiplicity?
-		//	derivingAssociation=[RegularAssociation|StringOrID] & endBMultiplicity=Multiplicity?
+		//	'derivation' name=StringOrID ('aka' alias=StringOrID)? (sourceEnd=AssociationEnd
+		//	derivingAssociation=[RegularAssociation|StringOrID] & targetEnd=AssociationEnd
 		//	derivedClass=[OntoUMLClass|StringOrID]);
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'derivation' name=StringOrID ('aka' alias=StringOrID)? (endAMultiplicity=Multiplicity?
-		//derivingAssociation=[RegularAssociation|StringOrID] & endBMultiplicity=Multiplicity?
-		//derivedClass=[OntoUMLClass|StringOrID])
+		//'derivation' name=StringOrID ('aka' alias=StringOrID)? (sourceEnd=AssociationEnd
+		//derivingAssociation=[RegularAssociation|StringOrID] & targetEnd=AssociationEnd derivedClass=[OntoUMLClass|StringOrID])
 		public Group getGroup() { return cGroup; }
 		
 		//'derivation'
@@ -313,18 +307,18 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 		//StringOrID
 		public RuleCall getAliasStringOrIDParserRuleCall_2_1_0() { return cAliasStringOrIDParserRuleCall_2_1_0; }
 		
-		//endAMultiplicity=Multiplicity? derivingAssociation=[RegularAssociation|StringOrID] & endBMultiplicity=Multiplicity?
+		//sourceEnd=AssociationEnd derivingAssociation=[RegularAssociation|StringOrID] & targetEnd=AssociationEnd
 		//derivedClass=[OntoUMLClass|StringOrID]
 		public UnorderedGroup getUnorderedGroup_3() { return cUnorderedGroup_3; }
 		
-		//endAMultiplicity=Multiplicity? derivingAssociation=[RegularAssociation|StringOrID]
+		//sourceEnd=AssociationEnd derivingAssociation=[RegularAssociation|StringOrID]
 		public Group getGroup_3_0() { return cGroup_3_0; }
 		
-		//endAMultiplicity=Multiplicity?
-		public Assignment getEndAMultiplicityAssignment_3_0_0() { return cEndAMultiplicityAssignment_3_0_0; }
+		//sourceEnd=AssociationEnd
+		public Assignment getSourceEndAssignment_3_0_0() { return cSourceEndAssignment_3_0_0; }
 		
-		//Multiplicity
-		public RuleCall getEndAMultiplicityMultiplicityParserRuleCall_3_0_0_0() { return cEndAMultiplicityMultiplicityParserRuleCall_3_0_0_0; }
+		//AssociationEnd
+		public RuleCall getSourceEndAssociationEndParserRuleCall_3_0_0_0() { return cSourceEndAssociationEndParserRuleCall_3_0_0_0; }
 		
 		//derivingAssociation=[RegularAssociation|StringOrID]
 		public Assignment getDerivingAssociationAssignment_3_0_1() { return cDerivingAssociationAssignment_3_0_1; }
@@ -335,14 +329,14 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 		//StringOrID
 		public RuleCall getDerivingAssociationRegularAssociationStringOrIDParserRuleCall_3_0_1_0_1() { return cDerivingAssociationRegularAssociationStringOrIDParserRuleCall_3_0_1_0_1; }
 		
-		//endBMultiplicity=Multiplicity? derivedClass=[OntoUMLClass|StringOrID]
+		//targetEnd=AssociationEnd derivedClass=[OntoUMLClass|StringOrID]
 		public Group getGroup_3_1() { return cGroup_3_1; }
 		
-		//endBMultiplicity=Multiplicity?
-		public Assignment getEndBMultiplicityAssignment_3_1_0() { return cEndBMultiplicityAssignment_3_1_0; }
+		//targetEnd=AssociationEnd
+		public Assignment getTargetEndAssignment_3_1_0() { return cTargetEndAssignment_3_1_0; }
 		
-		//Multiplicity
-		public RuleCall getEndBMultiplicityMultiplicityParserRuleCall_3_1_0_0() { return cEndBMultiplicityMultiplicityParserRuleCall_3_1_0_0; }
+		//AssociationEnd
+		public RuleCall getTargetEndAssociationEndParserRuleCall_3_1_0_0() { return cTargetEndAssociationEndParserRuleCall_3_1_0_0; }
 		
 		//derivedClass=[OntoUMLClass|StringOrID]
 		public Assignment getDerivedClassAssignment_3_1_1() { return cDerivedClassAssignment_3_1_1; }
@@ -353,44 +347,60 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 		//StringOrID
 		public RuleCall getDerivedClassOntoUMLClassStringOrIDParserRuleCall_3_1_1_0_1() { return cDerivedClassOntoUMLClassStringOrIDParserRuleCall_3_1_1_0_1; }
 	}
-	public class MultiplicityElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "it.unibz.inf.ontouml.xtext.OntoUML.Multiplicity");
+	public class AssociationEndElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "it.unibz.inf.ontouml.xtext.OntoUML.AssociationEnd");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cLeftSquareBracketKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cLowerBoundAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cLowerBoundCARDINALITYTerminalRuleCall_1_0 = (RuleCall)cLowerBoundAssignment_1.eContents().get(0);
-		private final Keyword cFullStopFullStopKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cUpperBoundAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cUpperBoundCARDINALITYTerminalRuleCall_3_0 = (RuleCall)cUpperBoundAssignment_3.eContents().get(0);
-		private final Keyword cRightSquareBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Action cAssociationEndAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cAggregationKindAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cAggregationKindAggregationKindEnumRuleCall_1_0 = (RuleCall)cAggregationKindAssignment_1.eContents().get(0);
+		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
+		private final Keyword cLeftSquareBracketKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
+		private final Assignment cLowerBoundAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cLowerBoundCARDINALITYTerminalRuleCall_2_1_0 = (RuleCall)cLowerBoundAssignment_2_1.eContents().get(0);
+		private final Keyword cFullStopFullStopKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
+		private final Assignment cUpperBoundAssignment_2_3 = (Assignment)cGroup_2.eContents().get(3);
+		private final RuleCall cUpperBoundCARDINALITYTerminalRuleCall_2_3_0 = (RuleCall)cUpperBoundAssignment_2_3.eContents().get(0);
+		private final Keyword cRightSquareBracketKeyword_2_4 = (Keyword)cGroup_2.eContents().get(4);
 		
-		//Multiplicity:
-		//	'[' lowerBound=CARDINALITY '..' upperBound=CARDINALITY ']';
+		//AssociationEnd:
+		//	{AssociationEnd} aggregationKind=AggregationKind? ('[' lowerBound=CARDINALITY '..' upperBound=CARDINALITY ']')?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'[' lowerBound=CARDINALITY '..' upperBound=CARDINALITY ']'
+		//{AssociationEnd} aggregationKind=AggregationKind? ('[' lowerBound=CARDINALITY '..' upperBound=CARDINALITY ']')?
 		public Group getGroup() { return cGroup; }
 		
+		//{AssociationEnd}
+		public Action getAssociationEndAction_0() { return cAssociationEndAction_0; }
+		
+		//aggregationKind=AggregationKind?
+		public Assignment getAggregationKindAssignment_1() { return cAggregationKindAssignment_1; }
+		
+		//AggregationKind
+		public RuleCall getAggregationKindAggregationKindEnumRuleCall_1_0() { return cAggregationKindAggregationKindEnumRuleCall_1_0; }
+		
+		//('[' lowerBound=CARDINALITY '..' upperBound=CARDINALITY ']')?
+		public Group getGroup_2() { return cGroup_2; }
+		
 		//'['
-		public Keyword getLeftSquareBracketKeyword_0() { return cLeftSquareBracketKeyword_0; }
+		public Keyword getLeftSquareBracketKeyword_2_0() { return cLeftSquareBracketKeyword_2_0; }
 		
 		//lowerBound=CARDINALITY
-		public Assignment getLowerBoundAssignment_1() { return cLowerBoundAssignment_1; }
+		public Assignment getLowerBoundAssignment_2_1() { return cLowerBoundAssignment_2_1; }
 		
 		//CARDINALITY
-		public RuleCall getLowerBoundCARDINALITYTerminalRuleCall_1_0() { return cLowerBoundCARDINALITYTerminalRuleCall_1_0; }
+		public RuleCall getLowerBoundCARDINALITYTerminalRuleCall_2_1_0() { return cLowerBoundCARDINALITYTerminalRuleCall_2_1_0; }
 		
 		//'..'
-		public Keyword getFullStopFullStopKeyword_2() { return cFullStopFullStopKeyword_2; }
+		public Keyword getFullStopFullStopKeyword_2_2() { return cFullStopFullStopKeyword_2_2; }
 		
 		//upperBound=CARDINALITY
-		public Assignment getUpperBoundAssignment_3() { return cUpperBoundAssignment_3; }
+		public Assignment getUpperBoundAssignment_2_3() { return cUpperBoundAssignment_2_3; }
 		
 		//CARDINALITY
-		public RuleCall getUpperBoundCARDINALITYTerminalRuleCall_3_0() { return cUpperBoundCARDINALITYTerminalRuleCall_3_0; }
+		public RuleCall getUpperBoundCARDINALITYTerminalRuleCall_2_3_0() { return cUpperBoundCARDINALITYTerminalRuleCall_2_3_0; }
 		
 		//']'
-		public Keyword getRightSquareBracketKeyword_4() { return cRightSquareBracketKeyword_4; }
+		public Keyword getRightSquareBracketKeyword_2_4() { return cRightSquareBracketKeyword_2_4; }
 	}
 	public class GeneralizationElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "it.unibz.inf.ontouml.xtext.OntoUML.Generalization");
@@ -663,55 +673,98 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 	public class RelationTypeElements extends AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "it.unibz.inf.ontouml.xtext.OntoUML.RelationType");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final EnumLiteralDeclaration cDescriptiveEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
-		private final Keyword cDescriptiveDescriptiveKeyword_0_0 = (Keyword)cDescriptiveEnumLiteralDeclaration_0.eContents().get(0);
-		private final EnumLiteralDeclaration cNonDescriptiveEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
-		private final Keyword cNonDescriptiveNonDescriptiveKeyword_1_0 = (Keyword)cNonDescriptiveEnumLiteralDeclaration_1.eContents().get(0);
-		private final EnumLiteralDeclaration cInherenceEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
-		private final Keyword cInherenceInherenceKeyword_2_0 = (Keyword)cInherenceEnumLiteralDeclaration_2.eContents().get(0);
-		private final EnumLiteralDeclaration cInvolvementEnumLiteralDeclaration_3 = (EnumLiteralDeclaration)cAlternatives.eContents().get(3);
-		private final Keyword cInvolvementInvolvementKeyword_3_0 = (Keyword)cInvolvementEnumLiteralDeclaration_3.eContents().get(0);
-		private final EnumLiteralDeclaration cDependenceEnumLiteralDeclaration_4 = (EnumLiteralDeclaration)cAlternatives.eContents().get(4);
-		private final Keyword cDependenceDependenceKeyword_4_0 = (Keyword)cDependenceEnumLiteralDeclaration_4.eContents().get(0);
+		private final EnumLiteralDeclaration cComparativeEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cComparativeComparativeKeyword_0_0 = (Keyword)cComparativeEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cMaterialEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cMaterialMaterialKeyword_1_0 = (Keyword)cMaterialEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cHistoricalEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cHistoricalHistoricalKeyword_2_0 = (Keyword)cHistoricalEnumLiteralDeclaration_2.eContents().get(0);
+		private final EnumLiteralDeclaration cCharacterizationEnumLiteralDeclaration_3 = (EnumLiteralDeclaration)cAlternatives.eContents().get(3);
+		private final Keyword cCharacterizationCharacterizationKeyword_3_0 = (Keyword)cCharacterizationEnumLiteralDeclaration_3.eContents().get(0);
+		private final EnumLiteralDeclaration cMediationEnumLiteralDeclaration_4 = (EnumLiteralDeclaration)cAlternatives.eContents().get(4);
+		private final Keyword cMediationMediationKeyword_4_0 = (Keyword)cMediationEnumLiteralDeclaration_4.eContents().get(0);
+		private final EnumLiteralDeclaration cExternalDepedenceEnumLiteralDeclaration_5 = (EnumLiteralDeclaration)cAlternatives.eContents().get(5);
+		private final Keyword cExternalDepedenceExternalDependenceKeyword_5_0 = (Keyword)cExternalDepedenceEnumLiteralDeclaration_5.eContents().get(0);
 		
 		//enum RelationType:
-		//	Descriptive="descriptive" | NonDescriptive="non-descriptive" | Inherence="inherence" | Involvement="involvement" |
-		//	Dependence="dependence";
+		//	Comparative="comparative" | Material="material" | Historical="historical" | Characterization="characterization" |
+		//	Mediation="mediation" | ExternalDepedence="external dependence";
 		public EnumRule getRule() { return rule; }
 		
-		//Descriptive="descriptive" | NonDescriptive="non-descriptive" | Inherence="inherence" | Involvement="involvement" |
-		//Dependence="dependence"
+		//Comparative="comparative" | Material="material" | Historical="historical" | Characterization="characterization" |
+		//Mediation="mediation" | ExternalDepedence="external dependence"
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//Descriptive="descriptive"
-		public EnumLiteralDeclaration getDescriptiveEnumLiteralDeclaration_0() { return cDescriptiveEnumLiteralDeclaration_0; }
+		//Comparative="comparative"
+		public EnumLiteralDeclaration getComparativeEnumLiteralDeclaration_0() { return cComparativeEnumLiteralDeclaration_0; }
 		
-		//"descriptive"
-		public Keyword getDescriptiveDescriptiveKeyword_0_0() { return cDescriptiveDescriptiveKeyword_0_0; }
+		//"comparative"
+		public Keyword getComparativeComparativeKeyword_0_0() { return cComparativeComparativeKeyword_0_0; }
 		
-		//NonDescriptive="non-descriptive"
-		public EnumLiteralDeclaration getNonDescriptiveEnumLiteralDeclaration_1() { return cNonDescriptiveEnumLiteralDeclaration_1; }
+		//Material="material"
+		public EnumLiteralDeclaration getMaterialEnumLiteralDeclaration_1() { return cMaterialEnumLiteralDeclaration_1; }
 		
-		//"non-descriptive"
-		public Keyword getNonDescriptiveNonDescriptiveKeyword_1_0() { return cNonDescriptiveNonDescriptiveKeyword_1_0; }
+		//"material"
+		public Keyword getMaterialMaterialKeyword_1_0() { return cMaterialMaterialKeyword_1_0; }
 		
-		//Inherence="inherence"
-		public EnumLiteralDeclaration getInherenceEnumLiteralDeclaration_2() { return cInherenceEnumLiteralDeclaration_2; }
+		//Historical="historical"
+		public EnumLiteralDeclaration getHistoricalEnumLiteralDeclaration_2() { return cHistoricalEnumLiteralDeclaration_2; }
 		
-		//"inherence"
-		public Keyword getInherenceInherenceKeyword_2_0() { return cInherenceInherenceKeyword_2_0; }
+		//"historical"
+		public Keyword getHistoricalHistoricalKeyword_2_0() { return cHistoricalHistoricalKeyword_2_0; }
 		
-		//Involvement="involvement"
-		public EnumLiteralDeclaration getInvolvementEnumLiteralDeclaration_3() { return cInvolvementEnumLiteralDeclaration_3; }
+		//Characterization="characterization"
+		public EnumLiteralDeclaration getCharacterizationEnumLiteralDeclaration_3() { return cCharacterizationEnumLiteralDeclaration_3; }
 		
-		//"involvement"
-		public Keyword getInvolvementInvolvementKeyword_3_0() { return cInvolvementInvolvementKeyword_3_0; }
+		//"characterization"
+		public Keyword getCharacterizationCharacterizationKeyword_3_0() { return cCharacterizationCharacterizationKeyword_3_0; }
 		
-		//Dependence="dependence"
-		public EnumLiteralDeclaration getDependenceEnumLiteralDeclaration_4() { return cDependenceEnumLiteralDeclaration_4; }
+		//Mediation="mediation"
+		public EnumLiteralDeclaration getMediationEnumLiteralDeclaration_4() { return cMediationEnumLiteralDeclaration_4; }
 		
-		//"dependence"
-		public Keyword getDependenceDependenceKeyword_4_0() { return cDependenceDependenceKeyword_4_0; }
+		//"mediation"
+		public Keyword getMediationMediationKeyword_4_0() { return cMediationMediationKeyword_4_0; }
+		
+		//ExternalDepedence="external dependence"
+		public EnumLiteralDeclaration getExternalDepedenceEnumLiteralDeclaration_5() { return cExternalDepedenceEnumLiteralDeclaration_5; }
+		
+		//"external dependence"
+		public Keyword getExternalDepedenceExternalDependenceKeyword_5_0() { return cExternalDepedenceExternalDependenceKeyword_5_0; }
+	}
+	public class AggregationKindElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "it.unibz.inf.ontouml.xtext.OntoUML.AggregationKind");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cNoneEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cNoneNoneKeyword_0_0 = (Keyword)cNoneEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cAggregationEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cAggregationAggregationKeyword_1_0 = (Keyword)cAggregationEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cCompositionEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cCompositionCompositionKeyword_2_0 = (Keyword)cCompositionEnumLiteralDeclaration_2.eContents().get(0);
+		
+		//enum AggregationKind:
+		//	None="none" | Aggregation | Composition="composition";
+		public EnumRule getRule() { return rule; }
+		
+		//None="none" | Aggregation | Composition="composition"
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//None="none"
+		public EnumLiteralDeclaration getNoneEnumLiteralDeclaration_0() { return cNoneEnumLiteralDeclaration_0; }
+		
+		//"none"
+		public Keyword getNoneNoneKeyword_0_0() { return cNoneNoneKeyword_0_0; }
+		
+		//Aggregation
+		public EnumLiteralDeclaration getAggregationEnumLiteralDeclaration_1() { return cAggregationEnumLiteralDeclaration_1; }
+		
+		//"Aggregation"
+		public Keyword getAggregationAggregationKeyword_1_0() { return cAggregationAggregationKeyword_1_0; }
+		
+		//Composition="composition"
+		public EnumLiteralDeclaration getCompositionEnumLiteralDeclaration_2() { return cCompositionEnumLiteralDeclaration_2; }
+		
+		//"composition"
+		public Keyword getCompositionCompositionKeyword_2_0() { return cCompositionCompositionKeyword_2_0; }
 	}
 	
 	private final ModelElements pModel;
@@ -721,7 +774,8 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 	private final RegularAssociationElements pRegularAssociation;
 	private final DerivationAssociationElements pDerivationAssociation;
 	private final RelationTypeElements eRelationType;
-	private final MultiplicityElements pMultiplicity;
+	private final AssociationEndElements pAssociationEnd;
+	private final AggregationKindElements eAggregationKind;
 	private final GeneralizationElements pGeneralization;
 	private final GeneralizationSetElements pGeneralizationSet;
 	private final StringOrIDElements pStringOrID;
@@ -743,7 +797,8 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 		this.pRegularAssociation = new RegularAssociationElements();
 		this.pDerivationAssociation = new DerivationAssociationElements();
 		this.eRelationType = new RelationTypeElements();
-		this.pMultiplicity = new MultiplicityElements();
+		this.pAssociationEnd = new AssociationEndElements();
+		this.eAggregationKind = new AggregationKindElements();
 		this.pGeneralization = new GeneralizationElements();
 		this.pGeneralizationSet = new GeneralizationSetElements();
 		this.pStringOrID = new StringOrIDElements();
@@ -787,10 +842,6 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 		return getModelAccess().getRule();
 	}
 	
-	////QualifiedName returns ecore::EString:
-	////	ID ('.' ID)*;
-	////QualifiedNameWithWildcard:
-	////	QualifiedName '.*'?;
 	//ModelElement:
 	//	OntoUMLClass | RegularAssociation | DerivationAssociation
 	//	| Generalization | GeneralizationSet;
@@ -826,8 +877,7 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//RegularAssociation:
 	//	('association' | _type=RelationType 'association' | _type=RelationType) name=StringOrID ('aka' alias=StringOrID)?
-	//	endAMultiplicity=Multiplicity? endA=[OntoUMLClass|StringOrID] endBMultiplicity=Multiplicity?
-	//	endB=[OntoUMLClass|StringOrID];
+	//	sourceEnd=AssociationEnd source=[OntoUMLClass|StringOrID] targetEnd=AssociationEnd target=[OntoUMLClass|StringOrID];
 	public RegularAssociationElements getRegularAssociationAccess() {
 		return pRegularAssociation;
 	}
@@ -837,8 +887,8 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//DerivationAssociation:
-	//	'derivation' name=StringOrID ('aka' alias=StringOrID)? (endAMultiplicity=Multiplicity?
-	//	derivingAssociation=[RegularAssociation|StringOrID] & endBMultiplicity=Multiplicity?
+	//	'derivation' name=StringOrID ('aka' alias=StringOrID)? (sourceEnd=AssociationEnd
+	//	derivingAssociation=[RegularAssociation|StringOrID] & targetEnd=AssociationEnd
 	//	derivedClass=[OntoUMLClass|StringOrID]);
 	public DerivationAssociationElements getDerivationAssociationAccess() {
 		return pDerivationAssociation;
@@ -849,8 +899,8 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//enum RelationType:
-	//	Descriptive="descriptive" | NonDescriptive="non-descriptive" | Inherence="inherence" | Involvement="involvement" |
-	//	Dependence="dependence";
+	//	Comparative="comparative" | Material="material" | Historical="historical" | Characterization="characterization" |
+	//	Mediation="mediation" | ExternalDepedence="external dependence";
 	public RelationTypeElements getRelationTypeAccess() {
 		return eRelationType;
 	}
@@ -859,14 +909,24 @@ public class OntoUMLGrammarAccess extends AbstractGrammarElementFinder {
 		return getRelationTypeAccess().getRule();
 	}
 	
-	//Multiplicity:
-	//	'[' lowerBound=CARDINALITY '..' upperBound=CARDINALITY ']';
-	public MultiplicityElements getMultiplicityAccess() {
-		return pMultiplicity;
+	//AssociationEnd:
+	//	{AssociationEnd} aggregationKind=AggregationKind? ('[' lowerBound=CARDINALITY '..' upperBound=CARDINALITY ']')?;
+	public AssociationEndElements getAssociationEndAccess() {
+		return pAssociationEnd;
 	}
 	
-	public ParserRule getMultiplicityRule() {
-		return getMultiplicityAccess().getRule();
+	public ParserRule getAssociationEndRule() {
+		return getAssociationEndAccess().getRule();
+	}
+	
+	//enum AggregationKind:
+	//	None="none" | Aggregation | Composition="composition";
+	public AggregationKindElements getAggregationKindAccess() {
+		return eAggregationKind;
+	}
+	
+	public EnumRule getAggregationKindRule() {
+		return getAggregationKindAccess().getRule();
 	}
 	
 	//Generalization:

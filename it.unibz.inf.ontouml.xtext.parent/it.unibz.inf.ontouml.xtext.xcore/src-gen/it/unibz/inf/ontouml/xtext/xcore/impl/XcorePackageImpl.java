@@ -2,7 +2,9 @@
  */
 package it.unibz.inf.ontouml.xtext.xcore.impl;
 
+import it.unibz.inf.ontouml.xtext.xcore.AggregationKind;
 import it.unibz.inf.ontouml.xtext.xcore.Association;
+import it.unibz.inf.ontouml.xtext.xcore.AssociationEnd;
 import it.unibz.inf.ontouml.xtext.xcore.Classifier;
 import it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation;
 import it.unibz.inf.ontouml.xtext.xcore.EndurantType;
@@ -10,7 +12,6 @@ import it.unibz.inf.ontouml.xtext.xcore.Generalization;
 import it.unibz.inf.ontouml.xtext.xcore.GeneralizationSet;
 import it.unibz.inf.ontouml.xtext.xcore.Model;
 import it.unibz.inf.ontouml.xtext.xcore.ModelElement;
-import it.unibz.inf.ontouml.xtext.xcore.Multiplicity;
 import it.unibz.inf.ontouml.xtext.xcore.OntoUMLClass;
 import it.unibz.inf.ontouml.xtext.xcore.RegularAssociation;
 import it.unibz.inf.ontouml.xtext.xcore.RelationType;
@@ -74,7 +75,7 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass multiplicityEClass = null;
+	private EClass associationEndEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -110,6 +111,13 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * @generated
 	 */
 	private EEnum endurantTypeEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum aggregationKindEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -421,7 +429,7 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getAssociation_EndAMultiplicity() {
+	public EReference getAssociation_SourceEnd() {
 		return (EReference)associationEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -430,7 +438,7 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getAssociation_EndBMultiplicity() {
+	public EReference getAssociation_TargetEnd() {
 		return (EReference)associationEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -457,8 +465,8 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getMultiplicity() {
-		return multiplicityEClass;
+	public EClass getAssociationEnd() {
+		return associationEndEClass;
 	}
 
 	/**
@@ -466,8 +474,8 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMultiplicity_LowerBound() {
-		return (EAttribute)multiplicityEClass.getEStructuralFeatures().get(0);
+	public EAttribute getAssociationEnd_LowerBound() {
+		return (EAttribute)associationEndEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -475,8 +483,8 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMultiplicity_UpperBound() {
-		return (EAttribute)multiplicityEClass.getEStructuralFeatures().get(1);
+	public EAttribute getAssociationEnd_UpperBound() {
+		return (EAttribute)associationEndEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -484,8 +492,8 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getMultiplicity__SetMultiplicity__String_String() {
-		return multiplicityEClass.getEOperations().get(0);
+	public EAttribute getAssociationEnd_AggregationKind() {
+		return (EAttribute)associationEndEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -493,8 +501,8 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getMultiplicity__SetZeroToOne() {
-		return multiplicityEClass.getEOperations().get(1);
+	public EOperation getAssociationEnd__IsRepresentingWhole() {
+		return associationEndEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -502,8 +510,8 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getMultiplicity__SetZeroToMany() {
-		return multiplicityEClass.getEOperations().get(2);
+	public EOperation getAssociationEnd__SetMultiplicity__String_String() {
+		return associationEndEClass.getEOperations().get(1);
 	}
 
 	/**
@@ -511,8 +519,8 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getMultiplicity__SetOneToOne() {
-		return multiplicityEClass.getEOperations().get(3);
+	public EOperation getAssociationEnd__SetZeroToOne() {
+		return associationEndEClass.getEOperations().get(2);
 	}
 
 	/**
@@ -520,8 +528,26 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getMultiplicity__SetOneToMany() {
-		return multiplicityEClass.getEOperations().get(4);
+	public EOperation getAssociationEnd__SetZeroToMany() {
+		return associationEndEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getAssociationEnd__SetOneToOne() {
+		return associationEndEClass.getEOperations().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getAssociationEnd__SetOneToMany() {
+		return associationEndEClass.getEOperations().get(5);
 	}
 
 	/**
@@ -547,7 +573,7 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRegularAssociation_EndA() {
+	public EReference getRegularAssociation_Source() {
 		return (EReference)regularAssociationEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -556,8 +582,89 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRegularAssociation_EndB() {
+	public EReference getRegularAssociation_Target() {
 		return (EReference)regularAssociationEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRegularAssociation__IsDescriptive() {
+		return regularAssociationEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRegularAssociation__IsNonDescriptive() {
+		return regularAssociationEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRegularAssociation__IsInternal() {
+		return regularAssociationEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRegularAssociation__IsExternal() {
+		return regularAssociationEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRegularAssociation__IsParthood() {
+		return regularAssociationEClass.getEOperations().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRegularAssociation__IsSourceAWhole() {
+		return regularAssociationEClass.getEOperations().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRegularAssociation__IsTargetAWhole() {
+		return regularAssociationEClass.getEOperations().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRegularAssociation__IsSourceAPart() {
+		return regularAssociationEClass.getEOperations().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRegularAssociation__IsTargetAPart() {
+		return regularAssociationEClass.getEOperations().get(8);
 	}
 
 	/**
@@ -585,6 +692,42 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 */
 	public EReference getDerivationAssociation_DerivedClass() {
 		return (EReference)derivationAssociationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getDerivationAssociation__GetDerivingEnd() {
+		return derivationAssociationEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getDerivationAssociation__GetDerivedEnd() {
+		return derivationAssociationEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getDerivationAssociation__GetSource() {
+		return derivationAssociationEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getDerivationAssociation__GetTarget() {
+		return derivationAssociationEClass.getEOperations().get(3);
 	}
 
 	/**
@@ -691,6 +834,15 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EEnum getAggregationKind() {
+		return aggregationKindEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EEnum getRelationType() {
 		return relationTypeEEnum;
 	}
@@ -753,28 +905,43 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 		createEOperation(ontoUMLClassEClass, ONTO_UML_CLASS___IS_MOMENT_KIND);
 
 		associationEClass = createEClass(ASSOCIATION);
-		createEReference(associationEClass, ASSOCIATION__END_AMULTIPLICITY);
-		createEReference(associationEClass, ASSOCIATION__END_BMULTIPLICITY);
+		createEReference(associationEClass, ASSOCIATION__SOURCE_END);
+		createEReference(associationEClass, ASSOCIATION__TARGET_END);
 		createEOperation(associationEClass, ASSOCIATION___GET_PARENTS);
 		createEOperation(associationEClass, ASSOCIATION___GET_CHILDREN);
 
-		multiplicityEClass = createEClass(MULTIPLICITY);
-		createEAttribute(multiplicityEClass, MULTIPLICITY__LOWER_BOUND);
-		createEAttribute(multiplicityEClass, MULTIPLICITY__UPPER_BOUND);
-		createEOperation(multiplicityEClass, MULTIPLICITY___SET_MULTIPLICITY__STRING_STRING);
-		createEOperation(multiplicityEClass, MULTIPLICITY___SET_ZERO_TO_ONE);
-		createEOperation(multiplicityEClass, MULTIPLICITY___SET_ZERO_TO_MANY);
-		createEOperation(multiplicityEClass, MULTIPLICITY___SET_ONE_TO_ONE);
-		createEOperation(multiplicityEClass, MULTIPLICITY___SET_ONE_TO_MANY);
+		associationEndEClass = createEClass(ASSOCIATION_END);
+		createEAttribute(associationEndEClass, ASSOCIATION_END__LOWER_BOUND);
+		createEAttribute(associationEndEClass, ASSOCIATION_END__UPPER_BOUND);
+		createEAttribute(associationEndEClass, ASSOCIATION_END__AGGREGATION_KIND);
+		createEOperation(associationEndEClass, ASSOCIATION_END___IS_REPRESENTING_WHOLE);
+		createEOperation(associationEndEClass, ASSOCIATION_END___SET_MULTIPLICITY__STRING_STRING);
+		createEOperation(associationEndEClass, ASSOCIATION_END___SET_ZERO_TO_ONE);
+		createEOperation(associationEndEClass, ASSOCIATION_END___SET_ZERO_TO_MANY);
+		createEOperation(associationEndEClass, ASSOCIATION_END___SET_ONE_TO_ONE);
+		createEOperation(associationEndEClass, ASSOCIATION_END___SET_ONE_TO_MANY);
 
 		regularAssociationEClass = createEClass(REGULAR_ASSOCIATION);
 		createEAttribute(regularAssociationEClass, REGULAR_ASSOCIATION__TYPE);
-		createEReference(regularAssociationEClass, REGULAR_ASSOCIATION__END_A);
-		createEReference(regularAssociationEClass, REGULAR_ASSOCIATION__END_B);
+		createEReference(regularAssociationEClass, REGULAR_ASSOCIATION__SOURCE);
+		createEReference(regularAssociationEClass, REGULAR_ASSOCIATION__TARGET);
+		createEOperation(regularAssociationEClass, REGULAR_ASSOCIATION___IS_DESCRIPTIVE);
+		createEOperation(regularAssociationEClass, REGULAR_ASSOCIATION___IS_NON_DESCRIPTIVE);
+		createEOperation(regularAssociationEClass, REGULAR_ASSOCIATION___IS_INTERNAL);
+		createEOperation(regularAssociationEClass, REGULAR_ASSOCIATION___IS_EXTERNAL);
+		createEOperation(regularAssociationEClass, REGULAR_ASSOCIATION___IS_PARTHOOD);
+		createEOperation(regularAssociationEClass, REGULAR_ASSOCIATION___IS_SOURCE_AWHOLE);
+		createEOperation(regularAssociationEClass, REGULAR_ASSOCIATION___IS_TARGET_AWHOLE);
+		createEOperation(regularAssociationEClass, REGULAR_ASSOCIATION___IS_SOURCE_APART);
+		createEOperation(regularAssociationEClass, REGULAR_ASSOCIATION___IS_TARGET_APART);
 
 		derivationAssociationEClass = createEClass(DERIVATION_ASSOCIATION);
 		createEReference(derivationAssociationEClass, DERIVATION_ASSOCIATION__DERIVING_ASSOCIATION);
 		createEReference(derivationAssociationEClass, DERIVATION_ASSOCIATION__DERIVED_CLASS);
+		createEOperation(derivationAssociationEClass, DERIVATION_ASSOCIATION___GET_DERIVING_END);
+		createEOperation(derivationAssociationEClass, DERIVATION_ASSOCIATION___GET_DERIVED_END);
+		createEOperation(derivationAssociationEClass, DERIVATION_ASSOCIATION___GET_SOURCE);
+		createEOperation(derivationAssociationEClass, DERIVATION_ASSOCIATION___GET_TARGET);
 
 		generalizationEClass = createEClass(GENERALIZATION);
 		createEReference(generalizationEClass, GENERALIZATION__GENERIC);
@@ -790,6 +957,7 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 
 		// Create enums
 		endurantTypeEEnum = createEEnum(ENDURANT_TYPE);
+		aggregationKindEEnum = createEEnum(AGGREGATION_KIND);
 		relationTypeEEnum = createEEnum(RELATION_TYPE);
 	}
 
@@ -881,37 +1049,66 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 		initEOperation(getOntoUMLClass__IsMomentKind(), theEcorePackage.getEBoolean(), "isMomentKind", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(associationEClass, Association.class, "Association", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getAssociation_EndAMultiplicity(), this.getMultiplicity(), null, "endAMultiplicity", null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAssociation_EndBMultiplicity(), this.getMultiplicity(), null, "endBMultiplicity", null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAssociation_SourceEnd(), this.getAssociationEnd(), null, "sourceEnd", null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAssociation_TargetEnd(), this.getAssociationEnd(), null, "targetEnd", null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getAssociation__GetParents(), this.getAssociation(), "getParents", 0, -1, !IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getAssociation__GetChildren(), this.getAssociation(), "getChildren", 0, -1, !IS_UNIQUE, IS_ORDERED);
 
-		initEClass(multiplicityEClass, Multiplicity.class, "Multiplicity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getMultiplicity_LowerBound(), theEcorePackage.getEString(), "lowerBound", "0", 0, 1, Multiplicity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMultiplicity_UpperBound(), theEcorePackage.getEString(), "upperBound", "*", 0, 1, Multiplicity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(associationEndEClass, AssociationEnd.class, "AssociationEnd", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getAssociationEnd_LowerBound(), theEcorePackage.getEString(), "lowerBound", "0", 0, 1, AssociationEnd.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAssociationEnd_UpperBound(), theEcorePackage.getEString(), "upperBound", "*", 0, 1, AssociationEnd.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAssociationEnd_AggregationKind(), this.getAggregationKind(), "aggregationKind", "none", 0, 1, AssociationEnd.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		op = initEOperation(getMultiplicity__SetMultiplicity__String_String(), null, "setMultiplicity", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		initEOperation(getAssociationEnd__IsRepresentingWhole(), theEcorePackage.getEBoolean(), "isRepresentingWhole", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		op = initEOperation(getAssociationEnd__SetMultiplicity__String_String(), null, "setMultiplicity", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "lowerBound", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "upperBound", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		initEOperation(getMultiplicity__SetZeroToOne(), null, "setZeroToOne", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		initEOperation(getAssociationEnd__SetZeroToOne(), null, "setZeroToOne", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		initEOperation(getMultiplicity__SetZeroToMany(), null, "setZeroToMany", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		initEOperation(getAssociationEnd__SetZeroToMany(), null, "setZeroToMany", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		initEOperation(getMultiplicity__SetOneToOne(), null, "setOneToOne", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		initEOperation(getAssociationEnd__SetOneToOne(), null, "setOneToOne", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		initEOperation(getMultiplicity__SetOneToMany(), null, "setOneToMany", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		initEOperation(getAssociationEnd__SetOneToMany(), null, "setOneToMany", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(regularAssociationEClass, RegularAssociation.class, "RegularAssociation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRegularAssociation__type(), this.getRelationType(), "_type", "none", 0, 1, RegularAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRegularAssociation_EndA(), this.getOntoUMLClass(), null, "endA", null, 0, 1, RegularAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRegularAssociation_EndB(), this.getOntoUMLClass(), null, "endB", null, 0, 1, RegularAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRegularAssociation_Source(), this.getOntoUMLClass(), null, "source", null, 0, 1, RegularAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRegularAssociation_Target(), this.getOntoUMLClass(), null, "target", null, 0, 1, RegularAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getRegularAssociation__IsDescriptive(), theEcorePackage.getEBoolean(), "isDescriptive", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getRegularAssociation__IsNonDescriptive(), theEcorePackage.getEBoolean(), "isNonDescriptive", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getRegularAssociation__IsInternal(), theEcorePackage.getEBoolean(), "isInternal", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getRegularAssociation__IsExternal(), theEcorePackage.getEBoolean(), "isExternal", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getRegularAssociation__IsParthood(), theEcorePackage.getEBoolean(), "isParthood", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getRegularAssociation__IsSourceAWhole(), theEcorePackage.getEBoolean(), "isSourceAWhole", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getRegularAssociation__IsTargetAWhole(), theEcorePackage.getEBoolean(), "isTargetAWhole", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getRegularAssociation__IsSourceAPart(), theEcorePackage.getEBoolean(), "isSourceAPart", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getRegularAssociation__IsTargetAPart(), theEcorePackage.getEBoolean(), "isTargetAPart", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(derivationAssociationEClass, DerivationAssociation.class, "DerivationAssociation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getDerivationAssociation_DerivingAssociation(), this.getRegularAssociation(), null, "derivingAssociation", null, 0, 1, DerivationAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getDerivationAssociation_DerivedClass(), this.getOntoUMLClass(), null, "derivedClass", null, 0, 1, DerivationAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getDerivationAssociation__GetDerivingEnd(), this.getAssociationEnd(), "getDerivingEnd", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getDerivationAssociation__GetDerivedEnd(), this.getAssociationEnd(), "getDerivedEnd", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getDerivationAssociation__GetSource(), this.getRegularAssociation(), "getSource", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getDerivationAssociation__GetTarget(), this.getOntoUMLClass(), "getTarget", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(generalizationEClass, Generalization.class, "Generalization", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getGeneralization_Generic(), this.getClassifier(), null, "generic", null, 0, 1, Generalization.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -943,13 +1140,19 @@ public class XcorePackageImpl extends EPackageImpl implements XcorePackage {
 		addEEnumLiteral(endurantTypeEEnum, EndurantType.ROLE_MIXIN);
 		addEEnumLiteral(endurantTypeEEnum, EndurantType.PHASE_MIXIN);
 
+		initEEnum(aggregationKindEEnum, AggregationKind.class, "AggregationKind");
+		addEEnumLiteral(aggregationKindEEnum, AggregationKind.NONE);
+		addEEnumLiteral(aggregationKindEEnum, AggregationKind.AGGREGATION);
+		addEEnumLiteral(aggregationKindEEnum, AggregationKind.COMPOSITION);
+
 		initEEnum(relationTypeEEnum, RelationType.class, "RelationType");
 		addEEnumLiteral(relationTypeEEnum, RelationType.NONE);
-		addEEnumLiteral(relationTypeEEnum, RelationType.DESCRIPTIVE);
-		addEEnumLiteral(relationTypeEEnum, RelationType.NON_DESCRIPTIVE);
-		addEEnumLiteral(relationTypeEEnum, RelationType.INHERENCE);
-		addEEnumLiteral(relationTypeEEnum, RelationType.INVOLVEMENT);
-		addEEnumLiteral(relationTypeEEnum, RelationType.DEPENDENCE);
+		addEEnumLiteral(relationTypeEEnum, RelationType.MATERIAL);
+		addEEnumLiteral(relationTypeEEnum, RelationType.COMPARATIVE);
+		addEEnumLiteral(relationTypeEEnum, RelationType.CHARACTERIZATION);
+		addEEnumLiteral(relationTypeEEnum, RelationType.MEDIATION);
+		addEEnumLiteral(relationTypeEEnum, RelationType.EXTERNAL_DEPEDENCE);
+		addEEnumLiteral(relationTypeEEnum, RelationType.HISTORICAL);
 
 		// Create resource
 		createResource(eNS_URI);

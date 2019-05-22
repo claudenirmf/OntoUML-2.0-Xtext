@@ -184,8 +184,8 @@ enum EndurantType
 abstract class Association extends Classifier
 {
 	
-	contains Multiplicity endAMultiplicity
-	contains Multiplicity endBMultiplicity
+	contains AssociationEnd sourceEnd
+	contains AssociationEnd targetEnd
 	
 	/** Returns the immediate ancestors (or parents) of the OntoUMLClass.  */
 	op Association[] getParents()
@@ -210,12 +210,20 @@ abstract class Association extends Classifier
 		]
 		children
 	}
+	
 }
 
-class Multiplicity 
+class AssociationEnd 
 {
 	String lowerBound = "0"
 	String upperBound = "*"
+	AggregationKind aggregationKind = "none"
+	
+	op boolean isRepresentingWhole()
+	{
+		return aggregationKind == AggregationKind.AGGREGATION
+			|| aggregationKind == AggregationKind.COMPOSITION
+	}
 	
 	op void setMultiplicity(String lowerBound, String upperBound)
 	{
@@ -229,31 +237,113 @@ class Multiplicity
 	op void setOneToMany() { setMultiplicity("*","*") }
 }
 
+enum AggregationKind
+{
+	None as "none" = 0
+	Aggregation as "aggregation" = 1
+	Composition as "composition" = 2
+}
+
 class RegularAssociation extends Association
 {
 	
 	RelationType _type = "none"
 	
-	refers OntoUMLClass endA
-	refers OntoUMLClass endB
+	refers OntoUMLClass source
+	refers OntoUMLClass target
+	
+	op boolean isDescriptive()
+	{
+		return this._type == RelationType.MATERIAL
+			|| this._type == RelationType.COMPARATIVE 
+	}
+	
+	op boolean isNonDescriptive()
+	{
+		return this._type == RelationType.HISTORICAL
+			|| this._type == RelationType.CHARACTERIZATION
+			|| this._type == RelationType.MEDIATION
+			|| this._type == RelationType.EXTERNAL_DEPEDENCE
+	}
+	
+	op boolean isInternal()
+	{
+		return this._type == RelationType.COMPARATIVE
+			|| this._type == RelationType.CHARACTERIZATION
+			|| this._type == RelationType.MEDIATION
+			|| this._type == RelationType.EXTERNAL_DEPEDENCE
+	}
+	
+	op boolean isExternal()
+	{
+		return this._type == RelationType.MATERIAL
+			|| this._type == RelationType.HISTORICAL
+	}
+	
+	op boolean isParthood()
+	{
+		return this.sourceEnd.isRepresentingWhole
+			|| this.targetEnd.isRepresentingWhole
+	}
+	
+	op boolean isSourceAWhole()
+	{
+		return sourceEnd.isRepresentingWhole
+	}
+	
+	op boolean isTargetAWhole()
+	{
+		return targetEnd.isRepresentingWhole
+	}
+	
+	op boolean isSourceAPart()
+	{
+		return isTargetAWhole
+	}
+	
+	op boolean isTargetAPart()
+	{
+		return isSourceAWhole
+	}
 	
 }
 
 enum RelationType 
 {
 	None as "none" = 0
-	Descriptive as "descriptive" = 1
-	NonDescriptive as "non-descriptive" = 2
-	Inherence as "inherence" = 3
-	Involvement as "involvement" = 4
-	Dependence as "dependence" = 5
+	Material as "material" = 1
+	Comparative as "comparative" = 2
+	Characterization as "characterization" = 3
+	Mediation as "mediation" = 4
+	ExternalDepedence as "external dependence" = 5
+	Historical as "historical" = 6
 }
 
 class DerivationAssociation extends Association
 {
 	
-	refers RegularAssociation derivingAssociation
-	refers OntoUMLClass derivedClass
+	refers RegularAssociation derivingAssociation		// SOURCE_END
+	refers OntoUMLClass derivedClass					// TARGET_END
+	
+	op AssociationEnd getDerivingEnd()
+	{
+		return this.sourceEnd
+	}
+	
+	op AssociationEnd getDerivedEnd()
+	{
+		return this.targetEnd
+	}
+	
+	op RegularAssociation getSource()
+	{
+		return this.derivingAssociation
+	}
+	
+	op OntoUMLClass getTarget()
+	{
+		return this.derivedClass
+	}
 	
 }
 

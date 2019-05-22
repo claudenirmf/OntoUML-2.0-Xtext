@@ -59,7 +59,7 @@ public class XcoreFactoryImpl extends EFactoryImpl implements XcoreFactory {
 		switch (eClass.getClassifierID()) {
 			case XcorePackage.MODEL: return createModel();
 			case XcorePackage.ONTO_UML_CLASS: return createOntoUMLClass();
-			case XcorePackage.MULTIPLICITY: return createMultiplicity();
+			case XcorePackage.ASSOCIATION_END: return createAssociationEnd();
 			case XcorePackage.REGULAR_ASSOCIATION: return createRegularAssociation();
 			case XcorePackage.DERIVATION_ASSOCIATION: return createDerivationAssociation();
 			case XcorePackage.GENERALIZATION: return createGeneralization();
@@ -79,6 +79,8 @@ public class XcoreFactoryImpl extends EFactoryImpl implements XcoreFactory {
 		switch (eDataType.getClassifierID()) {
 			case XcorePackage.ENDURANT_TYPE:
 				return createEndurantTypeFromString(eDataType, initialValue);
+			case XcorePackage.AGGREGATION_KIND:
+				return createAggregationKindFromString(eDataType, initialValue);
 			case XcorePackage.RELATION_TYPE:
 				return createRelationTypeFromString(eDataType, initialValue);
 			default:
@@ -96,6 +98,8 @@ public class XcoreFactoryImpl extends EFactoryImpl implements XcoreFactory {
 		switch (eDataType.getClassifierID()) {
 			case XcorePackage.ENDURANT_TYPE:
 				return convertEndurantTypeToString(eDataType, instanceValue);
+			case XcorePackage.AGGREGATION_KIND:
+				return convertAggregationKindToString(eDataType, instanceValue);
 			case XcorePackage.RELATION_TYPE:
 				return convertRelationTypeToString(eDataType, instanceValue);
 			default:
@@ -128,9 +132,9 @@ public class XcoreFactoryImpl extends EFactoryImpl implements XcoreFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Multiplicity createMultiplicity() {
-		MultiplicityImpl multiplicity = new MultiplicityImpl();
-		return multiplicity;
+	public AssociationEnd createAssociationEnd() {
+		AssociationEndImpl associationEnd = new AssociationEndImpl();
+		return associationEnd;
 	}
 
 	/**
@@ -190,6 +194,26 @@ public class XcoreFactoryImpl extends EFactoryImpl implements XcoreFactory {
 	 * @generated
 	 */
 	public String convertEndurantTypeToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public AggregationKind createAggregationKindFromString(EDataType eDataType, String initialValue) {
+		AggregationKind result = AggregationKind.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertAggregationKindToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

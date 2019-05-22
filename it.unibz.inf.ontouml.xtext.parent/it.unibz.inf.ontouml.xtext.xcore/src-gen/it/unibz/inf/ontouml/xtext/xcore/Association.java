@@ -13,8 +13,8 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.Association#getEndAMultiplicity <em>End AMultiplicity</em>}</li>
- *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.Association#getEndBMultiplicity <em>End BMultiplicity</em>}</li>
+ *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.Association#getSourceEnd <em>Source End</em>}</li>
+ *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.Association#getTargetEnd <em>Target End</em>}</li>
  * </ul>
  *
  * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getAssociation()
@@ -23,56 +23,56 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface Association extends Classifier {
 	/**
-	 * Returns the value of the '<em><b>End AMultiplicity</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Source End</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>End AMultiplicity</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Source End</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>End AMultiplicity</em>' containment reference.
-	 * @see #setEndAMultiplicity(Multiplicity)
-	 * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getAssociation_EndAMultiplicity()
+	 * @return the value of the '<em>Source End</em>' containment reference.
+	 * @see #setSourceEnd(AssociationEnd)
+	 * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getAssociation_SourceEnd()
 	 * @model containment="true"
 	 * @generated
 	 */
-	Multiplicity getEndAMultiplicity();
+	AssociationEnd getSourceEnd();
 
 	/**
-	 * Sets the value of the '{@link it.unibz.inf.ontouml.xtext.xcore.Association#getEndAMultiplicity <em>End AMultiplicity</em>}' containment reference.
+	 * Sets the value of the '{@link it.unibz.inf.ontouml.xtext.xcore.Association#getSourceEnd <em>Source End</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>End AMultiplicity</em>' containment reference.
-	 * @see #getEndAMultiplicity()
+	 * @param value the new value of the '<em>Source End</em>' containment reference.
+	 * @see #getSourceEnd()
 	 * @generated
 	 */
-	void setEndAMultiplicity(Multiplicity value);
+	void setSourceEnd(AssociationEnd value);
 
 	/**
-	 * Returns the value of the '<em><b>End BMultiplicity</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Target End</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>End BMultiplicity</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Target End</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>End BMultiplicity</em>' containment reference.
-	 * @see #setEndBMultiplicity(Multiplicity)
-	 * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getAssociation_EndBMultiplicity()
+	 * @return the value of the '<em>Target End</em>' containment reference.
+	 * @see #setTargetEnd(AssociationEnd)
+	 * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getAssociation_TargetEnd()
 	 * @model containment="true"
 	 * @generated
 	 */
-	Multiplicity getEndBMultiplicity();
+	AssociationEnd getTargetEnd();
 
 	/**
-	 * Sets the value of the '{@link it.unibz.inf.ontouml.xtext.xcore.Association#getEndBMultiplicity <em>End BMultiplicity</em>}' containment reference.
+	 * Sets the value of the '{@link it.unibz.inf.ontouml.xtext.xcore.Association#getTargetEnd <em>Target End</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>End BMultiplicity</em>' containment reference.
-	 * @see #getEndBMultiplicity()
+	 * @param value the new value of the '<em>Target End</em>' containment reference.
+	 * @see #getTargetEnd()
 	 * @generated
 	 */
-	void setEndBMultiplicity(Multiplicity value);
+	void setTargetEnd(AssociationEnd value);
 
 	/**
 	 * <!-- begin-user-doc -->

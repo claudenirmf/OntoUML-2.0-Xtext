@@ -2,7 +2,9 @@
  */
 package it.unibz.inf.ontouml.xtext.xcore.impl;
 
-import it.unibz.inf.ontouml.xtext.xcore.Multiplicity;
+import com.google.common.base.Objects;
+import it.unibz.inf.ontouml.xtext.xcore.AggregationKind;
+import it.unibz.inf.ontouml.xtext.xcore.AssociationEnd;
 import it.unibz.inf.ontouml.xtext.xcore.XcorePackage;
 
 import java.lang.reflect.InvocationTargetException;
@@ -18,19 +20,20 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Multiplicity</b></em>'.
+ * An implementation of the model object '<em><b>Association End</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.impl.MultiplicityImpl#getLowerBound <em>Lower Bound</em>}</li>
- *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.impl.MultiplicityImpl#getUpperBound <em>Upper Bound</em>}</li>
+ *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.impl.AssociationEndImpl#getLowerBound <em>Lower Bound</em>}</li>
+ *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.impl.AssociationEndImpl#getUpperBound <em>Upper Bound</em>}</li>
+ *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.impl.AssociationEndImpl#getAggregationKind <em>Aggregation Kind</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class MultiplicityImpl extends MinimalEObjectImpl.Container implements Multiplicity {
+public class AssociationEndImpl extends MinimalEObjectImpl.Container implements AssociationEnd {
 	/**
 	 * The default value of the '{@link #getLowerBound() <em>Lower Bound</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -72,11 +75,31 @@ public class MultiplicityImpl extends MinimalEObjectImpl.Container implements Mu
 	protected String upperBound = UPPER_BOUND_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getAggregationKind() <em>Aggregation Kind</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAggregationKind()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final AggregationKind AGGREGATION_KIND_EDEFAULT = AggregationKind.NONE;
+
+	/**
+	 * The cached value of the '{@link #getAggregationKind() <em>Aggregation Kind</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAggregationKind()
+	 * @generated
+	 * @ordered
+	 */
+	protected AggregationKind aggregationKind = AGGREGATION_KIND_EDEFAULT;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected MultiplicityImpl() {
+	protected AssociationEndImpl() {
 		super();
 	}
 
@@ -87,7 +110,7 @@ public class MultiplicityImpl extends MinimalEObjectImpl.Container implements Mu
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return XcorePackage.Literals.MULTIPLICITY;
+		return XcorePackage.Literals.ASSOCIATION_END;
 	}
 
 	/**
@@ -108,7 +131,7 @@ public class MultiplicityImpl extends MinimalEObjectImpl.Container implements Mu
 		String oldLowerBound = lowerBound;
 		lowerBound = newLowerBound;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, XcorePackage.MULTIPLICITY__LOWER_BOUND, oldLowerBound, lowerBound));
+			eNotify(new ENotificationImpl(this, Notification.SET, XcorePackage.ASSOCIATION_END__LOWER_BOUND, oldLowerBound, lowerBound));
 	}
 
 	/**
@@ -129,7 +152,37 @@ public class MultiplicityImpl extends MinimalEObjectImpl.Container implements Mu
 		String oldUpperBound = upperBound;
 		upperBound = newUpperBound;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, XcorePackage.MULTIPLICITY__UPPER_BOUND, oldUpperBound, upperBound));
+			eNotify(new ENotificationImpl(this, Notification.SET, XcorePackage.ASSOCIATION_END__UPPER_BOUND, oldUpperBound, upperBound));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public AggregationKind getAggregationKind() {
+		return aggregationKind;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setAggregationKind(AggregationKind newAggregationKind) {
+		AggregationKind oldAggregationKind = aggregationKind;
+		aggregationKind = newAggregationKind == null ? AGGREGATION_KIND_EDEFAULT : newAggregationKind;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, XcorePackage.ASSOCIATION_END__AGGREGATION_KIND, oldAggregationKind, aggregationKind));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isRepresentingWhole() {
+		return (Objects.equal(this.getAggregationKind(), AggregationKind.AGGREGATION) || Objects.equal(this.getAggregationKind(), AggregationKind.COMPOSITION));
 	}
 
 	/**
@@ -186,10 +239,12 @@ public class MultiplicityImpl extends MinimalEObjectImpl.Container implements Mu
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case XcorePackage.MULTIPLICITY__LOWER_BOUND:
+			case XcorePackage.ASSOCIATION_END__LOWER_BOUND:
 				return getLowerBound();
-			case XcorePackage.MULTIPLICITY__UPPER_BOUND:
+			case XcorePackage.ASSOCIATION_END__UPPER_BOUND:
 				return getUpperBound();
+			case XcorePackage.ASSOCIATION_END__AGGREGATION_KIND:
+				return getAggregationKind();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -202,11 +257,14 @@ public class MultiplicityImpl extends MinimalEObjectImpl.Container implements Mu
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case XcorePackage.MULTIPLICITY__LOWER_BOUND:
+			case XcorePackage.ASSOCIATION_END__LOWER_BOUND:
 				setLowerBound((String)newValue);
 				return;
-			case XcorePackage.MULTIPLICITY__UPPER_BOUND:
+			case XcorePackage.ASSOCIATION_END__UPPER_BOUND:
 				setUpperBound((String)newValue);
+				return;
+			case XcorePackage.ASSOCIATION_END__AGGREGATION_KIND:
+				setAggregationKind((AggregationKind)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -220,11 +278,14 @@ public class MultiplicityImpl extends MinimalEObjectImpl.Container implements Mu
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case XcorePackage.MULTIPLICITY__LOWER_BOUND:
+			case XcorePackage.ASSOCIATION_END__LOWER_BOUND:
 				setLowerBound(LOWER_BOUND_EDEFAULT);
 				return;
-			case XcorePackage.MULTIPLICITY__UPPER_BOUND:
+			case XcorePackage.ASSOCIATION_END__UPPER_BOUND:
 				setUpperBound(UPPER_BOUND_EDEFAULT);
+				return;
+			case XcorePackage.ASSOCIATION_END__AGGREGATION_KIND:
+				setAggregationKind(AGGREGATION_KIND_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -238,10 +299,12 @@ public class MultiplicityImpl extends MinimalEObjectImpl.Container implements Mu
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case XcorePackage.MULTIPLICITY__LOWER_BOUND:
+			case XcorePackage.ASSOCIATION_END__LOWER_BOUND:
 				return LOWER_BOUND_EDEFAULT == null ? lowerBound != null : !LOWER_BOUND_EDEFAULT.equals(lowerBound);
-			case XcorePackage.MULTIPLICITY__UPPER_BOUND:
+			case XcorePackage.ASSOCIATION_END__UPPER_BOUND:
 				return UPPER_BOUND_EDEFAULT == null ? upperBound != null : !UPPER_BOUND_EDEFAULT.equals(upperBound);
+			case XcorePackage.ASSOCIATION_END__AGGREGATION_KIND:
+				return aggregationKind != AGGREGATION_KIND_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -254,19 +317,21 @@ public class MultiplicityImpl extends MinimalEObjectImpl.Container implements Mu
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case XcorePackage.MULTIPLICITY___SET_MULTIPLICITY__STRING_STRING:
+			case XcorePackage.ASSOCIATION_END___IS_REPRESENTING_WHOLE:
+				return isRepresentingWhole();
+			case XcorePackage.ASSOCIATION_END___SET_MULTIPLICITY__STRING_STRING:
 				setMultiplicity((String)arguments.get(0), (String)arguments.get(1));
 				return null;
-			case XcorePackage.MULTIPLICITY___SET_ZERO_TO_ONE:
+			case XcorePackage.ASSOCIATION_END___SET_ZERO_TO_ONE:
 				setZeroToOne();
 				return null;
-			case XcorePackage.MULTIPLICITY___SET_ZERO_TO_MANY:
+			case XcorePackage.ASSOCIATION_END___SET_ZERO_TO_MANY:
 				setZeroToMany();
 				return null;
-			case XcorePackage.MULTIPLICITY___SET_ONE_TO_ONE:
+			case XcorePackage.ASSOCIATION_END___SET_ONE_TO_ONE:
 				setOneToOne();
 				return null;
-			case XcorePackage.MULTIPLICITY___SET_ONE_TO_MANY:
+			case XcorePackage.ASSOCIATION_END___SET_ONE_TO_MANY:
 				setOneToMany();
 				return null;
 		}
@@ -287,8 +352,10 @@ public class MultiplicityImpl extends MinimalEObjectImpl.Container implements Mu
 		result.append(lowerBound);
 		result.append(", upperBound: ");
 		result.append(upperBound);
+		result.append(", aggregationKind: ");
+		result.append(aggregationKind);
 		result.append(')');
 		return result.toString();
 	}
 
-} //MultiplicityImpl
+} //AssociationEndImpl

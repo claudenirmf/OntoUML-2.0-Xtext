@@ -6,22 +6,23 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Multiplicity</b></em>'.
+ * A representation of the model object '<em><b>Association End</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.Multiplicity#getLowerBound <em>Lower Bound</em>}</li>
- *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.Multiplicity#getUpperBound <em>Upper Bound</em>}</li>
+ *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#getLowerBound <em>Lower Bound</em>}</li>
+ *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#getUpperBound <em>Upper Bound</em>}</li>
+ *   <li>{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#getAggregationKind <em>Aggregation Kind</em>}</li>
  * </ul>
  *
- * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getMultiplicity()
+ * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getAssociationEnd()
  * @model
  * @generated
  */
-public interface Multiplicity extends EObject {
+public interface AssociationEnd extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Lower Bound</b></em>' attribute.
 	 * The default value is <code>"0"</code>.
@@ -33,14 +34,14 @@ public interface Multiplicity extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Lower Bound</em>' attribute.
 	 * @see #setLowerBound(String)
-	 * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getMultiplicity_LowerBound()
+	 * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getAssociationEnd_LowerBound()
 	 * @model default="0" unique="false"
 	 * @generated
 	 */
 	String getLowerBound();
 
 	/**
-	 * Sets the value of the '{@link it.unibz.inf.ontouml.xtext.xcore.Multiplicity#getLowerBound <em>Lower Bound</em>}' attribute.
+	 * Sets the value of the '{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#getLowerBound <em>Lower Bound</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Lower Bound</em>' attribute.
@@ -60,14 +61,14 @@ public interface Multiplicity extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Upper Bound</em>' attribute.
 	 * @see #setUpperBound(String)
-	 * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getMultiplicity_UpperBound()
+	 * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getAssociationEnd_UpperBound()
 	 * @model default="*" unique="false"
 	 * @generated
 	 */
 	String getUpperBound();
 
 	/**
-	 * Sets the value of the '{@link it.unibz.inf.ontouml.xtext.xcore.Multiplicity#getUpperBound <em>Upper Bound</em>}' attribute.
+	 * Sets the value of the '{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#getUpperBound <em>Upper Bound</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Upper Bound</em>' attribute.
@@ -75,6 +76,45 @@ public interface Multiplicity extends EObject {
 	 * @generated
 	 */
 	void setUpperBound(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Aggregation Kind</b></em>' attribute.
+	 * The default value is <code>"none"</code>.
+	 * The literals are from the enumeration {@link it.unibz.inf.ontouml.xtext.xcore.AggregationKind}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Aggregation Kind</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Aggregation Kind</em>' attribute.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AggregationKind
+	 * @see #setAggregationKind(AggregationKind)
+	 * @see it.unibz.inf.ontouml.xtext.xcore.XcorePackage#getAssociationEnd_AggregationKind()
+	 * @model default="none" unique="false"
+	 * @generated
+	 */
+	AggregationKind getAggregationKind();
+
+	/**
+	 * Sets the value of the '{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#getAggregationKind <em>Aggregation Kind</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Aggregation Kind</em>' attribute.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AggregationKind
+	 * @see #getAggregationKind()
+	 * @generated
+	 */
+	void setAggregationKind(AggregationKind value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (&lt;%com.google.common.base.Objects%&gt;.equal(this.getAggregationKind(), &lt;%it.unibz.inf.ontouml.xtext.xcore.AggregationKind%&gt;.AGGREGATION) || &lt;%com.google.common.base.Objects%&gt;.equal(this.getAggregationKind(), &lt;%it.unibz.inf.ontouml.xtext.xcore.AggregationKind%&gt;.COMPOSITION));'"
+	 * @generated
+	 */
+	boolean isRepresentingWhole();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -117,4 +157,4 @@ public interface Multiplicity extends EObject {
 	 */
 	void setOneToMany();
 
-} // Multiplicity
+} // AssociationEnd

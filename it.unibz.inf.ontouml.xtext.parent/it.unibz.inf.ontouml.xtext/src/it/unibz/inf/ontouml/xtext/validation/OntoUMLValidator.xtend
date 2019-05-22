@@ -41,10 +41,14 @@ class OntoUMLValidator extends AbstractOntoUMLValidator {
 	public static val MULTIPLE_DERIVATIONS = "it.unibz.inf.ontouml.xtext.validation.MULTIPLE_DERIVATIONS"
 	public static val MISSING_DERIVATION = "it.unibz.inf.ontouml.xtext.validation.MISSING_DERIVATION"
 	public static val PROHIBITED_DERIVATION = "it.unibz.inf.ontouml.xtext.validation.PROHIBITED_DERIVATION"
-	public static val MISSING_INHERENCE = "it.unibz.inf.ontouml.xtext.validation.MISSING_INHERENCE"
-	public static val INVALID_INHERENCE = "it.unibz.inf.ontouml.xtext.validation.INVALID_INHERENCE"
-	public static val MISSING_DEPENDENCE = "it.unibz.inf.ontouml.xtext.validation.MISSING_DEPENDENCE"
-	public static val MISSING_INVOLVEMENT = "it.unibz.inf.ontouml.xtext.validation.MISSING_INVOLVEMENT"
+	public static val MISSING_CHARACTERIZATION = "it.unibz.inf.ontouml.xtext.validation.MISSING_CHARACTERIZATION"
+	public static val INVALID_CHARACTERIZATION = "it.unibz.inf.ontouml.xtext.validation.INVALID_CHARACTERIZATION"
+	public static val MISSING_EXTERNAL_DEPENDENCE = "it.unibz.inf.ontouml.xtext.validation.MISSING_EXTERNAL_DEPENDENCE"
+	public static val MISSING_MEDIATION = "it.unibz.inf.ontouml.xtext.validation.MISSING_MEDIATION"
+	public static val MISSING_COMPARISSON_QUALITY_CHARACTERIZATION = "it.unibz.inf.ontouml.xtext.validation.MISSING_COMPARISSON_QUALITY_CHARACTERIZATION"
+	public static val MISSING_PART_CHARACTERIZATION = "it.unibz.inf.ontouml.xtext.validation.MISSING_PART_CHARACTERIZATION"
+	public static val MISSING_PART_EXTERNAL_DEPENDENCE = "it.unibz.inf.ontouml.xtext.validation.MISSING_PART_EXTERNAL_DEPENDENCE"
+	public static val PROHIBITED_PART_EXTERNAL_DEPENDENCE = "it.unibz.inf.ontouml.xtext.validation.PROHIBITED_PART_EXTERNAL_DEPENDENCE"
 		
 	
 	@Check(CheckType.FAST)
@@ -76,6 +80,8 @@ class OntoUMLValidator extends AbstractOntoUMLValidator {
 	@Check(CheckType.FAST)
 	def checkUnkownOntologicalProperties(RegularAssociation a) {
 		if(a._type==RelationType.NONE) {
+			if(a.isParthood)		return ; // TODO remove as soon as associated stereotypes are included
+			
 			warning(''''Unkown ontological nature. Associations without a valid OntoUML stereotype cannot '''
 				+ '''be properly considered in model verification.''', a, 
 			 	XcorePackage.eINSTANCE.modelElement_Name, UNKOWN_NATURE)
@@ -181,7 +187,7 @@ class OntoUMLValidator extends AbstractOntoUMLValidator {
 	
 	@Check(CheckType.NORMAL)
 	def checkDescriptiveRelationDerivation(RegularAssociation a) {
-		if(a._type==RelationType.DESCRIPTIVE) {
+		if(a._type==RelationType.MATERIAL) {
 			val d = a.derivation
 			if(d===null)
 				warning('''Every descriptive relation should derive some class representing its truthmaker.''',
@@ -195,64 +201,121 @@ class OntoUMLValidator extends AbstractOntoUMLValidator {
 	@Check(CheckType.NORMAL)
 	def checkDerivedMomentDependences(DerivationAssociation d) {
 		val dc = d.derivedClass
+		
 		val dcKind = dc.kindType
 		val relata = new BasicEList<OntoUMLClass>
 		
-		relata.add(d.derivingAssociation.endA)
-		relata.add(d.derivingAssociation.endB)
+		relata.add(d.derivingAssociation.getSource)
+		relata.add(d.derivingAssociation.getTarget)
 		
 		if(dcKind==EndurantType.MODE_KIND) {
 			// This code might ignore specializations...
 			// TODO reconsider implementation
-			val inherence = dc.inherence
+			val inherence = dc.characterization
 			
 			if(inherence===null) {
 				error('''Derived classes representing mode types must inhere in one of the relata''',
-					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, MISSING_INHERENCE)
+					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, it.unibz.inf.ontouml.xtext.validation.OntoUMLValidator.MISSING_CHARACTERIZATION)
 				return ;
 			}
-			else if (!relata.contains(inherence.endB)) {
+			else if (!relata.contains(inherence.getTarget)) {
 				error('''Derived classes representing mode types must inhere in one of the relata''', d,
-					XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, INVALID_INHERENCE)
+					XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, it.unibz.inf.ontouml.xtext.validation.OntoUMLValidator.INVALID_CHARACTERIZATION)
 				return;
 			}
 			
-			val dependences = dc.dependences
+			val dependences = dc.externalDependences
 			
-			if(dependences.isEmpty || !dependences.exists[ relata.contains(endA) || relata.contains(endB) ]) {
+			if(dependences.isEmpty || !dependences.exists[ relata.contains(getSource) || relata.contains(getTarget) ]) {
 				error('''Derived classes representing mode types must depende (externally) in one of the relata''',
-					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, MISSING_DEPENDENCE)
+					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, it.unibz.inf.ontouml.xtext.validation.OntoUMLValidator.MISSING_EXTERNAL_DEPENDENCE)
 				return ;
 			}
 		}
 		
 		if(dcKind==EndurantType.RELATOR_KIND) {
-			val involvements = dc.involvements
+			val involvements = dc.mediations
 			
 			if(involvements.isEmpty
-				|| !involvements.exists[ relata.head==endA || relata.head==endB ]
-				|| !!involvements.exists[ relata.tail==endA || relata.tail==endB ] 
+				|| !involvements.exists[ relata.head==getSource || relata.head==getTarget ]
+				|| !!involvements.exists[ relata.tail==getSource || relata.tail==getTarget ] 
 			){
 				error('''Derived classes representing relator types must involve all of the relata''',
-					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, MISSING_INVOLVEMENT)
+					 d, XcorePackage.eINSTANCE.derivationAssociation_DerivedClass, it.unibz.inf.ontouml.xtext.validation.OntoUMLValidator.MISSING_MEDIATION)
 			}
 		}
 	}
 	
-//	@Check(CheckType.NORMAL)
-//	def checkRelatorParts() {
-//		
-//	}
+	@Check(CheckType.NORMAL)
+	def checkRelatorParts(OntoUMLClass part) {
+		if(!part.isModeType)		return ;
+		
+		val x = part.parthoods
+		
+		x.forEach[ parthood |
+			if(parthood.isTargetAWhole && parthood.source == part && parthood.target.isRelatorType) {
+				val relator = parthood.target
+				val mediated = relator.mediations.map[ it.target ].toSet
+				val characterized = part.characterization?.target
+				val externalDependences = part.externalDependences.map[ it.target ].toSet
+				
+				if(!mediated.contains(characterized)) {
+					warning('''Modes that parts of relators must characterize one of the relata.''',
+						part, XcorePackage.eINSTANCE.modelElement_Name, MISSING_PART_CHARACTERIZATION)
+				}
+				
+				if(externalDependences.isEmpty) {
+					warning('''Modes that parts of relators must externally depend on at least one of the relata.''',
+						part, XcorePackage.eINSTANCE.modelElement_Name, MISSING_PART_EXTERNAL_DEPENDENCE)
+				}
+				else{ 
+					externalDependences.forEach[ extDep |
+						if(!mediated.contains(extDep)) {
+							warning('''Modes that parts of relators must externally depedend exclusively on the relata of its whole.''',
+								part, XcorePackage.eINSTANCE.modelElement_Name, PROHIBITED_PART_EXTERNAL_DEPENDENCE)
+						}
+//						else {
+//							mediated.remove(extDep)
+//						}
+					]
+				}
+				
+			}
+		]
+	}
 	
-	// TODO check parts of relators derived from relations
+	@Check(CheckType.NORMAL)
+	def checkComparativeRelationDerivation(RegularAssociation comp) {
+		if(comp._type==RelationType.COMPARATIVE) {
+			val d = comp.derivation
+			if(d===null)
+				warning('''Every comparative relation should derive some class representing its truthmaker.''',
+					comp, XcorePackage.eINSTANCE.modelElement_Name, MISSING_DERIVATION)
+			else if(!d.derivedClass.isQualityType)
+				warning('''Comparative relations have to derive some class representing a quality type ('«d.derivedClass.name»').''',
+					comp, XcorePackage.eINSTANCE.modelElement_Name, PROHIBITED_DERIVATION)
+		}
+	}
+	
+	@Check(CheckType.NORMAL)
+	def checkDerivedQualityDependency(DerivationAssociation d) {
+		val quality = d.derivedClass
+		if(!quality.isQualityType)	return ;
+		
+		val characterizedType = quality.characterization?.getTarget
+		val relata = new BasicEList<OntoUMLClass>
+		
+		relata.add(d.derivingAssociation.getSource)
+		relata.add(d.derivingAssociation.getTarget)
+		
+		val prob = relata.findFirst[ it != characterizedType && !it.ancestors.contains(characterizedType)]
+		if(prob !== null) {
+			warning('''The relata of a comparative relation must be characterized (or specialize a class that is) by the quality serving as truthmaker of the relation.''',
+					prob, XcorePackage.eINSTANCE.modelElement_Name, MISSING_COMPARISSON_QUALITY_CHARACTERIZATION)
+		}
+	}
 	
 	// TODO Validate generalization relations
-	// TODO Validate dependence relations
-	// TODO Validate involvement relations
-	// TODO Validate inherence relations (multiple occurrences, bounded entities...)
-	// TODO check inherence of modes that are parts of relators
-	// TODO Consider derivation relations involving qualities
-	// TODO check external dependence of modes that are parts of relators
 	// TODO Validate disjointness and generalization
 	// TODO Validate duplicated generalizations
 	// TODO Validate generalization cycles

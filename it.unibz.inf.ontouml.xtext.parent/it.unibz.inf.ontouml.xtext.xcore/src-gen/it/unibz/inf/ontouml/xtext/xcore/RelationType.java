@@ -29,54 +29,64 @@ public enum RelationType implements Enumerator {
 	NONE(0, "None", "none"),
 
 	/**
-	 * The '<em><b>Descriptive</b></em>' literal object.
+	 * The '<em><b>Material</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #DESCRIPTIVE_VALUE
+	 * @see #MATERIAL_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	DESCRIPTIVE(1, "Descriptive", "descriptive"),
+	MATERIAL(1, "Material", "material"),
 
 	/**
-	 * The '<em><b>Non Descriptive</b></em>' literal object.
+	 * The '<em><b>Comparative</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #NON_DESCRIPTIVE_VALUE
+	 * @see #COMPARATIVE_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	NON_DESCRIPTIVE(2, "NonDescriptive", "non-descriptive"),
+	COMPARATIVE(2, "Comparative", "comparative"),
 
 	/**
-	 * The '<em><b>Inherence</b></em>' literal object.
+	 * The '<em><b>Characterization</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #INHERENCE_VALUE
+	 * @see #CHARACTERIZATION_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	INHERENCE(3, "Inherence", "inherence"),
+	CHARACTERIZATION(3, "Characterization", "characterization"),
 
 	/**
-	 * The '<em><b>Involvement</b></em>' literal object.
+	 * The '<em><b>Mediation</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #INVOLVEMENT_VALUE
+	 * @see #MEDIATION_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	INVOLVEMENT(4, "Involvement", "involvement"),
+	MEDIATION(4, "Mediation", "mediation"),
 
 	/**
-	 * The '<em><b>Dependence</b></em>' literal object.
+	 * The '<em><b>External Depedence</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #DEPENDENCE_VALUE
+	 * @see #EXTERNAL_DEPEDENCE_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	DEPENDENCE(5, "Dependence", "dependence");
+	EXTERNAL_DEPEDENCE(5, "ExternalDepedence", "external dependence"),
+
+	/**
+	 * The '<em><b>Historical</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #HISTORICAL_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	HISTORICAL(6, "Historical", "historical");
 
 	/**
 	 * The '<em><b>None</b></em>' literal value.
@@ -94,79 +104,94 @@ public enum RelationType implements Enumerator {
 	public static final int NONE_VALUE = 0;
 
 	/**
-	 * The '<em><b>Descriptive</b></em>' literal value.
+	 * The '<em><b>Material</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>Descriptive</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>Material</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #DESCRIPTIVE
-	 * @model name="Descriptive" literal="descriptive"
+	 * @see #MATERIAL
+	 * @model name="Material" literal="material"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int DESCRIPTIVE_VALUE = 1;
+	public static final int MATERIAL_VALUE = 1;
 
 	/**
-	 * The '<em><b>Non Descriptive</b></em>' literal value.
+	 * The '<em><b>Comparative</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>Non Descriptive</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>Comparative</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #NON_DESCRIPTIVE
-	 * @model name="NonDescriptive" literal="non-descriptive"
+	 * @see #COMPARATIVE
+	 * @model name="Comparative" literal="comparative"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int NON_DESCRIPTIVE_VALUE = 2;
+	public static final int COMPARATIVE_VALUE = 2;
 
 	/**
-	 * The '<em><b>Inherence</b></em>' literal value.
+	 * The '<em><b>Characterization</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>Inherence</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>Characterization</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #INHERENCE
-	 * @model name="Inherence" literal="inherence"
+	 * @see #CHARACTERIZATION
+	 * @model name="Characterization" literal="characterization"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int INHERENCE_VALUE = 3;
+	public static final int CHARACTERIZATION_VALUE = 3;
 
 	/**
-	 * The '<em><b>Involvement</b></em>' literal value.
+	 * The '<em><b>Mediation</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>Involvement</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>Mediation</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #INVOLVEMENT
-	 * @model name="Involvement" literal="involvement"
+	 * @see #MEDIATION
+	 * @model name="Mediation" literal="mediation"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int INVOLVEMENT_VALUE = 4;
+	public static final int MEDIATION_VALUE = 4;
 
 	/**
-	 * The '<em><b>Dependence</b></em>' literal value.
+	 * The '<em><b>External Depedence</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>Dependence</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>External Depedence</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #DEPENDENCE
-	 * @model name="Dependence" literal="dependence"
+	 * @see #EXTERNAL_DEPEDENCE
+	 * @model name="ExternalDepedence" literal="external dependence"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int DEPENDENCE_VALUE = 5;
+	public static final int EXTERNAL_DEPEDENCE_VALUE = 5;
+
+	/**
+	 * The '<em><b>Historical</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>Historical</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #HISTORICAL
+	 * @model name="Historical" literal="historical"
+	 * @generated
+	 * @ordered
+	 */
+	public static final int HISTORICAL_VALUE = 6;
 
 	/**
 	 * An array of all the '<em><b>Relation Type</b></em>' enumerators.
@@ -177,11 +202,12 @@ public enum RelationType implements Enumerator {
 	private static final RelationType[] VALUES_ARRAY =
 		new RelationType[] {
 			NONE,
-			DESCRIPTIVE,
-			NON_DESCRIPTIVE,
-			INHERENCE,
-			INVOLVEMENT,
-			DEPENDENCE,
+			MATERIAL,
+			COMPARATIVE,
+			CHARACTERIZATION,
+			MEDIATION,
+			EXTERNAL_DEPEDENCE,
+			HISTORICAL,
 		};
 
 	/**
@@ -239,11 +265,12 @@ public enum RelationType implements Enumerator {
 	public static RelationType get(int value) {
 		switch (value) {
 			case NONE_VALUE: return NONE;
-			case DESCRIPTIVE_VALUE: return DESCRIPTIVE;
-			case NON_DESCRIPTIVE_VALUE: return NON_DESCRIPTIVE;
-			case INHERENCE_VALUE: return INHERENCE;
-			case INVOLVEMENT_VALUE: return INVOLVEMENT;
-			case DEPENDENCE_VALUE: return DEPENDENCE;
+			case MATERIAL_VALUE: return MATERIAL;
+			case COMPARATIVE_VALUE: return COMPARATIVE;
+			case CHARACTERIZATION_VALUE: return CHARACTERIZATION;
+			case MEDIATION_VALUE: return MEDIATION;
+			case EXTERNAL_DEPEDENCE_VALUE: return EXTERNAL_DEPEDENCE;
+			case HISTORICAL_VALUE: return HISTORICAL;
 		}
 		return null;
 	}

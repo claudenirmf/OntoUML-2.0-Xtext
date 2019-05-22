@@ -73,4 +73,40 @@ public interface DerivationAssociation extends Association {
 	 */
 	void setDerivedClass(OntoUMLClass value);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.getSourceEnd();'"
+	 * @generated
+	 */
+	AssociationEnd getDerivingEnd();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.getTargetEnd();'"
+	 * @generated
+	 */
+	AssociationEnd getDerivedEnd();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.getDerivingAssociation();'"
+	 * @generated
+	 */
+	RegularAssociation getSource();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.getDerivedClass();'"
+	 * @generated
+	 */
+	OntoUMLClass getTarget();
+
 } // DerivationAssociation

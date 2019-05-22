@@ -101,9 +101,9 @@ public class XcoreSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case XcorePackage.MULTIPLICITY: {
-				Multiplicity multiplicity = (Multiplicity)theEObject;
-				T result = caseMultiplicity(multiplicity);
+			case XcorePackage.ASSOCIATION_END: {
+				AssociationEnd associationEnd = (AssociationEnd)theEObject;
+				T result = caseAssociationEnd(associationEnd);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -219,17 +219,17 @@ public class XcoreSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Association End</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Association End</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseMultiplicity(Multiplicity object) {
+	public T caseAssociationEnd(AssociationEnd object) {
 		return null;
 	}
 

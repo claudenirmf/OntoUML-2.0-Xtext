@@ -8,12 +8,6 @@ Model:
 	elements+=ModelElement*
 	;
 
-//QualifiedName returns ecore::EString:
-//	ID ('.' ID)*;
-
-//QualifiedNameWithWildcard:
-//	QualifiedName '.*'?;
-
 ModelElement:
 	( OntoUMLClass | RegularAssociation | DerivationAssociation 
 	| Generalization | GeneralizationSet ) ;// ';' ;
@@ -21,8 +15,6 @@ ModelElement:
 OntoUMLClass returns OntoUMLClass:
 	('class' | _type=EndurantType 'class' | _type=EndurantType ) name=StringOrID ('aka' alias=StringOrID)?
 	;
-//	('supers...' '{' generalizationsToSuperclasses+=[Generalization] (',' generalizationsToSuperclasses+=[Generalization])* '}')?
-//	('subs...' '{' generalizationsToSubclasses+=[Generalization] (',' generalizationsToSubclasses+=[Generalization])* '}')?
 
 enum EndurantType:
 	Kind | RelatorKind | ModeKind
@@ -31,22 +23,28 @@ enum EndurantType:
 
 RegularAssociation returns RegularAssociation:
 	( 'association' | _type=RelationType 'association' | _type=RelationType ) name=StringOrID ('aka' alias=StringOrID)?
-	endAMultiplicity=Multiplicity? endA=[OntoUMLClass | StringOrID]
-	endBMultiplicity=Multiplicity? endB=[OntoUMLClass | StringOrID]
+	sourceEnd=AssociationEnd source=[OntoUMLClass | StringOrID]
+	targetEnd=AssociationEnd target=[OntoUMLClass | StringOrID]
 	;
 
 DerivationAssociation returns DerivationAssociation:
 	'derivation' name=StringOrID ('aka' alias=StringOrID)?
-	(endAMultiplicity=Multiplicity? derivingAssociation=[RegularAssociation | StringOrID]
-	& endBMultiplicity=Multiplicity? derivedClass=[OntoUMLClass | StringOrID])
+	(sourceEnd=AssociationEnd derivingAssociation=[RegularAssociation | StringOrID]
+	& targetEnd=AssociationEnd derivedClass=[OntoUMLClass | StringOrID])
 	;
 
 enum RelationType:
-	Descriptive | NonDescriptive
-	| Inherence | Involvement | Dependence ;
+	Comparative | Material | Historical
+	| Characterization | Mediation | ExternalDepedence ;
 
-Multiplicity returns Multiplicity:
-	'[' lowerBound=CARDINALITY '..' upperBound=CARDINALITY ']'
+AssociationEnd returns AssociationEnd:
+	{AssociationEnd} 
+	(aggregationKind=AggregationKind)?
+	('[' lowerBound=CARDINALITY '..' upperBound=CARDINALITY ']')?
+	;
+
+enum AggregationKind:
+	None | Aggregation | Composition
 	;
 
 Generalization:

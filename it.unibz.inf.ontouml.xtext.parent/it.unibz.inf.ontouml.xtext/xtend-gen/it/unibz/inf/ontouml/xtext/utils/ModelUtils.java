@@ -151,9 +151,9 @@ public class ModelUtils {
   /**
    * @return Regular association that binds the given class (as first argument) and represent inherence. Null if there are none.
    */
-  public RegularAssociation getInherence(final OntoUMLClass c) {
+  public RegularAssociation getCharacterization(final OntoUMLClass c) {
     final Function1<ModelElement, Boolean> _function = (ModelElement it) -> {
-      return Boolean.valueOf((((it instanceof RegularAssociation) && Objects.equal(((RegularAssociation) it).get_type(), RelationType.INHERENCE)) && Objects.equal(((RegularAssociation) it).getEndA(), c)));
+      return Boolean.valueOf((((it instanceof RegularAssociation) && Objects.equal(((RegularAssociation) it).get_type(), RelationType.CHARACTERIZATION)) && Objects.equal(((RegularAssociation) it).getSource(), c)));
     };
     ModelElement _findFirst = IterableExtensions.<ModelElement>findFirst(c.getReacheableElements(), _function);
     return ((RegularAssociation) _findFirst);
@@ -162,11 +162,11 @@ public class ModelUtils {
   /**
    * @return Set of regular associations that bind the given class and represent existential dependences. Never null.
    */
-  public Set<RegularAssociation> getDependences(final OntoUMLClass c) {
+  public Set<RegularAssociation> getExternalDependences(final OntoUMLClass c) {
     final HashSet<RegularAssociation> dependences = new HashSet<RegularAssociation>();
     final Consumer<ModelElement> _function = (ModelElement it) -> {
       if ((it instanceof RegularAssociation)) {
-        if ((Objects.equal(((RegularAssociation)it).get_type(), RelationType.DEPENDENCE) && (Objects.equal(((RegularAssociation)it).getEndA(), c) || Objects.equal(((RegularAssociation)it).getEndB(), c)))) {
+        if ((Objects.equal(((RegularAssociation)it).get_type(), RelationType.EXTERNAL_DEPEDENCE) && (Objects.equal(((RegularAssociation)it).getSource(), c) || Objects.equal(((RegularAssociation)it).getTarget(), c)))) {
           dependences.add(((RegularAssociation)it));
         }
       }
@@ -178,16 +178,32 @@ public class ModelUtils {
   /**
    * @return Set of regular associations that bind the given class and represent involvements. Never null.
    */
-  public Set<RegularAssociation> getInvolvements(final OntoUMLClass c) {
+  public Set<RegularAssociation> getMediations(final OntoUMLClass c) {
     final HashSet<RegularAssociation> involvements = new HashSet<RegularAssociation>();
     final Consumer<ModelElement> _function = (ModelElement it) -> {
       if ((it instanceof RegularAssociation)) {
-        if ((Objects.equal(((RegularAssociation)it).get_type(), RelationType.INVOLVEMENT) && (Objects.equal(((RegularAssociation)it).getEndA(), c) || Objects.equal(((RegularAssociation)it).getEndB(), c)))) {
+        if ((Objects.equal(((RegularAssociation)it).get_type(), RelationType.MEDIATION) && (Objects.equal(((RegularAssociation)it).getSource(), c) || Objects.equal(((RegularAssociation)it).getTarget(), c)))) {
           involvements.add(((RegularAssociation)it));
         }
       }
     };
     c.getReacheableElements().forEach(_function);
     return involvements;
+  }
+  
+  /**
+   * @return Set of regular associations that bind the given class and represent involvements. Never null.
+   */
+  public Set<RegularAssociation> getParthoods(final OntoUMLClass c) {
+    final HashSet<RegularAssociation> parthoods = new HashSet<RegularAssociation>();
+    final Consumer<ModelElement> _function = (ModelElement it) -> {
+      if ((it instanceof RegularAssociation)) {
+        if ((((RegularAssociation)it).isParthood() && (Objects.equal(c, ((RegularAssociation)it).getSource()) || Objects.equal(c, ((RegularAssociation)it).getTarget())))) {
+          parthoods.add(((RegularAssociation)it));
+        }
+      }
+    };
+    c.getReacheableElements().forEach(_function);
+    return parthoods;
   }
 }

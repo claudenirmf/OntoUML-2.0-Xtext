@@ -67,13 +67,21 @@ public class OntoUMLValidator extends AbstractOntoUMLValidator {
   
   public final static String PROHIBITED_DERIVATION = "it.unibz.inf.ontouml.xtext.validation.PROHIBITED_DERIVATION";
   
-  public final static String MISSING_INHERENCE = "it.unibz.inf.ontouml.xtext.validation.MISSING_INHERENCE";
+  public final static String MISSING_CHARACTERIZATION = "it.unibz.inf.ontouml.xtext.validation.MISSING_CHARACTERIZATION";
   
-  public final static String INVALID_INHERENCE = "it.unibz.inf.ontouml.xtext.validation.INVALID_INHERENCE";
+  public final static String INVALID_CHARACTERIZATION = "it.unibz.inf.ontouml.xtext.validation.INVALID_CHARACTERIZATION";
   
-  public final static String MISSING_DEPENDENCE = "it.unibz.inf.ontouml.xtext.validation.MISSING_DEPENDENCE";
+  public final static String MISSING_EXTERNAL_DEPENDENCE = "it.unibz.inf.ontouml.xtext.validation.MISSING_EXTERNAL_DEPENDENCE";
   
-  public final static String MISSING_INVOLVEMENT = "it.unibz.inf.ontouml.xtext.validation.MISSING_INVOLVEMENT";
+  public final static String MISSING_MEDIATION = "it.unibz.inf.ontouml.xtext.validation.MISSING_MEDIATION";
+  
+  public final static String MISSING_COMPARISSON_QUALITY_CHARACTERIZATION = "it.unibz.inf.ontouml.xtext.validation.MISSING_COMPARISSON_QUALITY_CHARACTERIZATION";
+  
+  public final static String MISSING_PART_CHARACTERIZATION = "it.unibz.inf.ontouml.xtext.validation.MISSING_PART_CHARACTERIZATION";
+  
+  public final static String MISSING_PART_EXTERNAL_DEPENDENCE = "it.unibz.inf.ontouml.xtext.validation.MISSING_PART_EXTERNAL_DEPENDENCE";
+  
+  public final static String PROHIBITED_PART_EXTERNAL_DEPENDENCE = "it.unibz.inf.ontouml.xtext.validation.PROHIBITED_PART_EXTERNAL_DEPENDENCE";
   
   @Check(CheckType.FAST)
   public void checkDuplicatedName(final ModelElement me) {
@@ -133,6 +141,10 @@ public class OntoUMLValidator extends AbstractOntoUMLValidator {
     RelationType __type = a.get_type();
     boolean _equals = Objects.equal(__type, RelationType.NONE);
     if (_equals) {
+      boolean _isParthood = a.isParthood();
+      if (_isParthood) {
+        return;
+      }
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("\'Unkown ontological nature. Associations without a valid OntoUML stereotype cannot ");
       StringConcatenation _builder_1 = new StringConcatenation();
@@ -375,7 +387,7 @@ public class OntoUMLValidator extends AbstractOntoUMLValidator {
   @Check(CheckType.NORMAL)
   public void checkDescriptiveRelationDerivation(final RegularAssociation a) {
     RelationType __type = a.get_type();
-    boolean _equals = Objects.equal(__type, RelationType.DESCRIPTIVE);
+    boolean _equals = Objects.equal(__type, RelationType.MATERIAL);
     if (_equals) {
       final DerivationAssociation d = this._modelUtils.getDerivation(a);
       if ((d == null)) {
@@ -402,49 +414,156 @@ public class OntoUMLValidator extends AbstractOntoUMLValidator {
     final OntoUMLClass dc = d.getDerivedClass();
     final EndurantType dcKind = this._modelUtils.getKindType(dc);
     final BasicEList<OntoUMLClass> relata = new BasicEList<OntoUMLClass>();
-    relata.add(d.getDerivingAssociation().getEndA());
-    relata.add(d.getDerivingAssociation().getEndB());
+    relata.add(d.getDerivingAssociation().getSource());
+    relata.add(d.getDerivingAssociation().getTarget());
     boolean _equals = Objects.equal(dcKind, EndurantType.MODE_KIND);
     if (_equals) {
-      final RegularAssociation inherence = this._modelUtils.getInherence(dc);
+      final RegularAssociation inherence = this._modelUtils.getCharacterization(dc);
       if ((inherence == null)) {
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("Derived classes representing mode types must inhere in one of the relata");
-        this.error(_builder.toString(), d, XcorePackage.eINSTANCE.getDerivationAssociation_DerivedClass(), OntoUMLValidator.MISSING_INHERENCE);
+        this.error(_builder.toString(), d, XcorePackage.eINSTANCE.getDerivationAssociation_DerivedClass(), OntoUMLValidator.MISSING_CHARACTERIZATION);
         return;
       } else {
-        boolean _contains = relata.contains(inherence.getEndB());
+        boolean _contains = relata.contains(inherence.getTarget());
         boolean _not = (!_contains);
         if (_not) {
           StringConcatenation _builder_1 = new StringConcatenation();
           _builder_1.append("Derived classes representing mode types must inhere in one of the relata");
           this.error(_builder_1.toString(), d, 
-            XcorePackage.eINSTANCE.getDerivationAssociation_DerivedClass(), OntoUMLValidator.INVALID_INHERENCE);
+            XcorePackage.eINSTANCE.getDerivationAssociation_DerivedClass(), OntoUMLValidator.INVALID_CHARACTERIZATION);
           return;
         }
       }
-      final Set<RegularAssociation> dependences = this._modelUtils.getDependences(dc);
+      final Set<RegularAssociation> dependences = this._modelUtils.getExternalDependences(dc);
       if ((dependences.isEmpty() || (!IterableExtensions.<RegularAssociation>exists(dependences, ((Function1<RegularAssociation, Boolean>) (RegularAssociation it) -> {
-        return Boolean.valueOf((relata.contains(it.getEndA()) || relata.contains(it.getEndB())));
+        return Boolean.valueOf((relata.contains(it.getSource()) || relata.contains(it.getTarget())));
       }))))) {
         StringConcatenation _builder_2 = new StringConcatenation();
         _builder_2.append("Derived classes representing mode types must depende (externally) in one of the relata");
-        this.error(_builder_2.toString(), d, XcorePackage.eINSTANCE.getDerivationAssociation_DerivedClass(), OntoUMLValidator.MISSING_DEPENDENCE);
+        this.error(_builder_2.toString(), d, XcorePackage.eINSTANCE.getDerivationAssociation_DerivedClass(), OntoUMLValidator.MISSING_EXTERNAL_DEPENDENCE);
         return;
       }
     }
     boolean _equals_1 = Objects.equal(dcKind, EndurantType.RELATOR_KIND);
     if (_equals_1) {
-      final Set<RegularAssociation> involvements = this._modelUtils.getInvolvements(dc);
+      final Set<RegularAssociation> involvements = this._modelUtils.getMediations(dc);
       if (((involvements.isEmpty() || (!IterableExtensions.<RegularAssociation>exists(involvements, ((Function1<RegularAssociation, Boolean>) (RegularAssociation it) -> {
-        return Boolean.valueOf((Objects.equal(IterableExtensions.<OntoUMLClass>head(relata), it.getEndA()) || Objects.equal(IterableExtensions.<OntoUMLClass>head(relata), it.getEndB())));
+        return Boolean.valueOf((Objects.equal(IterableExtensions.<OntoUMLClass>head(relata), it.getSource()) || Objects.equal(IterableExtensions.<OntoUMLClass>head(relata), it.getTarget())));
       })))) || (!(!IterableExtensions.<RegularAssociation>exists(involvements, ((Function1<RegularAssociation, Boolean>) (RegularAssociation it) -> {
-        return Boolean.valueOf((Objects.equal(IterableExtensions.<OntoUMLClass>tail(relata), it.getEndA()) || Objects.equal(IterableExtensions.<OntoUMLClass>tail(relata), it.getEndB())));
+        return Boolean.valueOf((Objects.equal(IterableExtensions.<OntoUMLClass>tail(relata), it.getSource()) || Objects.equal(IterableExtensions.<OntoUMLClass>tail(relata), it.getTarget())));
       })))))) {
         StringConcatenation _builder_3 = new StringConcatenation();
         _builder_3.append("Derived classes representing relator types must involve all of the relata");
-        this.error(_builder_3.toString(), d, XcorePackage.eINSTANCE.getDerivationAssociation_DerivedClass(), OntoUMLValidator.MISSING_INVOLVEMENT);
+        this.error(_builder_3.toString(), d, XcorePackage.eINSTANCE.getDerivationAssociation_DerivedClass(), OntoUMLValidator.MISSING_MEDIATION);
       }
+    }
+  }
+  
+  @Check(CheckType.NORMAL)
+  public void checkRelatorParts(final OntoUMLClass part) {
+    boolean _isModeType = this._modelUtils.isModeType(part);
+    boolean _not = (!_isModeType);
+    if (_not) {
+      return;
+    }
+    final Set<RegularAssociation> x = this._modelUtils.getParthoods(part);
+    final Consumer<RegularAssociation> _function = (RegularAssociation parthood) -> {
+      if (((parthood.isTargetAWhole() && Objects.equal(parthood.getSource(), part)) && this._modelUtils.isRelatorType(parthood.getTarget()))) {
+        final OntoUMLClass relator = parthood.getTarget();
+        final Function1<RegularAssociation, OntoUMLClass> _function_1 = (RegularAssociation it) -> {
+          return it.getTarget();
+        };
+        final Set<OntoUMLClass> mediated = IterableExtensions.<OntoUMLClass>toSet(IterableExtensions.<RegularAssociation, OntoUMLClass>map(this._modelUtils.getMediations(relator), _function_1));
+        RegularAssociation _characterization = this._modelUtils.getCharacterization(part);
+        OntoUMLClass _target = null;
+        if (_characterization!=null) {
+          _target=_characterization.getTarget();
+        }
+        final OntoUMLClass characterized = _target;
+        final Function1<RegularAssociation, OntoUMLClass> _function_2 = (RegularAssociation it) -> {
+          return it.getTarget();
+        };
+        final Set<OntoUMLClass> externalDependences = IterableExtensions.<OntoUMLClass>toSet(IterableExtensions.<RegularAssociation, OntoUMLClass>map(this._modelUtils.getExternalDependences(part), _function_2));
+        boolean _contains = mediated.contains(characterized);
+        boolean _not_1 = (!_contains);
+        if (_not_1) {
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append("Modes that parts of relators must characterize one of the relata.");
+          this.warning(_builder.toString(), part, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.MISSING_PART_CHARACTERIZATION);
+        }
+        boolean _isEmpty = externalDependences.isEmpty();
+        if (_isEmpty) {
+          StringConcatenation _builder_1 = new StringConcatenation();
+          _builder_1.append("Modes that parts of relators must externally depend on at least one of the relata.");
+          this.warning(_builder_1.toString(), part, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.MISSING_PART_EXTERNAL_DEPENDENCE);
+        } else {
+          final Consumer<OntoUMLClass> _function_3 = (OntoUMLClass extDep) -> {
+            boolean _contains_1 = mediated.contains(extDep);
+            boolean _not_2 = (!_contains_1);
+            if (_not_2) {
+              StringConcatenation _builder_2 = new StringConcatenation();
+              _builder_2.append("Modes that parts of relators must externally depedend exclusively on the relata of its whole.");
+              this.warning(_builder_2.toString(), part, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.PROHIBITED_PART_EXTERNAL_DEPENDENCE);
+            }
+          };
+          externalDependences.forEach(_function_3);
+        }
+      }
+    };
+    x.forEach(_function);
+  }
+  
+  @Check(CheckType.NORMAL)
+  public void checkComparativeRelationDerivation(final RegularAssociation comp) {
+    RelationType __type = comp.get_type();
+    boolean _equals = Objects.equal(__type, RelationType.COMPARATIVE);
+    if (_equals) {
+      final DerivationAssociation d = this._modelUtils.getDerivation(comp);
+      if ((d == null)) {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("Every comparative relation should derive some class representing its truthmaker.");
+        this.warning(_builder.toString(), comp, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.MISSING_DERIVATION);
+      } else {
+        boolean _isQualityType = this._modelUtils.isQualityType(d.getDerivedClass());
+        boolean _not = (!_isQualityType);
+        if (_not) {
+          StringConcatenation _builder_1 = new StringConcatenation();
+          _builder_1.append("Comparative relations have to derive some class representing a quality type (\'");
+          String _name = d.getDerivedClass().getName();
+          _builder_1.append(_name);
+          _builder_1.append("\').");
+          this.warning(_builder_1.toString(), comp, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.PROHIBITED_DERIVATION);
+        }
+      }
+    }
+  }
+  
+  @Check(CheckType.NORMAL)
+  public void checkDerivedQualityDependency(final DerivationAssociation d) {
+    final OntoUMLClass quality = d.getDerivedClass();
+    boolean _isQualityType = this._modelUtils.isQualityType(quality);
+    boolean _not = (!_isQualityType);
+    if (_not) {
+      return;
+    }
+    RegularAssociation _characterization = this._modelUtils.getCharacterization(quality);
+    OntoUMLClass _target = null;
+    if (_characterization!=null) {
+      _target=_characterization.getTarget();
+    }
+    final OntoUMLClass characterizedType = _target;
+    final BasicEList<OntoUMLClass> relata = new BasicEList<OntoUMLClass>();
+    relata.add(d.getDerivingAssociation().getSource());
+    relata.add(d.getDerivingAssociation().getTarget());
+    final Function1<OntoUMLClass, Boolean> _function = (OntoUMLClass it) -> {
+      return Boolean.valueOf(((!Objects.equal(it, characterizedType)) && (!this._modelUtils.getAncestors(it).contains(characterizedType))));
+    };
+    final OntoUMLClass prob = IterableExtensions.<OntoUMLClass>findFirst(relata, _function);
+    if ((prob != null)) {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("The relata of a comparative relation must be characterized (or specialize a class that is) by the quality serving as truthmaker of the relation.");
+      this.warning(_builder.toString(), prob, XcorePackage.eINSTANCE.getModelElement_Name(), OntoUMLValidator.MISSING_COMPARISSON_QUALITY_CHARACTERIZATION);
     }
   }
 }

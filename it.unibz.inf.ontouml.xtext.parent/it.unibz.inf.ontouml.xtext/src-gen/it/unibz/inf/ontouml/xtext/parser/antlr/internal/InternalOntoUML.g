@@ -390,22 +390,22 @@ ruleRegularAssociation returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getRegularAssociationAccess().getEndAMultiplicityMultiplicityParserRuleCall_3_0());
+					newCompositeNode(grammarAccess.getRegularAssociationAccess().getSourceEndAssociationEndParserRuleCall_3_0());
 				}
-				lv_endAMultiplicity_7_0=ruleMultiplicity
+				lv_sourceEnd_7_0=ruleAssociationEnd
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getRegularAssociationRule());
 					}
 					set(
 						$current,
-						"endAMultiplicity",
-						lv_endAMultiplicity_7_0,
-						"it.unibz.inf.ontouml.xtext.OntoUML.Multiplicity");
+						"sourceEnd",
+						lv_sourceEnd_7_0,
+						"it.unibz.inf.ontouml.xtext.OntoUML.AssociationEnd");
 					afterParserOrEnumRuleCall();
 				}
 			)
-		)?
+		)
 		(
 			(
 				{
@@ -414,7 +414,7 @@ ruleRegularAssociation returns [EObject current=null]
 					}
 				}
 				{
-					newCompositeNode(grammarAccess.getRegularAssociationAccess().getEndAOntoUMLClassCrossReference_4_0());
+					newCompositeNode(grammarAccess.getRegularAssociationAccess().getSourceOntoUMLClassCrossReference_4_0());
 				}
 				ruleStringOrID
 				{
@@ -425,22 +425,22 @@ ruleRegularAssociation returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getRegularAssociationAccess().getEndBMultiplicityMultiplicityParserRuleCall_5_0());
+					newCompositeNode(grammarAccess.getRegularAssociationAccess().getTargetEndAssociationEndParserRuleCall_5_0());
 				}
-				lv_endBMultiplicity_9_0=ruleMultiplicity
+				lv_targetEnd_9_0=ruleAssociationEnd
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getRegularAssociationRule());
 					}
 					set(
 						$current,
-						"endBMultiplicity",
-						lv_endBMultiplicity_9_0,
-						"it.unibz.inf.ontouml.xtext.OntoUML.Multiplicity");
+						"targetEnd",
+						lv_targetEnd_9_0,
+						"it.unibz.inf.ontouml.xtext.OntoUML.AssociationEnd");
 					afterParserOrEnumRuleCall();
 				}
 			)
-		)?
+		)
 		(
 			(
 				{
@@ -449,7 +449,7 @@ ruleRegularAssociation returns [EObject current=null]
 					}
 				}
 				{
-					newCompositeNode(grammarAccess.getRegularAssociationAccess().getEndBOntoUMLClassCrossReference_6_0());
+					newCompositeNode(grammarAccess.getRegularAssociationAccess().getTargetOntoUMLClassCrossReference_6_0());
 				}
 				ruleStringOrID
 				{
@@ -539,22 +539,22 @@ ruleDerivationAssociation returns [EObject current=null]
 								({true}?=>((
 									(
 										{
-											newCompositeNode(grammarAccess.getDerivationAssociationAccess().getEndAMultiplicityMultiplicityParserRuleCall_3_0_0_0());
+											newCompositeNode(grammarAccess.getDerivationAssociationAccess().getSourceEndAssociationEndParserRuleCall_3_0_0_0());
 										}
-										lv_endAMultiplicity_5_0=ruleMultiplicity
+										lv_sourceEnd_5_0=ruleAssociationEnd
 										{
 											if ($current==null) {
 												$current = createModelElementForParent(grammarAccess.getDerivationAssociationRule());
 											}
 											set(
 												$current,
-												"endAMultiplicity",
-												lv_endAMultiplicity_5_0,
-												"it.unibz.inf.ontouml.xtext.OntoUML.Multiplicity");
+												"sourceEnd",
+												lv_sourceEnd_5_0,
+												"it.unibz.inf.ontouml.xtext.OntoUML.AssociationEnd");
 											afterParserOrEnumRuleCall();
 										}
 									)
-								)?
+								)
 								(
 									(
 										{
@@ -585,22 +585,22 @@ ruleDerivationAssociation returns [EObject current=null]
 								({true}?=>((
 									(
 										{
-											newCompositeNode(grammarAccess.getDerivationAssociationAccess().getEndBMultiplicityMultiplicityParserRuleCall_3_1_0_0());
+											newCompositeNode(grammarAccess.getDerivationAssociationAccess().getTargetEndAssociationEndParserRuleCall_3_1_0_0());
 										}
-										lv_endBMultiplicity_7_0=ruleMultiplicity
+										lv_targetEnd_7_0=ruleAssociationEnd
 										{
 											if ($current==null) {
 												$current = createModelElementForParent(grammarAccess.getDerivationAssociationRule());
 											}
 											set(
 												$current,
-												"endBMultiplicity",
-												lv_endBMultiplicity_7_0,
-												"it.unibz.inf.ontouml.xtext.OntoUML.Multiplicity");
+												"targetEnd",
+												lv_targetEnd_7_0,
+												"it.unibz.inf.ontouml.xtext.OntoUML.AssociationEnd");
 											afterParserOrEnumRuleCall();
 										}
 									)
-								)?
+								)
 								(
 									(
 										{
@@ -634,15 +634,15 @@ ruleDerivationAssociation returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRuleMultiplicity
-entryRuleMultiplicity returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getMultiplicityRule()); }
-	iv_ruleMultiplicity=ruleMultiplicity
-	{ $current=$iv_ruleMultiplicity.current; }
+// Entry rule entryRuleAssociationEnd
+entryRuleAssociationEnd returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getAssociationEndRule()); }
+	iv_ruleAssociationEnd=ruleAssociationEnd
+	{ $current=$iv_ruleAssociationEnd.current; }
 	EOF;
 
-// Rule Multiplicity
-ruleMultiplicity returns [EObject current=null]
+// Rule AssociationEnd
+ruleAssociationEnd returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -650,54 +650,82 @@ ruleMultiplicity returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='['
-		{
-			newLeafNode(otherlv_0, grammarAccess.getMultiplicityAccess().getLeftSquareBracketKeyword_0());
-		}
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getAssociationEndAccess().getAssociationEndAction_0(),
+					$current);
+			}
+		)
 		(
 			(
-				lv_lowerBound_1_0=RULE_CARDINALITY
 				{
-					newLeafNode(lv_lowerBound_1_0, grammarAccess.getMultiplicityAccess().getLowerBoundCARDINALITYTerminalRuleCall_1_0());
+					newCompositeNode(grammarAccess.getAssociationEndAccess().getAggregationKindAggregationKindEnumRuleCall_1_0());
 				}
+				lv_aggregationKind_1_0=ruleAggregationKind
 				{
 					if ($current==null) {
-						$current = createModelElement(grammarAccess.getMultiplicityRule());
+						$current = createModelElementForParent(grammarAccess.getAssociationEndRule());
 					}
-					setWithLastConsumed(
+					set(
 						$current,
-						"lowerBound",
-						lv_lowerBound_1_0,
-						"it.unibz.inf.ontouml.xtext.OntoUML.CARDINALITY");
+						"aggregationKind",
+						lv_aggregationKind_1_0,
+						"it.unibz.inf.ontouml.xtext.OntoUML.AggregationKind");
+					afterParserOrEnumRuleCall();
 				}
 			)
-		)
-		otherlv_2='..'
-		{
-			newLeafNode(otherlv_2, grammarAccess.getMultiplicityAccess().getFullStopFullStopKeyword_2());
-		}
+		)?
 		(
+			otherlv_2='['
+			{
+				newLeafNode(otherlv_2, grammarAccess.getAssociationEndAccess().getLeftSquareBracketKeyword_2_0());
+			}
 			(
-				lv_upperBound_3_0=RULE_CARDINALITY
-				{
-					newLeafNode(lv_upperBound_3_0, grammarAccess.getMultiplicityAccess().getUpperBoundCARDINALITYTerminalRuleCall_3_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getMultiplicityRule());
+				(
+					lv_lowerBound_3_0=RULE_CARDINALITY
+					{
+						newLeafNode(lv_lowerBound_3_0, grammarAccess.getAssociationEndAccess().getLowerBoundCARDINALITYTerminalRuleCall_2_1_0());
 					}
-					setWithLastConsumed(
-						$current,
-						"upperBound",
-						lv_upperBound_3_0,
-						"it.unibz.inf.ontouml.xtext.OntoUML.CARDINALITY");
-				}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getAssociationEndRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"lowerBound",
+							lv_lowerBound_3_0,
+							"it.unibz.inf.ontouml.xtext.OntoUML.CARDINALITY");
+					}
+				)
 			)
-		)
-		otherlv_4=']'
-		{
-			newLeafNode(otherlv_4, grammarAccess.getMultiplicityAccess().getRightSquareBracketKeyword_4());
-		}
+			otherlv_4='..'
+			{
+				newLeafNode(otherlv_4, grammarAccess.getAssociationEndAccess().getFullStopFullStopKeyword_2_2());
+			}
+			(
+				(
+					lv_upperBound_5_0=RULE_CARDINALITY
+					{
+						newLeafNode(lv_upperBound_5_0, grammarAccess.getAssociationEndAccess().getUpperBoundCARDINALITYTerminalRuleCall_2_3_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getAssociationEndRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"upperBound",
+							lv_upperBound_5_0,
+							"it.unibz.inf.ontouml.xtext.OntoUML.CARDINALITY");
+					}
+				)
+			)
+			otherlv_6=']'
+			{
+				newLeafNode(otherlv_6, grammarAccess.getAssociationEndAccess().getRightSquareBracketKeyword_2_4());
+			}
+		)?
 	)
 ;
 
@@ -1094,42 +1122,85 @@ ruleRelationType returns [Enumerator current=null]
 }:
 	(
 		(
-			enumLiteral_0='descriptive'
+			enumLiteral_0='comparative'
 			{
-				$current = grammarAccess.getRelationTypeAccess().getDescriptiveEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
-				newLeafNode(enumLiteral_0, grammarAccess.getRelationTypeAccess().getDescriptiveEnumLiteralDeclaration_0());
+				$current = grammarAccess.getRelationTypeAccess().getComparativeEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_0, grammarAccess.getRelationTypeAccess().getComparativeEnumLiteralDeclaration_0());
 			}
 		)
 		    |
 		(
-			enumLiteral_1='non-descriptive'
+			enumLiteral_1='material'
 			{
-				$current = grammarAccess.getRelationTypeAccess().getNonDescriptiveEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
-				newLeafNode(enumLiteral_1, grammarAccess.getRelationTypeAccess().getNonDescriptiveEnumLiteralDeclaration_1());
+				$current = grammarAccess.getRelationTypeAccess().getMaterialEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_1, grammarAccess.getRelationTypeAccess().getMaterialEnumLiteralDeclaration_1());
 			}
 		)
 		    |
 		(
-			enumLiteral_2='inherence'
+			enumLiteral_2='historical'
 			{
-				$current = grammarAccess.getRelationTypeAccess().getInherenceEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
-				newLeafNode(enumLiteral_2, grammarAccess.getRelationTypeAccess().getInherenceEnumLiteralDeclaration_2());
+				$current = grammarAccess.getRelationTypeAccess().getHistoricalEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_2, grammarAccess.getRelationTypeAccess().getHistoricalEnumLiteralDeclaration_2());
 			}
 		)
 		    |
 		(
-			enumLiteral_3='involvement'
+			enumLiteral_3='characterization'
 			{
-				$current = grammarAccess.getRelationTypeAccess().getInvolvementEnumLiteralDeclaration_3().getEnumLiteral().getInstance();
-				newLeafNode(enumLiteral_3, grammarAccess.getRelationTypeAccess().getInvolvementEnumLiteralDeclaration_3());
+				$current = grammarAccess.getRelationTypeAccess().getCharacterizationEnumLiteralDeclaration_3().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_3, grammarAccess.getRelationTypeAccess().getCharacterizationEnumLiteralDeclaration_3());
 			}
 		)
 		    |
 		(
-			enumLiteral_4='dependence'
+			enumLiteral_4='mediation'
 			{
-				$current = grammarAccess.getRelationTypeAccess().getDependenceEnumLiteralDeclaration_4().getEnumLiteral().getInstance();
-				newLeafNode(enumLiteral_4, grammarAccess.getRelationTypeAccess().getDependenceEnumLiteralDeclaration_4());
+				$current = grammarAccess.getRelationTypeAccess().getMediationEnumLiteralDeclaration_4().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_4, grammarAccess.getRelationTypeAccess().getMediationEnumLiteralDeclaration_4());
+			}
+		)
+		    |
+		(
+			enumLiteral_5='external dependence'
+			{
+				$current = grammarAccess.getRelationTypeAccess().getExternalDepedenceEnumLiteralDeclaration_5().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_5, grammarAccess.getRelationTypeAccess().getExternalDepedenceEnumLiteralDeclaration_5());
+			}
+		)
+	)
+;
+
+// Rule AggregationKind
+ruleAggregationKind returns [Enumerator current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			enumLiteral_0='none'
+			{
+				$current = grammarAccess.getAggregationKindAccess().getNoneEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_0, grammarAccess.getAggregationKindAccess().getNoneEnumLiteralDeclaration_0());
+			}
+		)
+		    |
+		(
+			enumLiteral_1='Aggregation'
+			{
+				$current = grammarAccess.getAggregationKindAccess().getAggregationEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_1, grammarAccess.getAggregationKindAccess().getAggregationEnumLiteralDeclaration_1());
+			}
+		)
+		    |
+		(
+			enumLiteral_2='composition'
+			{
+				$current = grammarAccess.getAggregationKindAccess().getCompositionEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_2, grammarAccess.getAggregationKindAccess().getCompositionEnumLiteralDeclaration_2());
 			}
 		)
 	)

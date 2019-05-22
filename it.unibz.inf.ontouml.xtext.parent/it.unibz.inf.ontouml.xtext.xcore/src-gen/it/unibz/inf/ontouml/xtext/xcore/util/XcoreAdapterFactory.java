@@ -88,8 +88,8 @@ public class XcoreAdapterFactory extends AdapterFactoryImpl {
 				return createAssociationAdapter();
 			}
 			@Override
-			public Adapter caseMultiplicity(Multiplicity object) {
-				return createMultiplicityAdapter();
+			public Adapter caseAssociationEnd(AssociationEnd object) {
+				return createAssociationEndAdapter();
 			}
 			@Override
 			public Adapter caseRegularAssociation(RegularAssociation object) {
@@ -198,16 +198,16 @@ public class XcoreAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link it.unibz.inf.ontouml.xtext.xcore.Multiplicity <em>Multiplicity</em>}'.
+	 * Creates a new adapter for an object of class '{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd <em>Association End</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see it.unibz.inf.ontouml.xtext.xcore.Multiplicity
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AssociationEnd
 	 * @generated
 	 */
-	public Adapter createMultiplicityAdapter() {
+	public Adapter createAssociationEndAdapter() {
 		return null;
 	}
 

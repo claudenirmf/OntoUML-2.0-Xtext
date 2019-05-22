@@ -2,13 +2,16 @@
  */
 package it.unibz.inf.ontouml.xtext.xcore.impl;
 
+import it.unibz.inf.ontouml.xtext.xcore.AssociationEnd;
 import it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation;
 import it.unibz.inf.ontouml.xtext.xcore.OntoUMLClass;
 import it.unibz.inf.ontouml.xtext.xcore.RegularAssociation;
 import it.unibz.inf.ontouml.xtext.xcore.XcorePackage;
 
+import java.lang.reflect.InvocationTargetException;
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
@@ -149,6 +152,42 @@ public class DerivationAssociationImpl extends AssociationImpl implements Deriva
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public AssociationEnd getDerivingEnd() {
+		return this.getSourceEnd();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public AssociationEnd getDerivedEnd() {
+		return this.getTargetEnd();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public RegularAssociation getSource() {
+		return this.getDerivingAssociation();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public OntoUMLClass getTarget() {
+		return this.getDerivedClass();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -212,6 +251,26 @@ public class DerivationAssociationImpl extends AssociationImpl implements Deriva
 				return derivedClass != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case XcorePackage.DERIVATION_ASSOCIATION___GET_DERIVING_END:
+				return getDerivingEnd();
+			case XcorePackage.DERIVATION_ASSOCIATION___GET_DERIVED_END:
+				return getDerivedEnd();
+			case XcorePackage.DERIVATION_ASSOCIATION___GET_SOURCE:
+				return getSource();
+			case XcorePackage.DERIVATION_ASSOCIATION___GET_TARGET:
+				return getTarget();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 } //DerivationAssociationImpl

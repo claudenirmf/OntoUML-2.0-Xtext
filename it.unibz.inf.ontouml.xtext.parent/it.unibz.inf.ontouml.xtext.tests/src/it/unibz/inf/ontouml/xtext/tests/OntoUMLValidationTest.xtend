@@ -304,23 +304,27 @@ class OntoUMLValidationTest {
 		val m1 = '''
 		relatorKind enrollment
 		kind person kind school
-		descriptive studies_at person school
+		material studies_at person school
 		derivation d_studies_at studies_at enrollment
+		
+		modeKind admiration
+		role admirer role admiredPerson
+		material admires admirer admiredPerson
+		derivation d_admires admires admiration
 		'''.parse
-		m1.assertNoWarnings(XcorePackage.eINSTANCE.regularAssociation,OntoUMLValidator.MISSING_DERIVATION)
 		m1.assertNoWarnings(XcorePackage.eINSTANCE.regularAssociation,OntoUMLValidator.MISSING_DERIVATION)
 		
 		val m2 = '''
 		relatorKind enrollment
 		kind person kind school
-		descriptive studies_at person school
+		material studies_at person school
 		'''.parse
 		m2.assertWarning(XcorePackage.eINSTANCE.regularAssociation,OntoUMLValidator.MISSING_DERIVATION)
 		
 		val m3 = '''
 		category substance
 		kind person kind school
-		descriptive studies_at person school
+		material studies_at person school
 		derivation d_studies_at studies_at substance
 		'''.parse
 		m3.assertWarning(XcorePackage.eINSTANCE.regularAssociation,OntoUMLValidator.PROHIBITED_DERIVATION)
@@ -332,87 +336,198 @@ class OntoUMLValidationTest {
 		roleMixin Lover
 		roleMixin LovedOne
 		modeKind Love
-		descriptive loves Lover LovedOne
+		material loves Lover LovedOne
 		derivation d_loves loves Love
-		inherence inh Love Lover
-		dependence dep Love LovedOne
+		characterization inh Love Lover
+		external dependence dep Love LovedOne
 		
 		roleMixin Customer
 		roleMixin Provider
 		relatorKind ServiceAgreement
-		descriptive subscribes_to Customer Provider
+		material subscribes_to Customer Provider
 		derivation d_subscribes_to subscribes_to ServiceAgreement
-		involvement inv1 ServiceAgreement Customer
-		involvement inv2 ServiceAgreement Provider
+		mediation inv1 ServiceAgreement Customer
+		mediation inv2 ServiceAgreement Provider
 		'''.parse
-		m1.assertNoIssue(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_INHERENCE)
-		m1.assertNoIssue(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.INVALID_INHERENCE)
-		m1.assertNoIssue(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_DEPENDENCE)
-		m1.assertNoIssue(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_INVOLVEMENT)
+		m1.assertNoIssue(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_CHARACTERIZATION)
+		m1.assertNoIssue(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.INVALID_CHARACTERIZATION)
+		m1.assertNoIssue(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_EXTERNAL_DEPENDENCE)
+		m1.assertNoIssue(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_MEDIATION)
 		
 		val m2 = '''
 		roleMixin Lover
 		roleMixin LovedOne
 		modeKind Love
-		descriptive loves Lover LovedOne
+		material loves Lover LovedOne
 		derivation d_loves loves Love
 		'''.parse
-		m2.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_INHERENCE)
+		m2.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_CHARACTERIZATION)
 		
 		val m3 = '''
 		roleMixin Lover
 		roleMixin LovedOne
 		modeKind Love
-		descriptive loves Lover LovedOne
+		material loves Lover LovedOne
 		derivation d_loves loves Love
-		inherence inh Love Lover
+		characterization inh Love Lover
 		'''.parse
-		m3.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_DEPENDENCE)
+		m3.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_EXTERNAL_DEPENDENCE)
 		
 		val m4 = '''
 		class Other
 		roleMixin Lover
 		roleMixin LovedOne
 		modeKind Love
-		descriptive loves Lover LovedOne
+		material loves Lover LovedOne
 		derivation d_loves loves Love
-		inherence inh Love Other
+		characterization inh Love Other
 		'''.parse
-		m4.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.INVALID_INHERENCE)
+		m4.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.INVALID_CHARACTERIZATION)
 		
 		val m5 = '''
 		class Other
 		roleMixin Lover
 		roleMixin LovedOne
 		modeKind Love
-		descriptive loves Lover LovedOne
+		material loves Lover LovedOne
 		derivation d_loves loves Love
-		inherence inh Love Lover
-		dependence dep Love Other
+		characterization inh Love Lover
+		external dependence dep Love Other
 		'''.parse
-		m5.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_DEPENDENCE)
+		m5.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_EXTERNAL_DEPENDENCE)
 		
 		val m6 = '''
 		roleMixin Customer
 		roleMixin Provider
 		relatorKind ServiceAgreement
-		descriptive subscribes_to Customer Provider
+		material subscribes_to Customer Provider
 		derivation d_subscribes_to subscribes_to ServiceAgreement
-		involvement inv2 ServiceAgreement Provider
+		mediation inv2 ServiceAgreement Provider
 		'''.parse
-		m6.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_INVOLVEMENT)
+		m6.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_MEDIATION)
 		
 		val m7 = '''
 		roleMixin Customer
 		roleMixin Provider
 		relatorKind ServiceAgreement
-		descriptive subscribes_to Customer Provider
+		material subscribes_to Customer Provider
 		derivation d_subscribes_to subscribes_to ServiceAgreement
 		'''.parse
-		m7.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_INVOLVEMENT)
+		m7.assertError(XcorePackage.eINSTANCE.derivationAssociation,OntoUMLValidator.MISSING_MEDIATION)
 	}
-
 	
+	@Test
+	def void testCheckRelatorParts() {
+		val m1 = '''
+		role spouse
+		relatorKind marriage
+		material married_with spouse spouse
+		mediation mediates marriage spouse
+
+		modeKind marriageCommitment
+		characterization inheres_in marriageCommitment spouse
+		external dependence depends_on marriageCommitment spouse
 		
+		association commitments_constituing_marriages 
+			marriageCommitment 
+			composition marriage
+		'''.parse
+		m1.assertNoWarnings(XcorePackage.eINSTANCE.ontoUMLClass,OntoUMLValidator.MISSING_PART_CHARACTERIZATION)
+		m1.assertNoWarnings(XcorePackage.eINSTANCE.ontoUMLClass,OntoUMLValidator.MISSING_PART_EXTERNAL_DEPENDENCE)
+		m1.assertNoWarnings(XcorePackage.eINSTANCE.ontoUMLClass,OntoUMLValidator.PROHIBITED_PART_EXTERNAL_DEPENDENCE)
+		
+		val m2 = '''
+		role spouse
+		relatorKind marriage
+		material married_with spouse spouse
+		mediation mediates marriage spouse
+
+		modeKind marriageCommitment
+		// characterization inheres_in marriageCommitment spouse
+		external dependence depends_on marriageCommitment spouse
+		
+		association commitments_constituing_marriages 
+			marriageCommitment 
+			composition marriage
+		'''.parse
+		m2.assertWarning(XcorePackage.eINSTANCE.ontoUMLClass,OntoUMLValidator.MISSING_PART_CHARACTERIZATION)
+		
+		val m3 = '''
+		role spouse
+		relatorKind marriage
+		material married_with spouse spouse
+		mediation mediates marriage spouse
+
+		modeKind marriageCommitment
+		characterization inheres_in marriageCommitment spouse
+		// external dependence depends_on marriageCommitment spouse
+		
+		association commitments_constituing_marriages 
+			marriageCommitment 
+			composition marriage
+		'''.parse
+		m3.assertWarning(XcorePackage.eINSTANCE.ontoUMLClass,OntoUMLValidator.MISSING_PART_EXTERNAL_DEPENDENCE)
+		
+		val m4 = '''
+		kind potato
+		role spouse
+		relatorKind marriage
+		material married_with spouse spouse
+		mediation mediates marriage spouse
+
+		modeKind marriageCommitment
+		characterization inheres_in marriageCommitment spouse
+		external dependence depends_on marriageCommitment potato
+		
+		association commitments_constituing_marriages 
+			marriageCommitment 
+			composition marriage
+		'''.parse
+		m4.assertWarning(XcorePackage.eINSTANCE.ontoUMLClass,OntoUMLValidator.PROHIBITED_PART_EXTERNAL_DEPENDENCE)
+	}
+	
+	@Test
+	def void testCheckComparativeRelationDerivation() {
+		val m1 = '''
+		kind person qualityKind weight
+		comparative heavier_than person person
+		derivation d_heavier_than heavier_than weight
+		'''.parse
+		m1.assertNoWarnings(XcorePackage.eINSTANCE.regularAssociation,OntoUMLValidator.MISSING_DERIVATION)
+		
+		val m2 = '''
+		kind person qualityKind weight
+		comparative heavier_than person person
+		'''.parse
+		m2.assertWarning(XcorePackage.eINSTANCE.regularAssociation,OntoUMLValidator.MISSING_DERIVATION)
+		
+		val m3 = '''
+		kind person modeKind notWeight
+		comparative heavier_than person person
+		derivation d_heavier_than heavier_than notWeight
+		'''.parse
+		m3.assertWarning(XcorePackage.eINSTANCE.regularAssociation,OntoUMLValidator.PROHIBITED_DERIVATION)
+	}
+	
+	@Test
+	def void testCheckDerivedQualityDependency() {
+		val m1 = '''
+		kind person 
+		qualityKind weight
+		characterization persons_weight weight person
+		comparative heavier_than person person
+		derivation d_heavier_than heavier_than weight
+		'''.parse
+		m1.assertNoWarnings(XcorePackage.eINSTANCE.ontoUMLClass,OntoUMLValidator.MISSING_COMPARISSON_QUALITY_CHARACTERIZATION)
+		
+		val m2 = '''
+		kind person 
+		qualityKind weight
+		comparative heavier_than person person
+		derivation d_heavier_than heavier_than weight
+		'''.parse
+		m2.assertWarning(XcorePackage.eINSTANCE.ontoUMLClass,OntoUMLValidator.MISSING_COMPARISSON_QUALITY_CHARACTERIZATION)
+	}
+	
 }
 

@@ -479,22 +479,22 @@ public interface XcorePackage extends EPackage {
 	int ASSOCIATION__ALIAS = CLASSIFIER__ALIAS;
 
 	/**
-	 * The feature id for the '<em><b>End AMultiplicity</b></em>' containment reference.
+	 * The feature id for the '<em><b>Source End</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ASSOCIATION__END_AMULTIPLICITY = CLASSIFIER_FEATURE_COUNT + 0;
+	int ASSOCIATION__SOURCE_END = CLASSIFIER_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>End BMultiplicity</b></em>' containment reference.
+	 * The feature id for the '<em><b>Target End</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ASSOCIATION__END_BMULTIPLICITY = CLASSIFIER_FEATURE_COUNT + 1;
+	int ASSOCIATION__TARGET_END = CLASSIFIER_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Association</em>' class.
@@ -569,14 +569,14 @@ public interface XcorePackage extends EPackage {
 	int ASSOCIATION_OPERATION_COUNT = CLASSIFIER_OPERATION_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link it.unibz.inf.ontouml.xtext.xcore.impl.MultiplicityImpl <em>Multiplicity</em>}' class.
+	 * The meta object id for the '{@link it.unibz.inf.ontouml.xtext.xcore.impl.AssociationEndImpl <em>Association End</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see it.unibz.inf.ontouml.xtext.xcore.impl.MultiplicityImpl
-	 * @see it.unibz.inf.ontouml.xtext.xcore.impl.XcorePackageImpl#getMultiplicity()
+	 * @see it.unibz.inf.ontouml.xtext.xcore.impl.AssociationEndImpl
+	 * @see it.unibz.inf.ontouml.xtext.xcore.impl.XcorePackageImpl#getAssociationEnd()
 	 * @generated
 	 */
-	int MULTIPLICITY = 5;
+	int ASSOCIATION_END = 5;
 
 	/**
 	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute.
@@ -585,7 +585,7 @@ public interface XcorePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MULTIPLICITY__LOWER_BOUND = 0;
+	int ASSOCIATION_END__LOWER_BOUND = 0;
 
 	/**
 	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute.
@@ -594,16 +594,34 @@ public interface XcorePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MULTIPLICITY__UPPER_BOUND = 1;
+	int ASSOCIATION_END__UPPER_BOUND = 1;
 
 	/**
-	 * The number of structural features of the '<em>Multiplicity</em>' class.
+	 * The feature id for the '<em><b>Aggregation Kind</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MULTIPLICITY_FEATURE_COUNT = 2;
+	int ASSOCIATION_END__AGGREGATION_KIND = 2;
+
+	/**
+	 * The number of structural features of the '<em>Association End</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ASSOCIATION_END_FEATURE_COUNT = 3;
+
+	/**
+	 * The operation id for the '<em>Is Representing Whole</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ASSOCIATION_END___IS_REPRESENTING_WHOLE = 0;
 
 	/**
 	 * The operation id for the '<em>Set Multiplicity</em>' operation.
@@ -612,7 +630,7 @@ public interface XcorePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MULTIPLICITY___SET_MULTIPLICITY__STRING_STRING = 0;
+	int ASSOCIATION_END___SET_MULTIPLICITY__STRING_STRING = 1;
 
 	/**
 	 * The operation id for the '<em>Set Zero To One</em>' operation.
@@ -621,7 +639,7 @@ public interface XcorePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MULTIPLICITY___SET_ZERO_TO_ONE = 1;
+	int ASSOCIATION_END___SET_ZERO_TO_ONE = 2;
 
 	/**
 	 * The operation id for the '<em>Set Zero To Many</em>' operation.
@@ -630,7 +648,7 @@ public interface XcorePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MULTIPLICITY___SET_ZERO_TO_MANY = 2;
+	int ASSOCIATION_END___SET_ZERO_TO_MANY = 3;
 
 	/**
 	 * The operation id for the '<em>Set One To One</em>' operation.
@@ -639,7 +657,7 @@ public interface XcorePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MULTIPLICITY___SET_ONE_TO_ONE = 3;
+	int ASSOCIATION_END___SET_ONE_TO_ONE = 4;
 
 	/**
 	 * The operation id for the '<em>Set One To Many</em>' operation.
@@ -648,16 +666,16 @@ public interface XcorePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MULTIPLICITY___SET_ONE_TO_MANY = 4;
+	int ASSOCIATION_END___SET_ONE_TO_MANY = 5;
 
 	/**
-	 * The number of operations of the '<em>Multiplicity</em>' class.
+	 * The number of operations of the '<em>Association End</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MULTIPLICITY_OPERATION_COUNT = 5;
+	int ASSOCIATION_END_OPERATION_COUNT = 6;
 
 	/**
 	 * The meta object id for the '{@link it.unibz.inf.ontouml.xtext.xcore.impl.RegularAssociationImpl <em>Regular Association</em>}' class.
@@ -688,22 +706,22 @@ public interface XcorePackage extends EPackage {
 	int REGULAR_ASSOCIATION__ALIAS = ASSOCIATION__ALIAS;
 
 	/**
-	 * The feature id for the '<em><b>End AMultiplicity</b></em>' containment reference.
+	 * The feature id for the '<em><b>Source End</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REGULAR_ASSOCIATION__END_AMULTIPLICITY = ASSOCIATION__END_AMULTIPLICITY;
+	int REGULAR_ASSOCIATION__SOURCE_END = ASSOCIATION__SOURCE_END;
 
 	/**
-	 * The feature id for the '<em><b>End BMultiplicity</b></em>' containment reference.
+	 * The feature id for the '<em><b>Target End</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REGULAR_ASSOCIATION__END_BMULTIPLICITY = ASSOCIATION__END_BMULTIPLICITY;
+	int REGULAR_ASSOCIATION__TARGET_END = ASSOCIATION__TARGET_END;
 
 	/**
 	 * The feature id for the '<em><b>type</b></em>' attribute.
@@ -715,22 +733,22 @@ public interface XcorePackage extends EPackage {
 	int REGULAR_ASSOCIATION__TYPE = ASSOCIATION_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>End A</b></em>' reference.
+	 * The feature id for the '<em><b>Source</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REGULAR_ASSOCIATION__END_A = ASSOCIATION_FEATURE_COUNT + 1;
+	int REGULAR_ASSOCIATION__SOURCE = ASSOCIATION_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>End B</b></em>' reference.
+	 * The feature id for the '<em><b>Target</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REGULAR_ASSOCIATION__END_B = ASSOCIATION_FEATURE_COUNT + 2;
+	int REGULAR_ASSOCIATION__TARGET = ASSOCIATION_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Regular Association</em>' class.
@@ -796,13 +814,94 @@ public interface XcorePackage extends EPackage {
 	int REGULAR_ASSOCIATION___GET_CHILDREN = ASSOCIATION___GET_CHILDREN;
 
 	/**
+	 * The operation id for the '<em>Is Descriptive</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REGULAR_ASSOCIATION___IS_DESCRIPTIVE = ASSOCIATION_OPERATION_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Is Non Descriptive</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REGULAR_ASSOCIATION___IS_NON_DESCRIPTIVE = ASSOCIATION_OPERATION_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Is Internal</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REGULAR_ASSOCIATION___IS_INTERNAL = ASSOCIATION_OPERATION_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Is External</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REGULAR_ASSOCIATION___IS_EXTERNAL = ASSOCIATION_OPERATION_COUNT + 3;
+
+	/**
+	 * The operation id for the '<em>Is Parthood</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REGULAR_ASSOCIATION___IS_PARTHOOD = ASSOCIATION_OPERATION_COUNT + 4;
+
+	/**
+	 * The operation id for the '<em>Is Source AWhole</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REGULAR_ASSOCIATION___IS_SOURCE_AWHOLE = ASSOCIATION_OPERATION_COUNT + 5;
+
+	/**
+	 * The operation id for the '<em>Is Target AWhole</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REGULAR_ASSOCIATION___IS_TARGET_AWHOLE = ASSOCIATION_OPERATION_COUNT + 6;
+
+	/**
+	 * The operation id for the '<em>Is Source APart</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REGULAR_ASSOCIATION___IS_SOURCE_APART = ASSOCIATION_OPERATION_COUNT + 7;
+
+	/**
+	 * The operation id for the '<em>Is Target APart</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REGULAR_ASSOCIATION___IS_TARGET_APART = ASSOCIATION_OPERATION_COUNT + 8;
+
+	/**
 	 * The number of operations of the '<em>Regular Association</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REGULAR_ASSOCIATION_OPERATION_COUNT = ASSOCIATION_OPERATION_COUNT + 0;
+	int REGULAR_ASSOCIATION_OPERATION_COUNT = ASSOCIATION_OPERATION_COUNT + 9;
 
 	/**
 	 * The meta object id for the '{@link it.unibz.inf.ontouml.xtext.xcore.impl.DerivationAssociationImpl <em>Derivation Association</em>}' class.
@@ -833,22 +932,22 @@ public interface XcorePackage extends EPackage {
 	int DERIVATION_ASSOCIATION__ALIAS = ASSOCIATION__ALIAS;
 
 	/**
-	 * The feature id for the '<em><b>End AMultiplicity</b></em>' containment reference.
+	 * The feature id for the '<em><b>Source End</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DERIVATION_ASSOCIATION__END_AMULTIPLICITY = ASSOCIATION__END_AMULTIPLICITY;
+	int DERIVATION_ASSOCIATION__SOURCE_END = ASSOCIATION__SOURCE_END;
 
 	/**
-	 * The feature id for the '<em><b>End BMultiplicity</b></em>' containment reference.
+	 * The feature id for the '<em><b>Target End</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DERIVATION_ASSOCIATION__END_BMULTIPLICITY = ASSOCIATION__END_BMULTIPLICITY;
+	int DERIVATION_ASSOCIATION__TARGET_END = ASSOCIATION__TARGET_END;
 
 	/**
 	 * The feature id for the '<em><b>Deriving Association</b></em>' reference.
@@ -932,13 +1031,49 @@ public interface XcorePackage extends EPackage {
 	int DERIVATION_ASSOCIATION___GET_CHILDREN = ASSOCIATION___GET_CHILDREN;
 
 	/**
+	 * The operation id for the '<em>Get Deriving End</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DERIVATION_ASSOCIATION___GET_DERIVING_END = ASSOCIATION_OPERATION_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Get Derived End</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DERIVATION_ASSOCIATION___GET_DERIVED_END = ASSOCIATION_OPERATION_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Get Source</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DERIVATION_ASSOCIATION___GET_SOURCE = ASSOCIATION_OPERATION_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Get Target</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DERIVATION_ASSOCIATION___GET_TARGET = ASSOCIATION_OPERATION_COUNT + 3;
+
+	/**
 	 * The number of operations of the '<em>Derivation Association</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DERIVATION_ASSOCIATION_OPERATION_COUNT = ASSOCIATION_OPERATION_COUNT + 0;
+	int DERIVATION_ASSOCIATION_OPERATION_COUNT = ASSOCIATION_OPERATION_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link it.unibz.inf.ontouml.xtext.xcore.impl.GeneralizationImpl <em>Generalization</em>}' class.
@@ -1151,6 +1286,16 @@ public interface XcorePackage extends EPackage {
 	int ENDURANT_TYPE = 10;
 
 	/**
+	 * The meta object id for the '{@link it.unibz.inf.ontouml.xtext.xcore.AggregationKind <em>Aggregation Kind</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AggregationKind
+	 * @see it.unibz.inf.ontouml.xtext.xcore.impl.XcorePackageImpl#getAggregationKind()
+	 * @generated
+	 */
+	int AGGREGATION_KIND = 11;
+
+	/**
 	 * The meta object id for the '{@link it.unibz.inf.ontouml.xtext.xcore.RelationType <em>Relation Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1158,7 +1303,7 @@ public interface XcorePackage extends EPackage {
 	 * @see it.unibz.inf.ontouml.xtext.xcore.impl.XcorePackageImpl#getRelationType()
 	 * @generated
 	 */
-	int RELATION_TYPE = 11;
+	int RELATION_TYPE = 12;
 
 
 	/**
@@ -1426,26 +1571,26 @@ public interface XcorePackage extends EPackage {
 	EClass getAssociation();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link it.unibz.inf.ontouml.xtext.xcore.Association#getEndAMultiplicity <em>End AMultiplicity</em>}'.
+	 * Returns the meta object for the containment reference '{@link it.unibz.inf.ontouml.xtext.xcore.Association#getSourceEnd <em>Source End</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>End AMultiplicity</em>'.
-	 * @see it.unibz.inf.ontouml.xtext.xcore.Association#getEndAMultiplicity()
+	 * @return the meta object for the containment reference '<em>Source End</em>'.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.Association#getSourceEnd()
 	 * @see #getAssociation()
 	 * @generated
 	 */
-	EReference getAssociation_EndAMultiplicity();
+	EReference getAssociation_SourceEnd();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link it.unibz.inf.ontouml.xtext.xcore.Association#getEndBMultiplicity <em>End BMultiplicity</em>}'.
+	 * Returns the meta object for the containment reference '{@link it.unibz.inf.ontouml.xtext.xcore.Association#getTargetEnd <em>Target End</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>End BMultiplicity</em>'.
-	 * @see it.unibz.inf.ontouml.xtext.xcore.Association#getEndBMultiplicity()
+	 * @return the meta object for the containment reference '<em>Target End</em>'.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.Association#getTargetEnd()
 	 * @see #getAssociation()
 	 * @generated
 	 */
-	EReference getAssociation_EndBMultiplicity();
+	EReference getAssociation_TargetEnd();
 
 	/**
 	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.Association#getParents() <em>Get Parents</em>}' operation.
@@ -1468,86 +1613,107 @@ public interface XcorePackage extends EPackage {
 	EOperation getAssociation__GetChildren();
 
 	/**
-	 * Returns the meta object for class '{@link it.unibz.inf.ontouml.xtext.xcore.Multiplicity <em>Multiplicity</em>}'.
+	 * Returns the meta object for class '{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd <em>Association End</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Multiplicity</em>'.
-	 * @see it.unibz.inf.ontouml.xtext.xcore.Multiplicity
+	 * @return the meta object for class '<em>Association End</em>'.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AssociationEnd
 	 * @generated
 	 */
-	EClass getMultiplicity();
+	EClass getAssociationEnd();
 
 	/**
-	 * Returns the meta object for the attribute '{@link it.unibz.inf.ontouml.xtext.xcore.Multiplicity#getLowerBound <em>Lower Bound</em>}'.
+	 * Returns the meta object for the attribute '{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#getLowerBound <em>Lower Bound</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Lower Bound</em>'.
-	 * @see it.unibz.inf.ontouml.xtext.xcore.Multiplicity#getLowerBound()
-	 * @see #getMultiplicity()
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#getLowerBound()
+	 * @see #getAssociationEnd()
 	 * @generated
 	 */
-	EAttribute getMultiplicity_LowerBound();
+	EAttribute getAssociationEnd_LowerBound();
 
 	/**
-	 * Returns the meta object for the attribute '{@link it.unibz.inf.ontouml.xtext.xcore.Multiplicity#getUpperBound <em>Upper Bound</em>}'.
+	 * Returns the meta object for the attribute '{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#getUpperBound <em>Upper Bound</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Upper Bound</em>'.
-	 * @see it.unibz.inf.ontouml.xtext.xcore.Multiplicity#getUpperBound()
-	 * @see #getMultiplicity()
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#getUpperBound()
+	 * @see #getAssociationEnd()
 	 * @generated
 	 */
-	EAttribute getMultiplicity_UpperBound();
+	EAttribute getAssociationEnd_UpperBound();
 
 	/**
-	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.Multiplicity#setMultiplicity(java.lang.String, java.lang.String) <em>Set Multiplicity</em>}' operation.
+	 * Returns the meta object for the attribute '{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#getAggregationKind <em>Aggregation Kind</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Aggregation Kind</em>'.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#getAggregationKind()
+	 * @see #getAssociationEnd()
+	 * @generated
+	 */
+	EAttribute getAssociationEnd_AggregationKind();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#isRepresentingWhole() <em>Is Representing Whole</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Representing Whole</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#isRepresentingWhole()
+	 * @generated
+	 */
+	EOperation getAssociationEnd__IsRepresentingWhole();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#setMultiplicity(java.lang.String, java.lang.String) <em>Set Multiplicity</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Set Multiplicity</em>' operation.
-	 * @see it.unibz.inf.ontouml.xtext.xcore.Multiplicity#setMultiplicity(java.lang.String, java.lang.String)
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#setMultiplicity(java.lang.String, java.lang.String)
 	 * @generated
 	 */
-	EOperation getMultiplicity__SetMultiplicity__String_String();
+	EOperation getAssociationEnd__SetMultiplicity__String_String();
 
 	/**
-	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.Multiplicity#setZeroToOne() <em>Set Zero To One</em>}' operation.
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#setZeroToOne() <em>Set Zero To One</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Set Zero To One</em>' operation.
-	 * @see it.unibz.inf.ontouml.xtext.xcore.Multiplicity#setZeroToOne()
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#setZeroToOne()
 	 * @generated
 	 */
-	EOperation getMultiplicity__SetZeroToOne();
+	EOperation getAssociationEnd__SetZeroToOne();
 
 	/**
-	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.Multiplicity#setZeroToMany() <em>Set Zero To Many</em>}' operation.
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#setZeroToMany() <em>Set Zero To Many</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Set Zero To Many</em>' operation.
-	 * @see it.unibz.inf.ontouml.xtext.xcore.Multiplicity#setZeroToMany()
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#setZeroToMany()
 	 * @generated
 	 */
-	EOperation getMultiplicity__SetZeroToMany();
+	EOperation getAssociationEnd__SetZeroToMany();
 
 	/**
-	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.Multiplicity#setOneToOne() <em>Set One To One</em>}' operation.
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#setOneToOne() <em>Set One To One</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Set One To One</em>' operation.
-	 * @see it.unibz.inf.ontouml.xtext.xcore.Multiplicity#setOneToOne()
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#setOneToOne()
 	 * @generated
 	 */
-	EOperation getMultiplicity__SetOneToOne();
+	EOperation getAssociationEnd__SetOneToOne();
 
 	/**
-	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.Multiplicity#setOneToMany() <em>Set One To Many</em>}' operation.
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#setOneToMany() <em>Set One To Many</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Set One To Many</em>' operation.
-	 * @see it.unibz.inf.ontouml.xtext.xcore.Multiplicity#setOneToMany()
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AssociationEnd#setOneToMany()
 	 * @generated
 	 */
-	EOperation getMultiplicity__SetOneToMany();
+	EOperation getAssociationEnd__SetOneToMany();
 
 	/**
 	 * Returns the meta object for class '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation <em>Regular Association</em>}'.
@@ -1571,26 +1737,116 @@ public interface XcorePackage extends EPackage {
 	EAttribute getRegularAssociation__type();
 
 	/**
-	 * Returns the meta object for the reference '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getEndA <em>End A</em>}'.
+	 * Returns the meta object for the reference '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getSource <em>Source</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>End A</em>'.
-	 * @see it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getEndA()
+	 * @return the meta object for the reference '<em>Source</em>'.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getSource()
 	 * @see #getRegularAssociation()
 	 * @generated
 	 */
-	EReference getRegularAssociation_EndA();
+	EReference getRegularAssociation_Source();
 
 	/**
-	 * Returns the meta object for the reference '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getEndB <em>End B</em>}'.
+	 * Returns the meta object for the reference '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getTarget <em>Target</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>End B</em>'.
-	 * @see it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getEndB()
+	 * @return the meta object for the reference '<em>Target</em>'.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#getTarget()
 	 * @see #getRegularAssociation()
 	 * @generated
 	 */
-	EReference getRegularAssociation_EndB();
+	EReference getRegularAssociation_Target();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isDescriptive() <em>Is Descriptive</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Descriptive</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isDescriptive()
+	 * @generated
+	 */
+	EOperation getRegularAssociation__IsDescriptive();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isNonDescriptive() <em>Is Non Descriptive</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Non Descriptive</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isNonDescriptive()
+	 * @generated
+	 */
+	EOperation getRegularAssociation__IsNonDescriptive();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isInternal() <em>Is Internal</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Internal</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isInternal()
+	 * @generated
+	 */
+	EOperation getRegularAssociation__IsInternal();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isExternal() <em>Is External</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is External</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isExternal()
+	 * @generated
+	 */
+	EOperation getRegularAssociation__IsExternal();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isParthood() <em>Is Parthood</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Parthood</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isParthood()
+	 * @generated
+	 */
+	EOperation getRegularAssociation__IsParthood();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isSourceAWhole() <em>Is Source AWhole</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Source AWhole</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isSourceAWhole()
+	 * @generated
+	 */
+	EOperation getRegularAssociation__IsSourceAWhole();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isTargetAWhole() <em>Is Target AWhole</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Target AWhole</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isTargetAWhole()
+	 * @generated
+	 */
+	EOperation getRegularAssociation__IsTargetAWhole();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isSourceAPart() <em>Is Source APart</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Source APart</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isSourceAPart()
+	 * @generated
+	 */
+	EOperation getRegularAssociation__IsSourceAPart();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isTargetAPart() <em>Is Target APart</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Target APart</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.RegularAssociation#isTargetAPart()
+	 * @generated
+	 */
+	EOperation getRegularAssociation__IsTargetAPart();
 
 	/**
 	 * Returns the meta object for class '{@link it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation <em>Derivation Association</em>}'.
@@ -1623,6 +1879,46 @@ public interface XcorePackage extends EPackage {
 	 * @generated
 	 */
 	EReference getDerivationAssociation_DerivedClass();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation#getDerivingEnd() <em>Get Deriving End</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Deriving End</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation#getDerivingEnd()
+	 * @generated
+	 */
+	EOperation getDerivationAssociation__GetDerivingEnd();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation#getDerivedEnd() <em>Get Derived End</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Derived End</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation#getDerivedEnd()
+	 * @generated
+	 */
+	EOperation getDerivationAssociation__GetDerivedEnd();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation#getSource() <em>Get Source</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Source</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation#getSource()
+	 * @generated
+	 */
+	EOperation getDerivationAssociation__GetSource();
+
+	/**
+	 * Returns the meta object for the '{@link it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation#getTarget() <em>Get Target</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Target</em>' operation.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.DerivationAssociation#getTarget()
+	 * @generated
+	 */
+	EOperation getDerivationAssociation__GetTarget();
 
 	/**
 	 * Returns the meta object for class '{@link it.unibz.inf.ontouml.xtext.xcore.Generalization <em>Generalization</em>}'.
@@ -1738,6 +2034,16 @@ public interface XcorePackage extends EPackage {
 	 * @generated
 	 */
 	EEnum getEndurantType();
+
+	/**
+	 * Returns the meta object for enum '{@link it.unibz.inf.ontouml.xtext.xcore.AggregationKind <em>Aggregation Kind</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Aggregation Kind</em>'.
+	 * @see it.unibz.inf.ontouml.xtext.xcore.AggregationKind
+	 * @generated
+	 */
+	EEnum getAggregationKind();
 
 	/**
 	 * Returns the meta object for enum '{@link it.unibz.inf.ontouml.xtext.xcore.RelationType <em>Relation Type</em>}'.
@@ -1991,20 +2297,20 @@ public interface XcorePackage extends EPackage {
 		EClass ASSOCIATION = eINSTANCE.getAssociation();
 
 		/**
-		 * The meta object literal for the '<em><b>End AMultiplicity</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Source End</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference ASSOCIATION__END_AMULTIPLICITY = eINSTANCE.getAssociation_EndAMultiplicity();
+		EReference ASSOCIATION__SOURCE_END = eINSTANCE.getAssociation_SourceEnd();
 
 		/**
-		 * The meta object literal for the '<em><b>End BMultiplicity</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Target End</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference ASSOCIATION__END_BMULTIPLICITY = eINSTANCE.getAssociation_EndBMultiplicity();
+		EReference ASSOCIATION__TARGET_END = eINSTANCE.getAssociation_TargetEnd();
 
 		/**
 		 * The meta object literal for the '<em><b>Get Parents</b></em>' operation.
@@ -2023,14 +2329,14 @@ public interface XcorePackage extends EPackage {
 		EOperation ASSOCIATION___GET_CHILDREN = eINSTANCE.getAssociation__GetChildren();
 
 		/**
-		 * The meta object literal for the '{@link it.unibz.inf.ontouml.xtext.xcore.impl.MultiplicityImpl <em>Multiplicity</em>}' class.
+		 * The meta object literal for the '{@link it.unibz.inf.ontouml.xtext.xcore.impl.AssociationEndImpl <em>Association End</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see it.unibz.inf.ontouml.xtext.xcore.impl.MultiplicityImpl
-		 * @see it.unibz.inf.ontouml.xtext.xcore.impl.XcorePackageImpl#getMultiplicity()
+		 * @see it.unibz.inf.ontouml.xtext.xcore.impl.AssociationEndImpl
+		 * @see it.unibz.inf.ontouml.xtext.xcore.impl.XcorePackageImpl#getAssociationEnd()
 		 * @generated
 		 */
-		EClass MULTIPLICITY = eINSTANCE.getMultiplicity();
+		EClass ASSOCIATION_END = eINSTANCE.getAssociationEnd();
 
 		/**
 		 * The meta object literal for the '<em><b>Lower Bound</b></em>' attribute feature.
@@ -2038,7 +2344,7 @@ public interface XcorePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MULTIPLICITY__LOWER_BOUND = eINSTANCE.getMultiplicity_LowerBound();
+		EAttribute ASSOCIATION_END__LOWER_BOUND = eINSTANCE.getAssociationEnd_LowerBound();
 
 		/**
 		 * The meta object literal for the '<em><b>Upper Bound</b></em>' attribute feature.
@@ -2046,7 +2352,23 @@ public interface XcorePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MULTIPLICITY__UPPER_BOUND = eINSTANCE.getMultiplicity_UpperBound();
+		EAttribute ASSOCIATION_END__UPPER_BOUND = eINSTANCE.getAssociationEnd_UpperBound();
+
+		/**
+		 * The meta object literal for the '<em><b>Aggregation Kind</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ASSOCIATION_END__AGGREGATION_KIND = eINSTANCE.getAssociationEnd_AggregationKind();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Representing Whole</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation ASSOCIATION_END___IS_REPRESENTING_WHOLE = eINSTANCE.getAssociationEnd__IsRepresentingWhole();
 
 		/**
 		 * The meta object literal for the '<em><b>Set Multiplicity</b></em>' operation.
@@ -2054,7 +2376,7 @@ public interface XcorePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation MULTIPLICITY___SET_MULTIPLICITY__STRING_STRING = eINSTANCE.getMultiplicity__SetMultiplicity__String_String();
+		EOperation ASSOCIATION_END___SET_MULTIPLICITY__STRING_STRING = eINSTANCE.getAssociationEnd__SetMultiplicity__String_String();
 
 		/**
 		 * The meta object literal for the '<em><b>Set Zero To One</b></em>' operation.
@@ -2062,7 +2384,7 @@ public interface XcorePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation MULTIPLICITY___SET_ZERO_TO_ONE = eINSTANCE.getMultiplicity__SetZeroToOne();
+		EOperation ASSOCIATION_END___SET_ZERO_TO_ONE = eINSTANCE.getAssociationEnd__SetZeroToOne();
 
 		/**
 		 * The meta object literal for the '<em><b>Set Zero To Many</b></em>' operation.
@@ -2070,7 +2392,7 @@ public interface XcorePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation MULTIPLICITY___SET_ZERO_TO_MANY = eINSTANCE.getMultiplicity__SetZeroToMany();
+		EOperation ASSOCIATION_END___SET_ZERO_TO_MANY = eINSTANCE.getAssociationEnd__SetZeroToMany();
 
 		/**
 		 * The meta object literal for the '<em><b>Set One To One</b></em>' operation.
@@ -2078,7 +2400,7 @@ public interface XcorePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation MULTIPLICITY___SET_ONE_TO_ONE = eINSTANCE.getMultiplicity__SetOneToOne();
+		EOperation ASSOCIATION_END___SET_ONE_TO_ONE = eINSTANCE.getAssociationEnd__SetOneToOne();
 
 		/**
 		 * The meta object literal for the '<em><b>Set One To Many</b></em>' operation.
@@ -2086,7 +2408,7 @@ public interface XcorePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation MULTIPLICITY___SET_ONE_TO_MANY = eINSTANCE.getMultiplicity__SetOneToMany();
+		EOperation ASSOCIATION_END___SET_ONE_TO_MANY = eINSTANCE.getAssociationEnd__SetOneToMany();
 
 		/**
 		 * The meta object literal for the '{@link it.unibz.inf.ontouml.xtext.xcore.impl.RegularAssociationImpl <em>Regular Association</em>}' class.
@@ -2107,20 +2429,92 @@ public interface XcorePackage extends EPackage {
 		EAttribute REGULAR_ASSOCIATION__TYPE = eINSTANCE.getRegularAssociation__type();
 
 		/**
-		 * The meta object literal for the '<em><b>End A</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Source</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference REGULAR_ASSOCIATION__END_A = eINSTANCE.getRegularAssociation_EndA();
+		EReference REGULAR_ASSOCIATION__SOURCE = eINSTANCE.getRegularAssociation_Source();
 
 		/**
-		 * The meta object literal for the '<em><b>End B</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Target</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference REGULAR_ASSOCIATION__END_B = eINSTANCE.getRegularAssociation_EndB();
+		EReference REGULAR_ASSOCIATION__TARGET = eINSTANCE.getRegularAssociation_Target();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Descriptive</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REGULAR_ASSOCIATION___IS_DESCRIPTIVE = eINSTANCE.getRegularAssociation__IsDescriptive();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Non Descriptive</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REGULAR_ASSOCIATION___IS_NON_DESCRIPTIVE = eINSTANCE.getRegularAssociation__IsNonDescriptive();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Internal</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REGULAR_ASSOCIATION___IS_INTERNAL = eINSTANCE.getRegularAssociation__IsInternal();
+
+		/**
+		 * The meta object literal for the '<em><b>Is External</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REGULAR_ASSOCIATION___IS_EXTERNAL = eINSTANCE.getRegularAssociation__IsExternal();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Parthood</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REGULAR_ASSOCIATION___IS_PARTHOOD = eINSTANCE.getRegularAssociation__IsParthood();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Source AWhole</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REGULAR_ASSOCIATION___IS_SOURCE_AWHOLE = eINSTANCE.getRegularAssociation__IsSourceAWhole();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Target AWhole</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REGULAR_ASSOCIATION___IS_TARGET_AWHOLE = eINSTANCE.getRegularAssociation__IsTargetAWhole();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Source APart</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REGULAR_ASSOCIATION___IS_SOURCE_APART = eINSTANCE.getRegularAssociation__IsSourceAPart();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Target APart</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REGULAR_ASSOCIATION___IS_TARGET_APART = eINSTANCE.getRegularAssociation__IsTargetAPart();
 
 		/**
 		 * The meta object literal for the '{@link it.unibz.inf.ontouml.xtext.xcore.impl.DerivationAssociationImpl <em>Derivation Association</em>}' class.
@@ -2147,6 +2541,38 @@ public interface XcorePackage extends EPackage {
 		 * @generated
 		 */
 		EReference DERIVATION_ASSOCIATION__DERIVED_CLASS = eINSTANCE.getDerivationAssociation_DerivedClass();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Deriving End</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation DERIVATION_ASSOCIATION___GET_DERIVING_END = eINSTANCE.getDerivationAssociation__GetDerivingEnd();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Derived End</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation DERIVATION_ASSOCIATION___GET_DERIVED_END = eINSTANCE.getDerivationAssociation__GetDerivedEnd();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Source</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation DERIVATION_ASSOCIATION___GET_SOURCE = eINSTANCE.getDerivationAssociation__GetSource();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Target</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation DERIVATION_ASSOCIATION___GET_TARGET = eINSTANCE.getDerivationAssociation__GetTarget();
 
 		/**
 		 * The meta object literal for the '{@link it.unibz.inf.ontouml.xtext.xcore.impl.GeneralizationImpl <em>Generalization</em>}' class.
@@ -2241,6 +2667,16 @@ public interface XcorePackage extends EPackage {
 		 * @generated
 		 */
 		EEnum ENDURANT_TYPE = eINSTANCE.getEndurantType();
+
+		/**
+		 * The meta object literal for the '{@link it.unibz.inf.ontouml.xtext.xcore.AggregationKind <em>Aggregation Kind</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see it.unibz.inf.ontouml.xtext.xcore.AggregationKind
+		 * @see it.unibz.inf.ontouml.xtext.xcore.impl.XcorePackageImpl#getAggregationKind()
+		 * @generated
+		 */
+		EEnum AGGREGATION_KIND = eINSTANCE.getAggregationKind();
 
 		/**
 		 * The meta object literal for the '{@link it.unibz.inf.ontouml.xtext.xcore.RelationType <em>Relation Type</em>}' enum.
